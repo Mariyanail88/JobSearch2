@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkExperienceInfoDto {
-    private Long id;
-    private Integer applicantId;
-    private String name;
-    private Integer categoryId;
-    private Integer salary;
-    private Boolean isActive;
-    private LocalDateTime createdDate;
-    private LocalDateTime updateTime;
+    private Integer id;
+    private Integer  resume_id;
+    private Integer years;
+    private String company_name;
+    private String position;
+    private String responsibilities;
+
 }

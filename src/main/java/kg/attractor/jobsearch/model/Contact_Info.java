@@ -1,4 +1,4 @@
-package main.java.kg.attractor.jobsearch.model;
+package kg.attractor.jobsearch.model;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContactInfo {
+public class Contact_Info {
     private Integer id;
     private Integer typeId;
     private Integer resumeId;
