@@ -1,4 +1,4 @@
-package main.java.kg.attractor.jobsearch.model;
+package kg.attractor.jobsearch.model;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

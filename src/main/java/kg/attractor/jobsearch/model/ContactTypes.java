@@ -15,7 +15,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contact_types {
+public class ContactTypes {
     private Integer id;
     private String type;
 }

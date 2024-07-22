@@ -1,4 +1,4 @@
-package main.java.kg.attractor.jobsearch.dto;
+package kg.attractor.jobsearch.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
