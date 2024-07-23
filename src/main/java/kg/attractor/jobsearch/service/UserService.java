@@ -10,12 +10,8 @@ public interface UserService {
     UserDto getUserByEmail(String email);
     UserDto getUserById(Integer id);
     void addUser(UserDto userDto);
-
-    boolean deleteUser(Long id);
-
-    List<UserDto> getUsersRespondedToVacancy(Integer vacancyId);
-
     void updateUser(Integer id, UserDto userDto);
     boolean deleteUser(Integer id);
     void uploadAvatar(MultipartFile file);
+    String saveUploadedFile(MultipartFile file, String subDir); // Новый метод
 }

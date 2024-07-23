@@ -2,11 +2,15 @@ package kg.attractor.jobsearch.controller;
 
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.VacancyDto;
+import kg.attractor.jobsearch.service.FileService;
 import kg.attractor.jobsearch.service.UserService;
 
 import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class EmployerController {
     private final UserService userService;
     private final VacancyService vacancyService;
+    private final FileService fileService;
 
     @PostMapping("/resumes")
     public void createResume(@RequestBody UserDto userDto) {
@@ -59,6 +64,16 @@ public class EmployerController {
     public UserDto getEmployerById(@PathVariable Integer employerId) {
         return userService.getUserById(employerId);
     }
+    // Загрузка аватара
+    @PostMapping("/upload-avatar")
+    public void uploadAvatar(@RequestParam("file") MultipartFile file) {
+        userService.uploadAvatar(file);
+    }
 
+    // Скачивание изображения
+    @GetMapping("/download-avatar/{filename}")
+    public ResponseEntity<?> downloadImage(@PathVariable String filename) {
+        return fileService.getOutputFile(filename, "/avatars", MediaType.IMAGE_JPEG);
+    }
 
 }
