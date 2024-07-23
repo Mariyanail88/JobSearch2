@@ -2,45 +2,58 @@ package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.service.UserService;
-
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    // Получает список всех пользователей
     @Override
     public List<UserDto> getUsers() {
+
         return null;
     }
 
-    // Получает пользователя по его email
     @Override
     public UserDto getUserByEmail(String email) {
+
         return null;
     }
 
-    // Получает пользователя по его ID
     @Override
     public UserDto getUserById(Integer id) {
+
         return null;
     }
 
-    // Добавляет нового пользователя
     @Override
     public void addUser(UserDto userDto) {
-
     }
 
-    // Удаляет пользователя по его ID
     @Override
     public boolean deleteUser(Long id) {
         return false;
     }
 
-    // Получает список пользователей, откликнувшихся на вакансию
     @Override
     public List<UserDto> getUsersRespondedToVacancy(Integer vacancyId) {
         return null;
+    }
+
+    @Override
+    public void updateUser(Integer id, UserDto userDto) {
+
+    }
+
+    @Override
+    public boolean deleteUser(Integer id) {
+        return false;
+    }
+
+    @Override
+    public void uploadAvatar(MultipartFile file) {
+
     }
 }
