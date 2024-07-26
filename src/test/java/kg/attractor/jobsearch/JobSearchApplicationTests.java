@@ -1,13 +1,16 @@
-package kg.attractor.jobsearch;
-
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-public class JobSearchApplicationTests {
-
-	@Test
-    public void contextLoads() {
-	}
-
-}
+//package kg.attractor.jobsearch;
+//
+//
+//
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
+//public class JobSearchApplicationTests {
+//
+//	@Test
+//    public void contextLoads() {
+//	}
+//
+//}

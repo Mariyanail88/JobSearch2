@@ -13,5 +13,6 @@ public interface UserService {
     void updateUser(Integer id, UserDto userDto);
     boolean deleteUser(Integer id);
     void uploadAvatar(MultipartFile file);
-    String saveUploadedFile(MultipartFile file, String subDir); // Новый метод
+    String saveUploadedFile(MultipartFile file, String subDir);
+    List<UserDto> getUserList();
 }
