@@ -33,6 +33,14 @@ CREATE TABLE IF NOT EXISTS vacancies (
                                          created_date TIMESTAMP,
                                          update_time TIMESTAMP
 );
+CREATE TABLE IF NOT EXISTS applications (
+                                            id INT AUTO_INCREMENT PRIMARY KEY,
+                                            resume_id INT,
+                                            vacancy_id INT,
+                                            application_date TIMESTAMP,
+                                            FOREIGN KEY (resume_id) REFERENCES resumes(id),
+                                            FOREIGN KEY (vacancy_id) REFERENCES vacancies(id)
+);
 
 -- Insert users if not exists
 INSERT INTO users (name, age, email, password, phone_number, avatar, account_type)
@@ -60,3 +68,39 @@ WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Backend Developer' AND a
 INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time)
 SELECT 'Frontend Developer', 'Develop and maintain frontend applications', 2, 75000, 1, 3, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
 WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Frontend Developer' AND author_id = 2);
+
+-- Insert users if not exists
+INSERT INTO users (name, age, email, password, phone_number, avatar, account_type)
+SELECT 'John Doe', 30, 'john.doe@example.com', '123456', '123-456-7890', 'avatar1.png', 'applicant'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'john.doe@example.com');
+
+INSERT INTO users (name, age, email, password, phone_number, avatar, account_type)
+SELECT 'Jane Doe', 25, 'jane.doe@example.com', 'qwerty', '098-765-4321', 'avatar2.png', 'employer'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'jane.doe@example.com');
+
+-- Insert resumes if not exists
+INSERT INTO resumes (applicant_id, name, category_id, salary, is_active, created_date, update_time)
+SELECT 1, 'Software Engineer', 1, 60000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM resumes WHERE name = 'Software Engineer' AND applicant_id = 1);
+
+INSERT INTO resumes (applicant_id, name, category_id, salary, is_active, created_date, update_time)
+SELECT 1, 'Data Scientist', 2, 70000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM resumes WHERE name = 'Data Scientist' AND applicant_id = 1);
+
+-- Insert vacancies if not exists
+INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time)
+SELECT 'Backend Developer', 'Develop and maintain backend services', 1, 80000, 2, 5, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Backend Developer' AND author_id = 2);
+
+INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time)
+SELECT 'Frontend Developer', 'Develop and maintain frontend applications', 2, 75000, 1, 3, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Frontend Developer' AND author_id = 2);
+
+-- Insert applications if not exists
+INSERT INTO applications (resume_id, vacancy_id, application_date)
+SELECT 1, 1, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM applications WHERE resume_id = 1 AND vacancy_id = 1);
+
+INSERT INTO applications (resume_id, vacancy_id, application_date)
+SELECT 2, 2, CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM applications WHERE resume_id = 2 AND vacancy_id = 2);
