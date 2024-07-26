@@ -97,92 +97,72 @@ CREATE TABLE IF NOT EXISTS work_experience_info (
                                                     FOREIGN KEY (resume_id) REFERENCES resumes(id)
 );
 
--- Вставка пользователей, если их нет
+-- Вставка пользователей
 INSERT INTO users (name, age, email, password, phone_number, avatar, account_type)
-SELECT 'John Doe', 30, 'john.doe@example.com', '123456', '123-456-7890', 'avatar1.png', 'applicant'
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'john.doe@example.com');
+VALUES ('John Doe', 30, 'john.doe@example.com', '123456', '123-456-7890', 'avatar1.png', 'applicant');
 
 INSERT INTO users (name, age, email, password, phone_number, avatar, account_type)
-SELECT 'Jane Doe', 25, 'jane.doe@example.com', 'qwerty', '098-765-4321', 'avatar2.png', 'employer'
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'jane.doe@example.com');
+VALUES ('Jane Doe', 25, 'jane.doe@example.com', 'qwerty', '098-765-4321', 'avatar2.png', 'employer');
 
--- Вставка категорий, если их нет
+-- Вставка категорий
 INSERT INTO categories (name, parent_id)
-SELECT 'IT', NULL
-WHERE NOT EXISTS (SELECT 1 FROM categories WHERE name = 'IT');
+VALUES ('IT', NULL);
 
 INSERT INTO categories (name, parent_id)
-SELECT 'Software Development', 1
-WHERE NOT EXISTS (SELECT 1 FROM categories WHERE name = 'Software Development');
+VALUES ('Software Development', 1);
 
--- Вставка резюме, если их нет
+-- Вставка резюме
 INSERT INTO resumes (applicant_id, name, category_id, salary, is_active, created_date, update_time)
-SELECT 1, 'Software Engineer', 2, 60000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM resumes WHERE name = 'Software Engineer' AND applicant_id = 1);
+VALUES (1, 'Software Engineer', 2, 60000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO resumes (applicant_id, name, category_id, salary, is_active, created_date, update_time)
-SELECT 1, 'Data Scientist', 2, 70000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM resumes WHERE name = 'Data Scientist' AND applicant_id = 1);
+VALUES (1, 'Data Scientist', 2, 70000, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Вставка вакансий, если их нет
+-- Вставка вакансий
 INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time)
-SELECT 'Backend Developer', 'Develop and maintain backend services', 2, 80000, 2, 5, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Backend Developer' AND author_id = 2);
+VALUES ('Backend Developer', 'Develop and maintain backend services', 2, 80000, 2, 5, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time)
-SELECT 'Frontend Developer', 'Develop and maintain frontend applications', 2, 75000, 1, 3, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM vacancies WHERE name = 'Frontend Developer' AND author_id = 2);
+VALUES ('Frontend Developer', 'Develop and maintain frontend applications', 2, 75000, 1, 3, TRUE, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Вставка типов контактов, если их нет
+-- Вставка типов контактов
 INSERT INTO contact_types (type)
-SELECT 'Email'
-WHERE NOT EXISTS (SELECT 1 FROM contact_types WHERE type = 'Email');
+VALUES ('Email');
 
 INSERT INTO contact_types (type)
-SELECT 'Phone'
-WHERE NOT EXISTS (SELECT 1 FROM contact_types WHERE type = 'Phone');
+VALUES ('Phone');
 
--- Вставка контактной информации, если её нет
+-- Вставка контактной информации
 INSERT INTO contact_info (type_id, resume_id, "value")
-SELECT 1, 1, 'john.doe@example.com'
-WHERE NOT EXISTS (SELECT 1 FROM contact_info WHERE resume_id = 1 AND type_id = 1);
+VALUES (1, 1, 'john.doe@example.com');
 
 INSERT INTO contact_info (type_id, resume_id, "value")
-SELECT 2, 1, '123-456-7890'
-WHERE NOT EXISTS (SELECT 1 FROM contact_info WHERE resume_id = 1 AND type_id = 2);
+VALUES (2, 1, '123-456-7890');
 
--- Вставка информации об образовании, если её нет
+-- Вставка об образовании
 INSERT INTO education_info (institution, program, start_date, end_date, degree, resume_id)
-SELECT 'MIT', 'Computer Science', '2015-09-01 00:00:00', '2019-06-01 00:00:00', 'Bachelor', 1
-WHERE NOT EXISTS (SELECT 1 FROM education_info WHERE resume_id = 1 AND institution = 'MIT');
+VALUES ('MIT', 'Computer Science', '2015-09-01 00:00:00', '2019-06-01 00:00:00', 'Bachelor', 1);
 
 INSERT INTO education_info (institution, program, start_date, end_date, degree, resume_id)
-SELECT 'Stanford', 'Data Science', '2016-09-01 00:00:00', '2020-06-01 00:00:00', 'Master', 1
-WHERE NOT EXISTS (SELECT 1 FROM education_info WHERE resume_id = 1 AND institution = 'Stanford');
+VALUES ('Stanford', 'Data Science', '2016-09-01 00:00:00', '2020-06-01 00:00:00', 'Master', 1);
 
--- Вставка откликнувшихся соискателей, если их нет
+-- Вставка откликнувшихся соискателей
 INSERT INTO responded_applicants (resume_id, vacancy_id, confirmation)
-SELECT 1, 1, TRUE
-WHERE NOT EXISTS (SELECT 1 FROM responded_applicants WHERE resume_id = 1 AND vacancy_id = 1);
+VALUES (1, 1, TRUE);
 
 INSERT INTO responded_applicants (resume_id, vacancy_id, confirmation)
-SELECT 2, 2, TRUE
-WHERE NOT EXISTS (SELECT 1 FROM responded_applicants WHERE resume_id = 2 AND vacancy_id = 2);
+VALUES (2, 2, TRUE);
 
--- Вставка сообщений, если их нет
+-- Вставка сообщений
 INSERT INTO messages (responded_applicant_id, content, timestamp)
-SELECT 1, 'Thank you for applying!', CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM messages WHERE responded_applicant_id = 1);
+VALUES (1, 'Thank you for applying!', CURRENT_TIMESTAMP);
 
 INSERT INTO messages (responded_applicant_id, content, timestamp)
-SELECT 2, 'We will review your application soon.', CURRENT_TIMESTAMP
-WHERE NOT EXISTS (SELECT 1 FROM messages WHERE responded_applicant_id = 2);
+VALUES (2, 'We will review your application soon.', CURRENT_TIMESTAMP);
 
--- Вставка информации о рабочем опыте, если её нет
+-- Вставка  опыта
 INSERT INTO work_experience_info (resume_id, years, company_name, position, responsibilities)
-SELECT 1, 3, 'Google', 'Software Engineer', 'Developed scalable backend services'
-WHERE NOT EXISTS (SELECT 1 FROM work_experience_info WHERE resume_id = 1 AND company_name = 'Google');
+VALUES (1, 3, 'Google', 'Software Engineer', 'Developed scalable backend services');
 
 INSERT INTO work_experience_info (resume_id, years, company_name, position, responsibilities)
-SELECT 1, 2, 'Facebook', 'Data Scientist', 'Analyzed large datasets'
-WHERE NOT EXISTS (SELECT 1 FROM work_experience_info WHERE resume_id = 1 AND company_name = 'Facebook');
+VALUES (1, 2, 'Facebook', 'Data Scientist', 'Analyzed large datasets');
