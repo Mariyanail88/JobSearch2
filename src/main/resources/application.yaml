@@ -11,8 +11,6 @@ spring:
     password: qwerty
     driver-class-name: org.h2.Driver
 
-  sql:
-    init:
-      mode: always
-    schema: classpath:schema.sql
-    data: classpath:data.sql
+
+  liquibase:
+    change-log: classpath:/db/changelog/master.yaml
