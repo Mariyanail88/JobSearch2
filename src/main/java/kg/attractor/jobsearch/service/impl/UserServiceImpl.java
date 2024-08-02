@@ -1,7 +1,10 @@
 package kg.attractor.jobsearch.service.impl;
 
+import kg.attractor.jobsearch.dao.UserDao;
 import kg.attractor.jobsearch.dto.UserDto;
+import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final List<UserDto> users = new ArrayList<>();
+    private final UserDao userDao;
     private static final String UPLOAD_DIR = "uploads/avatars/";
 
     @Override
@@ -46,7 +51,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserDto userDto) {
-        users.add(userDto);
+        if (userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
+            userDto.setAvatar("ava.png");
+        }
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setAge(userDto.getAge());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setAvatar(userDto.getAvatar());
+        user.setAccountType(userDto.getAccountType());
+
+        userDao.create(user);
+        if (user.getAccountType().equals("applicant")) {
+            log.info("added applicant with email {}", user.getEmail());
+        } else {
+            log.info("added employer with email {}", user.getEmail());
+        }
     }
 
     @Override

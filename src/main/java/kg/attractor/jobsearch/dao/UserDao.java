@@ -40,35 +40,32 @@ public class UserDao {
         );
     }
 
-    // Получение пользователя по имени
+
     public Optional<User> getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE name = ?";
         User user = jdbcTemplate.queryForObject(sql, new UserMapper(), username);
         return Optional.ofNullable(user);
     }
 
-    // Получение пользователя по номеру телефона
     public Optional<User> getUserByPhoneNumber(String phoneNumber) {
         String sql = "SELECT * FROM users WHERE phone_number = ?";
         User user = jdbcTemplate.queryForObject(sql, new UserMapper(), phoneNumber);
         return Optional.ofNullable(user);
     }
 
-    // Получение пользователя по email
+
     public Optional<User> getUserByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
         User user = jdbcTemplate.queryForObject(sql, new UserMapper(), email);
         return Optional.ofNullable(user);
     }
 
-    // Проверка наличия пользователя в системе по email
     public boolean existsByEmail(String email) {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
 
-    // Создание нового пользователя
     public void create(User user) {
         String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type) " +
                 "VALUES (:name, :password, :age, :email, :phoneNumber, :avatar, :accountType)";
@@ -85,7 +82,7 @@ public class UserDao {
         );
     }
 
-    // Создание нового пользователя с возвратом ID
+
     public Integer create(String username, String password, Integer age, String email, String phoneNumber, String avatar, String accountType) {
         String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
 

@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    @NotNull(message = "ID is mandatory")
+
     private Integer id;
 
     @NotBlank(message = "Name is mandatory")
