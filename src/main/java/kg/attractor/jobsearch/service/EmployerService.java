@@ -8,14 +8,11 @@ public interface EmployerService {
 
     void createVacancy(VacancyDto vacancyDto);
 
-
     void updateVacancy(Integer id, VacancyDto vacancyDto);
-
 
     void deleteVacancy(Integer id);
 
     List<VacancyDto> getAllVacancies();
 
-
-    List<VacancyDto> getVacanciesByCategory(String category);
+    List<VacancyDto> getVacanciesByCategory(Integer category);
 }

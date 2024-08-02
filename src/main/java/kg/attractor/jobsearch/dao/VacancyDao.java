@@ -65,6 +65,27 @@ public class VacancyDao {
                 )
         );
     }
+    public void save(Vacancy vacancy) {
+        String sql = "INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(), vacancy.getSalary(),
+                vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.getIsActive(), vacancy.getAuthorId(),
+                vacancy.getCreatedDate(), vacancy.getUpdateTime());
+    }
 
+    // Обновление вакансии
+    public void update(Vacancy vacancy) {
+        String sql = "UPDATE vacancies SET name = ?, description = ?, category_id = ?, salary = ?, exp_from = ?, exp_to = ?, is_active = ?, author_id = ?, update_time = ? WHERE id = ?";
+        jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(), vacancy.getSalary(),
+                vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.getIsActive(), vacancy.getAuthorId(),
+                vacancy.getUpdateTime(), vacancy.getId());
+    }
 
+    // Удаление вакансии
+    public void delete(int id) {
+        String sql = "DELETE FROM vacancies WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
+
+

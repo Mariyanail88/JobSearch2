@@ -36,14 +36,12 @@ public class ResumeDao {
         ));
     }
 
-    public Optional<Resume> getResumeByCategoryId(Integer categoryId) {
+    public List<Resume> getResumesByCategoryId(Integer categoryId) {
         String sql = """
-                select * from RESUMES
+                select * from resumes
                 where CATEGORY_ID = ?
                 """;
-        return Optional.ofNullable(DataAccessUtils.singleResult(
-                template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId)
-        ));
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
     }
 
     public List<Resume> getResumesByUserId(Integer userId) {
@@ -75,5 +73,52 @@ public class ResumeDao {
                 where ID=?
                 """;
         template.update(sql, id);
+    }
+
+    // Метод для сохранения нового резюме
+    public void save(Resume resume) {
+        String sql = """
+                insert into resumes (APPLICANT_ID, NAME, CATEGORY_ID, SALARY, IS_ACTIVE, CREATED_DATE, UPDATE_TIME)
+                values (:applicantId, :name, :categoryId, :salary, :isActive, :createdDate, :updateTime)
+                """;
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                .addValue("applicantId", resume.getApplicantId())
+                .addValue("name", resume.getName())
+                .addValue("categoryId", resume.getCategoryId())
+                .addValue("salary", resume.getSalary())
+                .addValue("isActive", resume.getIsActive())
+                .addValue("createdDate", resume.getCreatedDate())
+                .addValue("updateTime", resume.getUpdateTime()));
+    }
+
+    // Метод для обновления существующего резюме
+    public void update(Resume resume) {
+        String sql = """
+                update resumes set
+                APPLICANT_ID = :applicantId,
+                NAME = :name,
+                CATEGORY_ID = :categoryId,
+                SALARY = :salary,
+                IS_ACTIVE = :isActive,
+                CREATED_DATE = :createdDate,
+                UPDATE_TIME = :updateTime
+                where ID = :id
+                """;
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                .addValue("applicantId", resume.getApplicantId())
+                .addValue("name", resume.getName())
+                .addValue("categoryId", resume.getCategoryId())
+                .addValue("salary", resume.getSalary())
+                .addValue("isActive", resume.getIsActive())
+                .addValue("createdDate", resume.getCreatedDate())
+                .addValue("updateTime", resume.getUpdateTime())
+                .addValue("id", resume.getId()));
+    }
+    public List<Resume> getAllResumes() {
+        String sql = """
+                select * from resumes
+                """;
+
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
 }
