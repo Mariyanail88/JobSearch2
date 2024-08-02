@@ -83,22 +83,22 @@ public class UserDao {
     }
 
 
-    public Integer create(String username, String password, Integer age, String email, String phoneNumber, String avatar, String accountType) {
-        String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setInt(3, age);
-            ps.setString(4, email);
-            ps.setString(5, phoneNumber);
-            ps.setString(6, avatar);
-            ps.setString(7, accountType);
-            return ps;
-        }, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
-    }
+//    public Integer create(String username, String password, Integer age, String email, String phoneNumber, String avatar, String accountType) {
+//        String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//
+//        jdbcTemplate.update(con -> {
+//            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+//            ps.setString(1, username);
+//            ps.setString(2, password);
+//            ps.setInt(3, age);
+//            ps.setString(4, email);
+//            ps.setString(5, phoneNumber);
+//            ps.setString(6, avatar);
+//            ps.setString(7, accountType);
+//            return ps;
+//        }, keyHolder);
+//        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+//    }
 
     // Получение пользователей по возрасту
     public List<User> getUsersByAge(int age) {
