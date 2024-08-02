@@ -12,7 +12,8 @@ public interface UserService {
     void addUser(UserDto userDto);
     void updateUser(Integer id, UserDto userDto);
     boolean deleteUser(Integer id);
-    void uploadAvatar(MultipartFile file);
+    void uploadAvatar(MultipartFile file, Integer userId); // Обновленная сигнатура метода
     String saveUploadedFile(MultipartFile file, String subDir);
     List<UserDto> getUserList();
+    void createUser(UserDto user);
 }
