@@ -3,20 +3,31 @@ package kg.attractor.jobsearch.controller;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
+
     private final UserService userService;
 
-    @GetMapping
-    public List<UserDto> getUsers() {
-        return userService.getUserList();
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@Valid @RequestBody UserDto user) {
+        userService.createUser(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/upload-avatar")
+    public ResponseEntity<Void> uploadAvatar(@RequestParam("userId") Integer userId, @RequestParam("avatar") MultipartFile avatar) {
+        userService.uploadAvatar(avatar, userId);
+        return ResponseEntity.ok().build();
     }
 }

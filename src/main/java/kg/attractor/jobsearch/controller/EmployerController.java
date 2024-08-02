@@ -59,18 +59,16 @@ public class EmployerController {
         vacancyService.applyToVacancy(vacancyId, userDto);
     }
 
-
     @GetMapping("/employers/{employerId}")
     public UserDto getEmployerById(@PathVariable Integer employerId) {
         return userService.getUserById(employerId);
     }
     // Загрузка аватара
     @PostMapping("/upload-avatar")
-    public void uploadAvatar(@RequestParam("file") MultipartFile file) {
-        userService.uploadAvatar(file);
+    public void uploadAvatar(@RequestParam("userId") Integer userId, @RequestParam("file") MultipartFile file) {
+        userService.uploadAvatar(file, userId);
     }
 
-    // Скачивание изображения
     @GetMapping("/download-avatar/{filename}")
     public ResponseEntity<?> downloadImage(@PathVariable String filename) {
         return fileService.getOutputFile(filename, "/avatars", MediaType.IMAGE_JPEG);
