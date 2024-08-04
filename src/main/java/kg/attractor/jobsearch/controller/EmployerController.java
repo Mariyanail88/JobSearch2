@@ -44,7 +44,7 @@ public class EmployerController {
         return vacancyService.getVacanciesByCategory(category);
     }
 
-    @GetMapping("/employers/{employerId}")
+    @GetMapping("/{employerId}")
     public UserDto getEmployerById(@PathVariable Integer employerId) {
         return userService.getUserById(employerId);
     }
@@ -70,7 +70,7 @@ public class EmployerController {
         userService.uploadAvatar(file, userId);
     }
 
-    @PostMapping
+    @PostMapping("/vacancy")
     public void createVacancy(@RequestBody VacancyDto vacancyDto) {
         employerService.createVacancy(vacancyDto);
     }

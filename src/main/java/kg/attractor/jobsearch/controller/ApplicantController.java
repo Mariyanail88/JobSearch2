@@ -52,7 +52,7 @@ public class ApplicantController {
         }
         return ResponseEntity.ok(resumes);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/resume/{id}")
     public ResponseEntity<ResumeDto> getResumeById(@PathVariable Integer id) {
         ResumeDto resume = resumeService.getResumeById(id);
         if (resume == null) {
@@ -70,19 +70,19 @@ public class ApplicantController {
         return ResponseEntity.ok(resumes);
     }
 
-    @PostMapping
+    @PostMapping("/resume")
     public ResponseEntity<Void> addResume(@Valid @RequestBody ResumeDto resumeDto) {
         resumeService.addResume(resumeDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/resume/{id}")
     public ResponseEntity<Void> updateResume(@PathVariable Integer id, @Valid @RequestBody ResumeDto resumeDto) {
         resumeService.editResume(id, resumeDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/resume/{id}")
     public ResponseEntity<Void> deleteResume(@PathVariable Integer id) {
         if (resumeService.deleteResume(id)) {
             return ResponseEntity.noContent().build();

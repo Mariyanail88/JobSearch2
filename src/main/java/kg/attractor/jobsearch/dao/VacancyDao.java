@@ -66,7 +66,7 @@ public class VacancyDao {
         );
     }
     public void save(Vacancy vacancy) {
-        String sql = "INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date, update_time) " +
+        String sql = "INSERT INTO vacancies (name, description, category_id, salary, EXPFROM, EXPTO, is_active, author_id, created_date, update_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(), vacancy.getSalary(),
                 vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.getIsActive(), vacancy.getAuthorId(),
@@ -75,7 +75,7 @@ public class VacancyDao {
 
     // Обновление вакансии
     public void update(Vacancy vacancy) {
-        String sql = "UPDATE vacancies SET name = ?, description = ?, category_id = ?, salary = ?, exp_from = ?, exp_to = ?, is_active = ?, author_id = ?, update_time = ? WHERE id = ?";
+        String sql = "UPDATE vacancies SET name = ?, description = ?, category_id = ?, salary = ?, EXPFROM = ?, expto = ?, is_active = ?, author_id = ?, update_time = ? WHERE id = ?";
         jdbcTemplate.update(sql, vacancy.getName(), vacancy.getDescription(), vacancy.getCategoryId(), vacancy.getSalary(),
                 vacancy.getExpFrom(), vacancy.getExpTo(), vacancy.getIsActive(), vacancy.getAuthorId(),
                 vacancy.getUpdateTime(), vacancy.getId());

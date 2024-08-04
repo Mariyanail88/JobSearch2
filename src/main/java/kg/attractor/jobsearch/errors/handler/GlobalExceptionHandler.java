@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -59,5 +60,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseBody> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(BadSqlGrammarException.class)
+    public ResponseEntity<ErrorResponseBody> handleBadSqlGrammarException(BadSqlGrammarException e) {
+        return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

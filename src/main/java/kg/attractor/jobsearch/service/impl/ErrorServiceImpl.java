@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ErrorServiceImpl implements ErrorService {
 
+
     @Override
     public ErrorResponseBody makeResponse(Exception exception) {
         return ErrorResponseBody.builder()
@@ -34,4 +35,5 @@ public class ErrorServiceImpl implements ErrorService {
                 .reasons(errors)
                 .build();
     }
+
 }
