@@ -2,8 +2,11 @@ package kg.attractor.jobsearch.errors.handler;
 
 import kg.attractor.jobsearch.errors.ErrorResponseBody;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
+import kg.attractor.jobsearch.errors.EntityNotFoundException;
+import kg.attractor.jobsearch.errors.CanNotFindImageException;
 import kg.attractor.jobsearch.service.ErrorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,5 +41,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseBody> handleResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
+    }
+
+    // Обработка EntityNotFoundException
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponseBody> handleEntityNotFoundException(EntityNotFoundException e) {
+        return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
+    }
+
+    // Обработка CanNotFindImageException
+    @ExceptionHandler(CanNotFindImageException.class)
+    public ResponseEntity<ErrorResponseBody> handleCanNotFindImageException(CanNotFindImageException e) {
+        return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
+    }
+
+    // Обработка DataIntegrityViolationException
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseBody> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.CONFLICT);
     }
 }
