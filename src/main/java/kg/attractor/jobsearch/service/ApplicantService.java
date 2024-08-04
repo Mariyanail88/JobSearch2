@@ -1,11 +1,12 @@
 package kg.attractor.jobsearch.service;
 
+import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 
 import java.util.List;
 
 public interface ApplicantService {
-    List<UserDto> getAllResumes();
+    List<ResumeDto> getAllResumes();
 
     List<UserDto> getResumesByCategory(String category);
 

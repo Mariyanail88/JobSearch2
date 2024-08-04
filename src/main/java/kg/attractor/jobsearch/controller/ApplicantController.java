@@ -1,8 +1,15 @@
 package kg.attractor.jobsearch.controller;
 
+import jakarta.validation.Valid;
+import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
+import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.service.ApplicantService;
+import kg.attractor.jobsearch.service.ResumeService;
+import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicantController {
     private final ApplicantService applicantService;
+    private final   VacancyService vacancyService;
+    private final ResumeService resumeService;
 
-    @GetMapping
-    public List<UserDto> getAllApplicants() {
+    @GetMapping("/resumes")
+    public List<ResumeDto> getAllResumes() {
         return applicantService.getAllResumes();
     }
 
@@ -26,5 +35,58 @@ public class ApplicantController {
     @GetMapping("/vacancy/{vacancyId}/applicants")
     public List<UserDto> getApplicantsByVacancyId(@PathVariable Integer vacancyId) {
         return applicantService.getApplicantsByVacancyId(vacancyId);
+    }
+    @GetMapping("/vacancies")
+    public ResponseEntity<List<VacancyDto>> getAllActiveVacancies() {
+        return ResponseEntity.ok(vacancyService.getVacancies());
+    }
+    @GetMapping("/vacancies/category/{category}")
+    public ResponseEntity<List<?>> getVacanciesByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(vacancyService.getVacanciesByCategory(category));
+    }
+    @GetMapping("get-user-resumes/{user_id}")
+    public ResponseEntity<?> getResumesByUserId(@PathVariable Integer user_id) {
+        List<ResumeDto> resumes = resumeService.getResumeByUserId(user_id);
+        if (resumes.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("resumes with user_id %d not found", user_id));
+        }
+        return ResponseEntity.ok(resumes);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ResumeDto> getResumeById(@PathVariable Integer id) {
+        ResumeDto resume = resumeService.getResumeById(id);
+        if (resume == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(resume);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ResumeDto>> getResumeByUserId(@PathVariable Integer userId) {
+        List<ResumeDto> resumes = resumeService.getResumeByUserId(userId);
+        if (resumes.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(resumes);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addResume(@Valid @RequestBody ResumeDto resumeDto) {
+        resumeService.addResume(resumeDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateResume(@PathVariable Integer id, @Valid @RequestBody ResumeDto resumeDto) {
+        resumeService.editResume(id, resumeDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteResume(@PathVariable Integer id) {
+        if (resumeService.deleteResume(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

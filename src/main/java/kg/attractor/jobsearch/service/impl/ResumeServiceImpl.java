@@ -1,6 +1,7 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.ResumeDao;
+import kg.attractor.jobsearch.dao.mappers.ResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
 import kg.attractor.jobsearch.model.Resume;
@@ -17,12 +18,12 @@ import java.util.stream.Collectors;
 public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeDao resumeDao;
-
+    private  ResumeMapper resumeMapper;
     @Override
     public List<ResumeDto> getResumes() {
         List<Resume> resumes = resumeDao.getAllResumes();
         return resumes.stream()
-                .map(this::convertToDto)
+                .map(ResumeMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -32,7 +33,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (resume.isEmpty()) {
             throw new ResourceNotFoundException("Resume not found with id: " + id);
         }
-        return convertToDto(resume.get());
+        return ResumeMapper. convertToDto(resume.get());
     }
 
     @Override
@@ -41,7 +42,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (resumes.isEmpty()) {
             throw new ResourceNotFoundException("No resumes found for category id: " + categoryId);
         }
-        return convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
+        return ResumeMapper. convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeDto> getResumeByUserId(Integer userId) {
         List<Resume> resumes = resumeDao.getResumesByUserId(userId);
         return resumes.stream()
-                .map(this::convertToDto)
+                .map(ResumeMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -95,16 +96,5 @@ public class ResumeServiceImpl implements ResumeService {
         resumeDao.update(resume);
     }
 
-    // Метод для преобразования Resume в ResumeDto
-    private ResumeDto convertToDto(Resume resume) {
-        return ResumeDto.builder()
-                .applicantId(resume.getApplicantId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.getIsActive())
-                .createdDate(resume.getCreatedDate())
-                .updateTime(resume.getUpdateTime())
-                .build();
-    }
+
 }

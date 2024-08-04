@@ -1,3 +1,4 @@
+/*
 package kg.attractor.jobsearch.controller;
 
 import kg.attractor.jobsearch.dto.VacancyDto;
@@ -25,4 +26,4 @@ public class VacancyController {
     public void deleteVacancy(@PathVariable Integer id) {
         employerService.deleteVacancy(id);
     }
-}
+}*/
