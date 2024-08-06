@@ -7,6 +7,7 @@ import kg.attractor.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.SneakyThrows;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final List<UserDto> users = new ArrayList<>();
     private final UserDao userDao;
     private static final String UPLOAD_DIR = "uploads/avatars/";
+    private final PasswordEncoder encoder;
 
     @Override
     public List<UserDto> getUsers() {
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getName());
         user.setAge(userDto.getAge());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encoder.encode(userDto.getPassword()));
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAvatar(userDto.getAvatar());
         user.setAccountType(userDto.getAccountType());
