@@ -24,4 +24,5 @@ public class User {
     private String phoneNumber;
     private String avatar;
     private String accountType;
+    private boolean enabled;
 }

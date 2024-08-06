@@ -41,4 +41,9 @@ databaseChangeLog:
               - column:
                   name: account_type
                   type: VARCHAR(45)
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
 

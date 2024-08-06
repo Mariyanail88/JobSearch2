@@ -47,6 +47,7 @@ public class UserDto {
 
     private String avatar;
 
-    @NotBlank(message = "Account type is mandatory")
     private String accountType;
+
+    private boolean enabled;
 }

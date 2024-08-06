@@ -6,6 +6,7 @@ import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.service.ApplicantService;
 import kg.attractor.jobsearch.service.ResumeService;
+import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class ApplicantController {
     private final ApplicantService applicantService;
     private final   VacancyService vacancyService;
     private final ResumeService resumeService;
+    private final UserService userService;
 
     @GetMapping("/resumes")
     public List<ResumeDto> getAllResumes() {
@@ -68,6 +70,12 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.ok(resumes);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@Valid @RequestBody UserDto user) {
+        user.setAccountType("applicant");
+        userService.createUser(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/resume")

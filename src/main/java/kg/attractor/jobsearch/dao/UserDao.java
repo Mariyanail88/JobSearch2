@@ -3,6 +3,7 @@ package kg.attractor.jobsearch.dao;
 import kg.attractor.jobsearch.dao.mappers.UserMapper;
 import kg.attractor.jobsearch.model.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,16 +12,21 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final Map<String, Integer> userAuthorityMap = new HashMap<>() {{
+        put("ADMIN", 1);
+        put("USER", 2);
+    }};
 
     private final KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -67,8 +73,8 @@ public class UserDao {
     }
 
     public void create(User user) {
-        String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type) " +
-                "VALUES (:name, :password, :age, :email, :phoneNumber, :avatar, :accountType)";
+        String sql = "INSERT INTO users (name, password, age, email, phone_number, avatar, account_type, enabled) " +
+                "VALUES (:name, :password, :age, :email, :phoneNumber, :avatar, :accountType, :enabled)";
         namedParameterJdbcTemplate.update(
                 sql,
                 new MapSqlParameterSource()
@@ -79,9 +85,16 @@ public class UserDao {
                         .addValue("phoneNumber", user.getPhoneNumber())
                         .addValue("avatar", user.getAvatar())
                         .addValue("accountType", user.getAccountType())
+                        .addValue("enabled", user.isEnabled())
         );
+        Optional<User> userByEmail = getUserByEmail(user.getEmail());
+        if (userByEmail.isPresent()) {
+            //Роль USER по умолчанию
+            setUserRole(userByEmail.get().getId(), userAuthorityMap.get("USER"));
+        } else {
+            log.error("Can't set user role - user with email '{}' not found.", user.getEmail());
+        }
     }
-
 
 
 
@@ -96,4 +109,16 @@ public class UserDao {
         String sql = "SELECT * FROM users WHERE account_type = ?";
         return jdbcTemplate.query(sql, new UserMapper(), accountType);
     }
+    private void setUserRole(Integer userId, Integer authorityId) {
+        String sql = """
+                insert into ROLES(USER_ID, AUTHORITY_ID)
+                values (:userId, :authorityId);
+                """;
+
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                        .addValue("userId", userId)
+                        .addValue("authorityId", authorityId)
+               );
+    }
+
 }
