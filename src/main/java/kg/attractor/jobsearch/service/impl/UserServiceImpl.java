@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAvatar(userDto.getAvatar());
         user.setAccountType(userDto.getAccountType());
+        user.setEnabled(true);
 
         userDao.create(user);
         if (user.getAccountType().equals("applicant")) {
