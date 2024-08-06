@@ -19,6 +19,10 @@ databaseChangeLog:
       file: /db/changelog/initial/001_create_education_info_table.yaml
   - include:
       file: /db/changelog/initial/001_create_work_experience_info_table.yaml
+  - include:
+      file: /db/changelog/initial/001_create_authorities_table.yaml
+  - include:
+      file: /db/changelog/initial/001_create_role-user_table.yaml
 
 
   - include:
@@ -41,3 +45,7 @@ databaseChangeLog:
       file: /db/changelog/initial/002_insert_education_info.sql
   - include:
       file: /db/changelog/initial/002_insert_work_experience_info.sql
+  - include:
+      file: /db/changelog/initial/002_insert_authorities.sql
+  - include:
+      file: /db/changelog/initial/002_insert_insert_roles.sql
