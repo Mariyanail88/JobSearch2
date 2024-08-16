@@ -98,7 +98,11 @@ public class UserServiceImpl implements UserService {
         String avatarFileName = saveUploadedFile(file, "");
         UserDto user = getUserById(userId);
         if (user != null) {
-            user.setAvatar(UPLOAD_DIR + avatarFileName);
+            if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
+                user.setAvatar("uploads/avatars/default_avatar(1).png"); // Установите путь к аватару по умолчанию
+            } else {
+                user.setAvatar(UPLOAD_DIR + avatarFileName);
+            }
             updateUser(userId, user);
         } else {
             throw new IllegalArgumentException("User not found with id: " + userId);
