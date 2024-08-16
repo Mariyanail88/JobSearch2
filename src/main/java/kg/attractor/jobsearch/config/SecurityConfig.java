@@ -9,11 +9,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -26,19 +26,19 @@ public class SecurityConfig {
 
     private static final String USER_QUERY =
             """
-            SELECT EMAIL, PASSWORD, ENABLED
-            FROM USERS
-            WHERE EMAIL=?
-            """;
+                    SELECT EMAIL, PASSWORD, ENABLED
+                    FROM USERS
+                    WHERE EMAIL=?
+                    """;
 
     private static final String AUTHORITIES_QUERY =
             """
-            select USERS.EMAIL, A.ROLE
-            from USERS
-            inner join ROLES UA on USERS.ID = UA.USER_ID
-            inner join AUTHORITIES A on A.ID = UA.AUTHORITY_ID
-            where EMAIL=?;
-            """;
+                    select USERS.EMAIL, A.ROLE
+                    from USERS
+                    inner join ROLES UA on USERS.ID = UA.USER_ID
+                    inner join AUTHORITIES A on A.ID = UA.AUTHORITY_ID
+                    where EMAIL=?;
+                    """;
 
 
     @Autowired
@@ -53,14 +53,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/auth/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui/").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                                .requestMatchers("/swagger-ui/").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/applicants/register").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/users/upload-avatar").hasAnyAuthority("ADMIN", "USER")
 //                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAuthority("ADMIN")
@@ -89,7 +97,7 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.POST, "/applicants/resume").hasAnyAuthority("ADMIN", "USER")
 //                        .requestMatchers(HttpMethod.PUT, "/applicants/resume/{id}").hasAnyAuthority("ADMIN", "USER")
 //                        .requestMatchers(HttpMethod.DELETE, "/applicants/resume/{id}").hasAnyAuthority("ADMIN", "USER")
-                        .anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 );
         return http.build();
     }

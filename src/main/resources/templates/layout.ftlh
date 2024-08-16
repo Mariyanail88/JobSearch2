@@ -58,9 +58,9 @@
                 </form>
             </div>
             <a href="/auth/login"
-               class="btn btn-outline-dark m-2">Login</a>
+               class="btn btn-outline-info m-2">Login</a>
             <a href="/auth/register"
-               class="btn btn-outline-dark m-2">Register</a>
+               class="btn btn-outline-info m-2">Register</a>
 
         </div>
     </nav>
