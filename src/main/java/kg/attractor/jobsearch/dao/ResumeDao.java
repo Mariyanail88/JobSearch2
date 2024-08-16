@@ -1,5 +1,6 @@
 package kg.attractor.jobsearch.dao;
 
+import kg.attractor.jobsearch.dao.mappers.ResumeMapper;
 import kg.attractor.jobsearch.model.Resume;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -51,6 +52,7 @@ public class ResumeDao {
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
     }
+
 
     public void addResume(Resume resume) {
         String sql = """

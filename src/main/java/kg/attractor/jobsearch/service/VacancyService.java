@@ -6,7 +6,12 @@ import kg.attractor.jobsearch.dto.VacancyDto;
 import java.util.List;
 
 public interface VacancyService {
-    List<VacancyDto> getVacancies();
+     List<VacancyDto> getVacancies();
+
+
+
+    List<VacancyDto> getVacancyDtos();
+
     VacancyDto getVacancyById(Integer id);
     void createVacancy(VacancyDto vacancyDto);
     boolean deleteVacancy(Integer id);

@@ -96,5 +96,25 @@ public class ResumeServiceImpl implements ResumeService {
         resumeDao.update(resume);
     }
 
+    @Override
+    public List<ResumeDto> getResumeDtos() {
+        var resumes = resumeDao.getAllResumes();
+        return resumes.stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
+    private ResumeDto convertToDto(Resume resume) {
+        return ResumeDto.builder()
+                .applicantId(resume.getApplicantId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.getIsActive())
+                .createdDate(resume.getCreatedDate())
+                .updateTime(resume.getUpdateTime())
+                .build();
+    }
+
 
 }

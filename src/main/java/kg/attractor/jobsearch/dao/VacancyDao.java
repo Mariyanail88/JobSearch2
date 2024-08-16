@@ -4,6 +4,7 @@ import kg.attractor.jobsearch.dao.mappers.UserMapper;
 import kg.attractor.jobsearch.dao.mappers.VacancyMapper;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+
 public class VacancyDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -64,6 +66,11 @@ public class VacancyDao {
                         jdbcTemplate.query(sql, new VacancyMapper(), id)
                 )
         );
+    }
+
+    public List<Vacancy> getVacancies() {
+        String sql = "SELECT * FROM vacancies";
+        return jdbcTemplate.query(sql, new VacancyMapper());
     }
     public void save(Vacancy vacancy) {
         String sql = "INSERT INTO vacancies (name, description, category_id, salary, EXPFROM, EXPTO, is_active, author_id, created_date, update_time) " +
