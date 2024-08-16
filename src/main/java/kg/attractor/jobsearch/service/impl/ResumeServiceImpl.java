@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeDao resumeDao;
-    private  ResumeMapper resumeMapper;
+
     @Override
     public List<ResumeDto> getResumes() {
         List<Resume> resumes = resumeDao.getAllResumes();
