@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/vacancies")
+@RequestMapping()
 @RequiredArgsConstructor
 public class VacancyController {
     private final VacancyService vacancyService;

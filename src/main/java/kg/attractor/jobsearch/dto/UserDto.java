@@ -37,12 +37,12 @@ public class UserDto {
     private String email;
 
     @NotBlank(message = "Password is mandatory")
-    @Size(min = 4, max = 24, message = "Length must be >= 4 and <= 24")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "Password should contain at least one uppercase letter, one number")
+    @Size(min = 3, max = 24, message = "Length must be >= 4 and <= 24")
+    // @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "Password should contain at least one uppercase letter, one number")
     private String password;
 
     @NotBlank(message = "Phone number is mandatory")
-    @Pattern(regexp = "^\\+\\d{1} \\d{3} \\d{3}-\\d{2}-\\d{2}$", message = "Phone number must be in the format +X XXX XXX-XX-XX")
+   // @Pattern(regexp = "^\\+\\d{1} \\d{3} \\d{3}-\\d{2}-\\d{2}$", message = "Phone number must be in the format +X XXX XXX-XX-XX")
     private String phoneNumber;
 
     private String avatar;

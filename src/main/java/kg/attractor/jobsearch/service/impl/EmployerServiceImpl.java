@@ -42,7 +42,7 @@ public class EmployerServiceImpl implements EmployerService {
                 .createdDate(vacancyDto.getCreatedDate())
                 .updateTime(vacancyDto.getUpdateTime())
                 .build();
-        vacancyDao.save(vacancy);
+        vacancyDao.addVacancy(vacancy);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class EmployerServiceImpl implements EmployerService {
         vacancy.setAuthorId(vacancyDto.getAuthorId());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
 
-        vacancyDao.update(vacancy);
+        vacancyDao.addVacancy(vacancy);
     }
 
     @Override
@@ -78,15 +78,15 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     public List<VacancyDto> getAllVacancies() {
-        List<Vacancy> vacancies = vacancyDao.getAllVacancies();
+        List<Vacancy> vacancies = vacancyDao.getVacancies();
         return vacancies.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<VacancyDto> getVacanciesByCategory(Integer category) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategory(category);
+    public List<VacancyDto> getVacanciesByCategoryId(Integer categoryId) {
+        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryId(categoryId);
         return vacancies.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

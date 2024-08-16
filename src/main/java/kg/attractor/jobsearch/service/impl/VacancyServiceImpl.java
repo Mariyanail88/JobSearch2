@@ -1,110 +1,160 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.VacancyDao;
-import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.VacancyDto;
-import kg.attractor.jobsearch.errors.EntityNotFoundException;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.service.VacancyService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-
-    private final List<VacancyDto> vacancies = new ArrayList<>();
     private final VacancyDao vacancyDao;
 
-    public VacancyServiceImpl(VacancyDao vacancyDao) {
-        this.vacancyDao = vacancyDao;
-    }
     @Override
     public List<VacancyDto> getVacancies() {
-        return new ArrayList<>(vacancies);
+        List<Vacancy> vacancies = vacancyDao.getVacancies();
+        List<VacancyDto> dtos = new ArrayList<>();
+        vacancies.forEach(e -> dtos.add(VacancyDto.builder()
+                .id(e.getId())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .expFrom(e.getExpFrom())
+                .expTo(e.getExpTo())
+                .isActive(e.getIsActive())
+                .authorId(e.getAuthorId())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
     }
 
     @Override
-    public List<VacancyDto> getVacancyDtos() {
-        var vacancies = vacancyDao.getVacancies();
-        return vacancies.stream()
-                .map(this::convertToDto)
-                .toList();
-    }
-    private VacancyDto convertToDto(Vacancy vacancy) {
-        return VacancyDto.builder()
-                .id(vacancy.getId())
-                .name(vacancy.getName())
-                .description(vacancy.getDescription())
-                .categoryId(vacancy.getCategoryId())
-                .salary(vacancy.getSalary())
-                .expFrom(vacancy.getExpFrom())
-                .expTo(vacancy.getExpTo())
-                .isActive(vacancy.getIsActive())
-                .authorId(vacancy.getAuthorId())
-                .createdDate(vacancy.getCreatedDate())
-                .updateTime(vacancy.getUpdateTime())
-                .build();
-    }
-
-
-
-    @Override
-    public VacancyDto getVacancyById(Integer id) {
-        return vacancies.stream()
-                .filter(vacancy -> vacancy.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Vacancy not found with id: " + id));
+    public VacancyDto getVacancyById(long id) {
+        try {
+            Vacancy vacancy = vacancyDao.getVacancyById(id)
+                    .orElseThrow(() -> new Exception("Can't find Vacancy with id " + id));
+            return VacancyDto.builder()
+                    .id(vacancy.getId())
+                    .name(vacancy.getName())
+                    .description(vacancy.getDescription())
+                    .categoryId(vacancy.getCategoryId())
+                    .salary(vacancy.getSalary())
+                    .expFrom(vacancy.getExpFrom())
+                    .expTo(vacancy.getExpTo())
+                    .isActive(vacancy.getIsActive())
+                    .authorId(vacancy.getAuthorId())
+                    .createdDate(vacancy.getCreatedDate())
+                    .updateTime(vacancy.getUpdateTime())
+                    .build();
+        } catch (Exception e) {
+            log.error("Can't find Vacancy with id {}", id);
+        }
+        return null;
     }
 
     @Override
     public void createVacancy(VacancyDto vacancyDto) {
-        vacancies.add(vacancyDto);
+        Vacancy vacancy = new Vacancy();
+//        User.setId(userDto.getId());
+        vacancy.setName(vacancyDto.getName());
+        vacancy.setDescription(vacancyDto.getDescription());
+        vacancy.setCategoryId(vacancyDto.getCategoryId());
+        vacancy.setSalary(vacancyDto.getSalary());
+        vacancy.setExpFrom(vacancyDto.getExpFrom());
+        vacancy.setExpTo(vacancyDto.getExpTo());
+        vacancy.setIsActive(vacancyDto.getIsActive());
+        vacancy.setAuthorId(vacancyDto.getAuthorId());
+        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
+        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
+
+        vacancyDao.addVacancy(vacancy);
+        log.info("added vacancy {}", vacancy.getName());
     }
 
     @Override
     public boolean deleteVacancy(Integer id) {
-        return vacancies.removeIf(vacancy -> vacancy.getId().equals(id));
+        Optional<Vacancy> vacancy = vacancyDao.getVacancyById(id);
+        if (vacancy.isPresent()) {
+            vacancyDao.delete(id);
+            log.info("vacancy deleted: {}", vacancy.get().getName());
+            return true;
+        }
+        log.info(String.format(" vacancy with id %d not found", id));
+        return false;
     }
 
     @Override
     public List<VacancyDto> getVacanciesUserResponded(Integer userId) {
-        return null;
+        List<Vacancy> vacancies = vacancyDao.getVacanciesUserResponded(userId);
+        List<VacancyDto> dtos = vacancies.stream()
+                .map(vacancy -> VacancyDto.builder()
+                        .name(vacancy.getName())
+                        .description(vacancy.getDescription())
+                        .categoryId(vacancy.getCategoryId())
+                        .salary(vacancy.getSalary())
+                        .expFrom(vacancy.getExpFrom())
+                        .expTo(vacancy.getExpTo())
+                        .isActive(vacancy.getIsActive())
+                        .authorId(vacancy.getAuthorId())
+                        .createdDate(vacancy.getCreatedDate())
+                        .updateTime(vacancy.getUpdateTime())
+                        .build())
+                .collect(Collectors.toList());
+
+        if (dtos.isEmpty()) {
+            log.error("Can't find vacancies with user id {}", userId);
+        } else {
+            log.info("found vacancies with user id {}", userId);
+        }
+        return dtos;
     }
 
     @Override
     public List<VacancyDto> getVacanciesByCategoryId(Integer categoryId) {
-        return null;
+        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryId(categoryId);
+        List<VacancyDto> dtos = vacancies.stream()
+                .map(vacancy -> VacancyDto.builder()
+                        .name(vacancy.getName())
+                        .description(vacancy.getDescription())
+                        .categoryId(vacancy.getCategoryId())
+                        .salary(vacancy.getSalary())
+                        .expFrom(vacancy.getExpFrom())
+                        .expTo(vacancy.getExpTo())
+                        .isActive(vacancy.getIsActive())
+                        .authorId(vacancy.getAuthorId())
+                        .createdDate(vacancy.getCreatedDate())
+                        .updateTime(vacancy.getUpdateTime())
+                        .build())
+                .collect(Collectors.toList());
+
+        if (dtos.isEmpty()) {
+            log.error("Can't find vacancies with category id " + categoryId);
+        } else {
+            log.info("found vacancies with category id " + categoryId);
+        }
+        return dtos;
     }
 
     @Override
-    public void editVacancy(Integer id, VacancyDto vacancyDto) {
-        VacancyDto existingVacancy = getVacancyById(id);
-        existingVacancy.setName(vacancyDto.getName());
-        existingVacancy.setDescription(vacancyDto.getDescription());
-        existingVacancy.setCategoryId(vacancyDto.getCategoryId());
-        existingVacancy.setSalary(vacancyDto.getSalary());
-        existingVacancy.setExpFrom(vacancyDto.getExpFrom());
-        existingVacancy.setExpTo(vacancyDto.getExpTo());
-        existingVacancy.setIsActive(vacancyDto.getIsActive());
-        existingVacancy.setAuthorId(vacancyDto.getAuthorId());
-        existingVacancy.setCreatedDate(vacancyDto.getCreatedDate());
-        existingVacancy.setUpdateTime(vacancyDto.getUpdateTime());
+    public void editVacancy(Long id, VacancyDto vacancyDto) {
+        // todo - implement vacancy editing
     }
 
     @Override
     public List<VacancyDto> getVacanciesByCategory(String category) {
-        return null;
+        // todo - implement
+        return List.of();
     }
 
-    @Override
-    public void applyToVacancy(Integer vacancyId, UserDto userDto) {
-    }
-
-    @Override
-    public List<VacancyDto> getAllVacancies() {
-        return new ArrayList<>(vacancies);
-    }
 }

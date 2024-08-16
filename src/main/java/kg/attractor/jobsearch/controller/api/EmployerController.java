@@ -34,7 +34,7 @@ public class EmployerController {
 
     @GetMapping("/vacancies/active")
     public List<VacancyDto> getAllActiveVacancies() {
-        return vacancyService.getAllVacancies().stream()
+        return vacancyService.getVacancies().stream()
                 .filter(VacancyDto::getIsActive)
                 .collect(Collectors.toList());
     }
@@ -59,10 +59,10 @@ public class EmployerController {
         userService.addUser(userDto);
     }
 
-    @PostMapping("/vacancies/{vacancyId}/apply")
-    public void applyToVacancy(@PathVariable Integer vacancyId, @RequestBody UserDto userDto) {
-        vacancyService.applyToVacancy(vacancyId, userDto);
-    }
+//    @PostMapping("/vacancies/{vacancyId}/apply")
+//    public void applyToVacancy(@PathVariable Integer vacancyId, @RequestBody UserDto userDto) {
+//        vacancyService.applyToVacancy(vacancyId, userDto);
+//    }
 
     // Загрузка аватара
     @PostMapping("/upload-avatar")

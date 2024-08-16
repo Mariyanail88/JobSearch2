@@ -14,5 +14,5 @@ public interface EmployerService {
 
     List<VacancyDto> getAllVacancies();
 
-    List<VacancyDto> getVacanciesByCategory(Integer category);
+    List<VacancyDto> getVacanciesByCategoryId(Integer category);
 }

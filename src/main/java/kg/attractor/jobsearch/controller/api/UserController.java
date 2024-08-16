@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto user) {
+        user.setAccountType("applicant");
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -23,18 +23,18 @@ public class ResumeController {
     @GetMapping
     public String getResumes(Model model) {
         model.addAttribute("resumes", resumeService.getResumes());
-        return "resumes/index";
-    }
-
-    @GetMapping
-    public String showResumes(Model model) {
-        List<ResumeDto> resumeDtos = resumeService.getResumes();
-        List<Resume> resumes = resumeDtos.stream()
-                .map(this::convertToEntity)
-                .collect(Collectors.toList());
-        model.addAttribute("resumes", resumes);
         return "resumes";
     }
+
+//    @GetMapping
+//    public String showResumes(Model model) {
+//        List<ResumeDto> resumeDtos = resumeService.getResumes();
+//        List<Resume> resumes = resumeDtos.stream()
+//                .map(this::convertToEntity)
+//                .collect(Collectors.toList());
+//        model.addAttribute("resumes", resumes);
+//        return "resumes";
+//    }
     private Resume convertToEntity(ResumeDto resumeDto) {
         return Resume.builder()
                 .applicantId(resumeDto.getApplicantId())

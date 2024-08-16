@@ -3,8 +3,8 @@ server:
 spring:
   application:
     name: JobSearch
-    mvc:
-      static-path-pattern: /static/**
+  mvc:
+    static-path-pattern: /static/**
 
   # ------------- DataBases
   datasource:
