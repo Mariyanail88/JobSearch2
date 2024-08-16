@@ -1,4 +1,4 @@
-package kg.attractor.jobsearch.controller;
+package kg.attractor.jobsearch.controller.api;
 
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.service.UserService;
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 @RequiredArgsConstructor
 @Validated
 public class UserController {
