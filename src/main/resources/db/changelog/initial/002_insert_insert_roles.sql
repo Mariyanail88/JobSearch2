@@ -1,0 +1,4 @@
+INSERT INTO ROLES(USER_ID, AUTHORITY_ID)
+VALUES
+    (1, 1),
+    (2, 2);
