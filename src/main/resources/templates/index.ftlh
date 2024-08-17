@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as main>
+<#import "layout.ftlh" as main>
 <@main.layout>
     <p class="h4 text-dark">Number of vacancies: ${vacancies?size}</p>
     <#if isAuthenticated>
