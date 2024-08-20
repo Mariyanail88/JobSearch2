@@ -24,3 +24,6 @@ logging:
     org:
       springframework:
         security: debug
+
+app:
+  avatar_dir: avatars

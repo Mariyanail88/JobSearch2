@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
+import kg.attractor.jobsearch.util.DateTimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,4 +53,10 @@ public class VacancyDto {
 
     @PastOrPresent(message = "Update time must be in the past or present")
     private LocalDateTime updateTime;
+    public String getFormattedCreatedDate() {
+        return DateTimeUtil.getFormattedDate(createdDate);
+    }
+    public String getFormattedUpdatedDate() {
+        return DateTimeUtil.getFormattedDate(updateTime);
+    }
 }

@@ -1,5 +1,6 @@
 package kg.attractor.jobsearch.dto;
 
+import kg.attractor.jobsearch.util.DateTimeUtil;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResumeDto {
+    Integer id;
 
     @NotNull(message = "Applicant ID cannot be null")
     Integer applicantId;
@@ -41,4 +43,10 @@ public class ResumeDto {
 
     @NotNull(message = "Update time cannot be null")
     LocalDateTime updateTime;
+    public String getFormattedCreatedDate() {
+        return DateTimeUtil.getFormattedDate(createdDate);
+    }
+    public String getFormattedUpdatedDate() {
+        return DateTimeUtil.getFormattedDate(updateTime);
+    }
 }

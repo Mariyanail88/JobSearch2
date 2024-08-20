@@ -113,6 +113,15 @@ public class VacancyDao {
                 .addValue("confirmation", true)
         );
     }
+
+    public List<Vacancy> getVacanciesByAuthorId(Integer id) {
+        String sql = """
+                select * from VACANCIES
+                where AUTHOR_ID = ?
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
+    }
+
 }
 
 

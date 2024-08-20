@@ -20,7 +20,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Navbar</a>
+            <a class="navbar-brand" href="/">JodSearch</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,8 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
+            <a href="/resumes" class="btn btn-outline-info ms-2">see all resumes</a>
+            <a href="/vacancies" class="btn btn-outline-info ms-2">see all vacancies</a>
             <a href="/auth/login"
                class="btn btn-outline-info m-2">Login</a>
             <a href="/auth/register"

@@ -24,6 +24,7 @@ public class ResumeMapper implements RowMapper<Resume> {
     // Метод для преобразования Resume в ResumeDto
     public static ResumeDto convertToDto(Resume resume) {
         return ResumeDto.builder()
+                .id(resume.getId())
                 .applicantId(resume.getApplicantId())
                 .name(resume.getName())
                 .categoryId(resume.getCategoryId())

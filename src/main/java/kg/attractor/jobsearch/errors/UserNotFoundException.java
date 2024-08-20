@@ -1,0 +1,7 @@
+package kg.attractor.jobsearch.errors;
+
+public class UserNotFoundException extends Exception {
+    public UserNotFoundException(String message) {
+        super(message);
+    }
+}

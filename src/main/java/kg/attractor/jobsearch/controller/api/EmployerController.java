@@ -44,10 +44,10 @@ public class EmployerController {
         return vacancyService.getVacanciesByCategory(category);
     }
 
-    @GetMapping("/{employerId}")
-    public UserDto getEmployerById(@PathVariable Integer employerId) {
-        return userService.getUserById(employerId);
-    }
+//    @GetMapping("/{employerId}")
+//    public UserDto getEmployerById(@PathVariable Integer employerId) {
+//        return userService.getUserById(employerId);
+//    }
 
     @GetMapping("/download-avatar/{filename}")
     public ResponseEntity<?> downloadImage(@PathVariable String filename) {
@@ -65,10 +65,10 @@ public class EmployerController {
 //    }
 
     // Загрузка аватара
-    @PostMapping("/upload-avatar")
-    public void uploadAvatar(@RequestParam("userId") Integer userId, @RequestParam("file") MultipartFile file) {
-        userService.uploadAvatar(file, userId);
-    }
+//    @PostMapping("/upload-avatar")
+//    public void uploadAvatar(@RequestParam("userId") Integer userId, @RequestParam("file") MultipartFile file) {
+//        userService.uploadAvatar(file, userId);
+//    }
 
     @PostMapping("/vacancy")
     public void createVacancy(@RequestBody VacancyDto vacancyDto) {
@@ -80,20 +80,20 @@ public class EmployerController {
         employerService.updateVacancy(id, vacancyDto);
     }
 
-    @PutMapping("/resumes/{id}")
-    public void updateResume(@PathVariable Integer id, @RequestBody UserDto userDto) {
-        userService.updateUser(id, userDto);
-    }
+//    @PutMapping("/resumes/{id}")
+//    public void updateResume(@PathVariable Integer id, @RequestBody UserDto userDto) {
+//        userService.updateUser(id, userDto);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteVacancy(@PathVariable Integer id) {
         employerService.deleteVacancy(id);
     }
 
-    @DeleteMapping("/resumes/{id}")
-    public void deleteResume(@PathVariable Integer id) {
-        userService.deleteUser(id);
-    }
+//    @DeleteMapping("/resumes/{id}")
+//    public void deleteResume(@PathVariable Integer id) {
+//        userService.deleteUser(id);
+//    }
 }
 
 

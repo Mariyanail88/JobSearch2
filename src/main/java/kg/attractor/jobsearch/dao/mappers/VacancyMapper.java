@@ -1,5 +1,6 @@
 package kg.attractor.jobsearch.dao.mappers;
 
+import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.model.Vacancy;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -23,4 +24,24 @@ public class VacancyMapper implements RowMapper<Vacancy> {
                 .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
                 .build();
     }
+    public static VacancyDto toDto(Vacancy vacancy) {
+        if (vacancy == null) {
+            return null;
+        }
+
+        return VacancyDto.builder()
+                .id(vacancy.getId())
+                .name(vacancy.getName())
+                .description(vacancy.getDescription())
+                .categoryId(vacancy.getCategoryId())
+                .salary(vacancy.getSalary())
+                .expFrom(vacancy.getExpFrom())
+                .expTo(vacancy.getExpTo())
+                .isActive(vacancy.getIsActive())
+                .authorId(vacancy.getAuthorId())
+                .createdDate(vacancy.getCreatedDate())
+                .updateTime(vacancy.getUpdateTime())
+                .build();
+    }
+
 }

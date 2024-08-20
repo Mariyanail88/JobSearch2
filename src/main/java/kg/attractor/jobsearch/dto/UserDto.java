@@ -1,18 +1,18 @@
 package kg.attractor.jobsearch.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Max;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -42,7 +42,7 @@ public class UserDto {
     private String password;
 
     @NotBlank(message = "Phone number is mandatory")
-   // @Pattern(regexp = "^\\+\\d{1} \\d{3} \\d{3}-\\d{2}-\\d{2}$", message = "Phone number must be in the format +X XXX XXX-XX-XX")
+    // @Pattern(regexp = "^\\+\\d{1} \\d{3} \\d{3}-\\d{2}-\\d{2}$", message = "Phone number must be in the format +X XXX XXX-XX-XX")
     private String phoneNumber;
 
     private String avatar;

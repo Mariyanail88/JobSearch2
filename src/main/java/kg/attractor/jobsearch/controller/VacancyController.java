@@ -2,6 +2,7 @@ package kg.attractor.jobsearch.controller;
 
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.service.VacancyService;
+import kg.attractor.jobsearch.util.MvcConrollersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,20 +21,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VacancyController {
     private final VacancyService vacancyService;
 
-    @GetMapping
+    @GetMapping("vacancies")
     public String getVacancies(Model model, Authentication authentication) {
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
-        model.addAttribute("vacancies", vacancyService.getVacancies());
-        model.addAttribute("isAuthenticated", isAuthenticated);
-        if (isAuthenticated && authentication.getPrincipal() instanceof UserDetails) {
-            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
-            model.addAttribute("username", username);
-            log.info("user logged in:  {}",username);
-        }else {
-            log.error("can't get user credentials:");
-        }
-        return "vacancies/index";
+        MvcConrollersUtil.authCheckAndAddAttributes(
+                model,
+                authentication,
+                vacancyService.getVacancies(),
+                "vacancies");
+        return "vacancies/vacancies";
     }
+
+    @GetMapping("vacancies/{vacancyId}")
+    public String getInfo(@PathVariable long vacancyId, Model model, Authentication authentication) {
+        MvcConrollersUtil.authCheckAndAddAttributes(
+                model,
+                authentication,
+                vacancyService.getVacancyById(vacancyId),
+                "vacancy"
+        );
+        return "vacancies/vacancy_info";
+    }
+
 
     @GetMapping("/create")
     public String createVacancy(Model model) {

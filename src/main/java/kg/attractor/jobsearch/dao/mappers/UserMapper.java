@@ -1,5 +1,7 @@
 package kg.attractor.jobsearch.dao.mappers;
 
+import kg.attractor.jobsearch.dto.UserDto;
+import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
 import kg.attractor.jobsearch.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,5 +21,34 @@ public class UserMapper implements RowMapper<User> {
         user.setAvatar(rs.getString("avatar"));
         user.setAccountType(rs.getString("account_type"));
         return user;
+    }
+    public static UserDto toUserDto(UserWithAvatarFileDto userWithAvatarFileDto) {
+        return UserDto.builder()
+                .name(userWithAvatarFileDto.getName())
+                .age(userWithAvatarFileDto.getAge())
+                .email(userWithAvatarFileDto.getEmail())
+                .password(userWithAvatarFileDto.getPassword())
+                .phoneNumber(userWithAvatarFileDto.getPhoneNumber())
+                .avatar(userWithAvatarFileDto.getAvatar().getOriginalFilename())
+                .accountType(userWithAvatarFileDto.getAccountType())
+                .enabled(userWithAvatarFileDto.isEnabled())
+                .build();
+    }
+
+    public static User fromUserDto(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+        return User.builder()
+                .id(userDto.getId())
+                .name(userDto.getName())
+                .age(userDto.getAge())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .phoneNumber(userDto.getPhoneNumber())
+                .avatar(userDto.getAvatar())
+                .accountType(userDto.getAccountType())
+                .enabled(userDto.isEnabled())
+                .build();
     }
 }

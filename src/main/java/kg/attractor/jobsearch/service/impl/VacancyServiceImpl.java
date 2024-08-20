@@ -1,6 +1,7 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.VacancyDao;
+import kg.attractor.jobsearch.dao.mappers.VacancyMapper;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.service.VacancyService;
@@ -148,13 +149,22 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public void editVacancy(Long id, VacancyDto vacancyDto) {
-        // todo - implement vacancy editing
+
     }
 
     @Override
     public List<VacancyDto> getVacanciesByCategory(String category) {
-        // todo - implement
+
         return List.of();
+    }
+
+    @Override
+    public List<VacancyDto> getVacancyByAuthorId(Integer id) {
+        List<Vacancy> vacancies = vacancyDao.getVacanciesByAuthorId(id);
+        return vacancies.stream()
+                .map(VacancyMapper::toDto)
+                .toList();
+
     }
 
 }
