@@ -135,7 +135,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDto userDto) {
         if (userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
-            userDto.setAvatar("default_avatar.jpg");
+            if (userDto.getAccountType().equals("applicant")){
+                userDto.setAvatar("default_avatar.jpg");
+            }else {
+                userDto.setAvatar("No_Image_Available.jpg");
+            }
             log.info(ConsoleColors.YELLOW +
                     "user with email {} didn't choose avatar, so default avatar is set" +
                     ConsoleColors.RESET,
