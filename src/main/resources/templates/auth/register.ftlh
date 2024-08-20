@@ -106,7 +106,7 @@
                 <label for="avatar" class="form-label">Avatar (optional)</label>
                 <input type="file" class="form-control" id="avatar" name="avatar">
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
     </div>
 

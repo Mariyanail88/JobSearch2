@@ -20,14 +20,14 @@
                         <strong>Created Date:</strong> ${resume.createdDate}<br>
                         <strong>Updated Date:</strong> ${resume.updateTime}
                     </p>
-                    <a href="/resumes/${resume.id}" class="btn btn-dark">More Info</a>
+                    <a href="/resumes/${resume.id}" class="btn btn-primary">More Info</a>
                 </div>
             </div>
         </#list>
         <!-- Centering the Home button -->
         <div class="row">
             <div class="col text-center"> <!-- This div centers the button -->
-                <a href="/" class="btn btn-primary">Home</a>
+                <a href="/" class="btn btn-primary w-100">Home</a>
             </div>
         </div>
     </div>

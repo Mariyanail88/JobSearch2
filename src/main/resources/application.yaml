@@ -5,6 +5,9 @@ spring:
     name: JobSearch
   mvc:
     static-path-pattern: /static/**
+  freemarker:
+    expose-session-attributes: true
+
 
   # ------------- DataBases
   datasource:
