@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: create roles
+      author: Mariya
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: roles
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authority_id
+                  type: long
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: roles
+            baseColumnNames: authority_id
+            constraintName: fk_authority_id
+            referencedTableName: authorities
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: roles
+            baseColumnNames: user_id
+            constraintName: fk_user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE

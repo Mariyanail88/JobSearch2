@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_for_education_info
+      author: Mariya
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: education_info
+      changes:
+        - createTable:
+            tableName: education_info
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resume_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: institution
+                  type: VARCHAR(255)
+              - column:
+                  name: program
+                  type: VARCHAR(255)
+              - column:
+                  name: start_date
+                  type: TIMESTAMP
+              - column:
+                  name: end_date
+                  type: TIMESTAMP
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+        - addForeignKeyConstraint:
+            baseTableName: education_info
+            baseColumnNames: resume_id
+            constraintName: f_key_resume_id
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
