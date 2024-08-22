@@ -12,5 +12,7 @@ public interface ResumeService {
     boolean deleteResume(Integer id);
     List<ResumeDto> getResumeByUserId(Integer userId);
     void editResume(Integer id, ResumeDto resumeDto);
-    List<ResumeDto> getResumeDtos();
+    List<ResumeDto> getResumeDtos(); // Новые методы
+    ResumeDto createResume(ResumeDto resumeDto);
+    ResumeDto updateResume(Integer id, ResumeDto resumeDto);
 }

@@ -115,6 +115,43 @@ public class ResumeServiceImpl implements ResumeService {
                 .updateTime(resume.getUpdateTime())
                 .build();
     }
+    // Метод для создания резюме
+    @Override
+    public ResumeDto createResume(ResumeDto resumeDto) {
+        Resume resume = Resume.builder()
+                .applicantId(resumeDto.getApplicantId())
+                .name(resumeDto.getName())
+                .categoryId(resumeDto.getCategoryId())
+                .salary(resumeDto.getSalary())
+                .isActive(resumeDto.getIsActive())
+                .createdDate(resumeDto.getCreatedDate())
+                .updateTime(resumeDto.getUpdateTime())
+                .build();
+        resumeDao.save(resume);
+        return convertToDto(resume);
+    }
+
+    // Метод для обновления резюме
+    @Override
+    public ResumeDto updateResume(Integer id, ResumeDto resumeDto) {
+        Optional<Resume> existingResume = resumeDao.getResumeById(id);
+        if (existingResume.isEmpty()) {
+            throw new ResourceNotFoundException("Resume not found with id: " + id);
+        }
+
+        Resume resume = existingResume.get();
+        resume.setApplicantId(resumeDto.getApplicantId());
+        resume.setName(resumeDto.getName());
+        resume.setCategoryId(resumeDto.getCategoryId());
+        resume.setSalary(resumeDto.getSalary());
+        resume.setIsActive(resumeDto.getIsActive());
+        resume.setCreatedDate(resumeDto.getCreatedDate());
+        resume.setUpdateTime(resumeDto.getUpdateTime());
+
+        resumeDao.update(resume);
+        return convertToDto(resume);
+    }
+
 
 
 }

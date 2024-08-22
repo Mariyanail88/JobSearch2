@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -44,6 +46,34 @@ public class ResumeController {
                 "resume"
         );
         return "resumes/resume_info";
+    }
+    // Метод для отображения формы создания резюме
+    @GetMapping("resumes/new")
+    public String showCreateResumeForm(Model model, Authentication authentication) {
+        model.addAttribute("resume", new ResumeDto());
+        MvcConrollersUtil.authCheck(model, authentication);
+        return "resumes/create_resume";
+    }
+
+    // Метод для обработки создания резюме
+    @PostMapping("resumes")
+    public String createResume(@ModelAttribute("resume") ResumeDto resumeDto, Authentication authentication) {
+        resumeService.createResume(resumeDto);
+        return "redirect:/resumes";
+    }
+    // Метод для отображения формы редактирования резюме
+    @GetMapping("resumes/edit/{resumeId}")
+    public String showEditResumeForm(@PathVariable Integer resumeId, Model model, Authentication authentication) {
+        ResumeDto resumeDto = resumeService.getResumeById(resumeId);
+        model.addAttribute("resume", resumeDto);
+        MvcConrollersUtil.authCheck(model, authentication);
+        return "resumes/edit_resume";
+    }
+    // Метод для обработки редактирования резюме
+    @PostMapping("resumes/edit/{resumeId}")
+    public String editResume(@PathVariable Integer resumeId, @ModelAttribute("resume") ResumeDto resumeDto, Authentication authentication) {
+        resumeService.updateResume(resumeId, resumeDto);
+        return "redirect:/resumes";
     }
 
 

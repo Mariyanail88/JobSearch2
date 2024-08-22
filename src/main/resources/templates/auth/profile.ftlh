@@ -10,11 +10,11 @@
 
         <div class="profile-section">
             <div class="profile-info">
-<#--                <img id="profile-avatar"-->
-<#--                     src="/avatars/${userDto.avatar}"-->
-<#--                     alt="User Avatar"-->
-<#--                     class="profile-avatar"-->
-<#--                     onerror="this.onerror=null;this.src='/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>ava.png</#if>';">-->
+                <#--                <img id="profile-avatar"-->
+                <#--                     src="/avatars/${userDto.avatar}"-->
+                <#--                     alt="User Avatar"-->
+                <#--                     class="profile-avatar"-->
+                <#--                     onerror="this.onerror=null;this.src='/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>ava.png</#if>';">-->
 
                 <img id="profile-avatar"
                      src="/avatars/${userDto.avatar}"
@@ -22,23 +22,23 @@
                      class="profile-avatar"
 
                      onerror="this.onerror=null; this.src='/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>';
-                     this.onerror=function(){ this.src='/static/images/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>'; };">
+                             this.onerror=function(){ this.src='/static/images/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>'; };">
 
                 <div id="profile-details">
                     <#if userDto.accountType == "employer">
                         <p class="profile-name" id="profile-name">company name</p><br>
-                        <button class="edit-profile-btn">Редактировать</button>
+                        <button class="edit-profile-btn" onclick="location.href='/profile/edit'">Редактировать</button>
                     <#else>
                         <p class="profile-name" id="profile-name">${userDto.name}</p>
                         <p class="profile-age" id="profile-age">Возраст: ${userDto.age}</p>
-                        <button class="edit-profile-btn">Редактировать</button>
+                        <button class="edit-profile-btn" onclick="location.href='/profile/edit'">Редактировать</button>
                     </#if>
                 </div>
             </div>
 
             <div class="profile-actions">
                 <div class="create-resume">
-                    <button class="create-resume-btn" id="create-resume-btn">
+                    <button class="create-resume-btn" id="create-resume-btn" onclick="location.href='/resumes/new'">
                         <#if userDto.accountType == "employer">
                             Создать<br>вакансию
                         <#else>
@@ -71,7 +71,7 @@
                                 <p class="resume-date">Дата обновления: ${vacancy.getFormattedUpdatedDate()}</p>
                                 <div class="resume-actions">
                                     <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn">Ред.</button>
+                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${vacancy.id}'">Ред.</button>
                                 </div>
                             </div>
                         </#list>
@@ -86,7 +86,7 @@
                                 <p class="resume-date">Дата обновления: ${resume.getFormattedUpdatedDate()}</p>
                                 <div class="resume-actions">
                                     <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn">Ред.</button>
+                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${resume.id}'">Ред.</button>
                                 </div>
                             </div>
                         </#list>
