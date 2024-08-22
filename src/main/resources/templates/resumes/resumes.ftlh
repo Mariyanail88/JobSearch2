@@ -12,7 +12,7 @@
             <div class="card col-6 m-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">${resume.name}</h5>
-                    <p class="card-text">
+                    <p class="card-text">MESSAGES
                         <strong>Applicant ID:</strong> ${resume.applicantId}<br>
                         <strong>Category ID:</strong> ${resume.categoryId}<br>
                         <strong>Salary:</strong> ${resume.salary}<br>

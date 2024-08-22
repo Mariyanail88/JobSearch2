@@ -1,51 +1,51 @@
 databaseChangeLog:
   - include:
-      file: /db/changelog/initial/001_create_users_table.yaml
+      file: /db/changelog/initial/001_01_create_users_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_categories_table.yaml
+      file: /db/changelog/initial/002_01_create_categories_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_contact_types_table.yaml
+      file: /db/changelog/initial/003_01_create_contact_types_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_resumes_table.yaml
+      file: /db/changelog/initial/004_01_create_resumes_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_contact_info_table.yaml
+      file: /db/changelog/initial/005_01_create_contact_info_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_vacancies_table.yaml
+      file: /db/changelog/initial/006_01_create_vacancies_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_responded_applicants_table.yaml
+      file: /db/changelog/initial/007_01_create_responded_applicants_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_messages_table.yaml
+      file: /db/changelog/initial/008_01_create_messages_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_education_info_table.yaml
+      file: /db/changelog/initial/009_01_create_education_info_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_work_experience_info_table.yaml
+      file: /db/changelog/initial/0010_01_create_work_experience_info_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_authorities_table.yaml
+      file: /db/changelog/initial/0011_01_create_authorities_table.yaml
   - include:
-      file: /db/changelog/initial/001_create_role-user_table.yaml
+      file: /db/changelog/initial/0012_01_create_role-user_table.yaml
 
 
   - include:
-      file: /db/changelog/initial/002_insert_users.sql
+      file: /db/changelog/initial/001_002_insert_users.sql
   - include:
-      file: /db/changelog/initial/002_insert_categories.sql
+      file: /db/changelog/initial/002_002_insert_categories.sql
   - include:
-      file: /db/changelog/initial/002_insert_contact_types.sql
+      file: /db/changelog/initial/003_002_insert_contact_types.sql
   - include:
-      file: /db/changelog/initial/002_insert_resumes.sql
+      file: /db/changelog/initial/004_002_insert_resumes.sql
   - include:
-      file: /db/changelog/initial/002_insert_contact_info.sql
+      file: /db/changelog/initial/005_002_insert_contact_info.sql
   - include:
-      file: /db/changelog/initial/002_insert_vacancies.sql
+      file: /db/changelog/initial/006_002_insert_vacancies.sql
   - include:
-      file: /db/changelog/initial/002_insert_responded_applicants.sql
+      file: /db/changelog/initial/007_002_insert_responded_applicants.sql
   - include:
-      file: /db/changelog/initial/002_insert_messages.sql
+      file: /db/changelog/initial/008_002_insert_messages.sql
   - include:
-      file: /db/changelog/initial/002_insert_education_info.sql
+      file: /db/changelog/initial/009_002_insert_education_info.sql
   - include:
-      file: /db/changelog/initial/002_insert_work_experience_info.sql
+      file: /db/changelog/initial/0010_002_insert_work_experience_info.sql
   - include:
-      file: /db/changelog/initial/002_insert_authorities.sql
+      file: /db/changelog/initial/0011_002_insert_authorities.sql
   - include:
-      file: /db/changelog/initial/002_insert_insert_roles.sql
+      file: /db/changelog/initial/0012_002_insert_insert_roles.sql
