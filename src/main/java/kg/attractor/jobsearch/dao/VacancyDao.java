@@ -121,6 +121,36 @@ public class VacancyDao {
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
     }
+    // Новый метод для обновления вакансии
+    public void updateVacancy(Vacancy vacancy) {
+        String sql = """
+                update VACANCIES set
+                    NAME = :name,
+                    DESCRIPTION = :description,
+                    CATEGORY_ID = :categoryId,
+                    SALARY = :salary,
+                    EXPFROM = :expFrom,
+                    EXPTO = :expTo,
+                    IS_ACTIVE = :isActive,
+                    AUTHOR_ID = :authorId,
+                    CREATED_DATE = :createdDate,
+                    UPDATE_TIME = :updateTime
+                where ID = :id;
+                """;
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                .addValue("id", vacancy.getId())
+                .addValue("name", vacancy.getName())
+                .addValue("description", vacancy.getDescription())
+                .addValue("categoryId", vacancy.getCategoryId())
+                .addValue("salary", vacancy.getSalary())
+                .addValue("expFrom", vacancy.getExpFrom())
+                .addValue("expTo", vacancy.getExpTo())
+                .addValue("isActive", vacancy.getIsActive())
+                .addValue("authorId", vacancy.getAuthorId())
+                .addValue("createdDate", vacancy.getCreatedDate())
+                .addValue("updateTime", vacancy.getUpdateTime()));
+    }
+
 
 }
 

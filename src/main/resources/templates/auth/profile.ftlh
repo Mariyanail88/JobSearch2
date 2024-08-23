@@ -35,7 +35,6 @@
                     </#if>
                 </div>
             </div>
-
             <div class="profile-actions">
                 <div class="create-resume">
                     <button class="create-resume-btn" id="create-resume-btn" onclick="location.href='/resumes/new'">

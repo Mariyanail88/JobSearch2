@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class VacancyController {
     @GetMapping("/create")
     public String createVacancy(Model model) {
         model.addAttribute("vacancyDto", new VacancyDto());
-        return "vacancies/create";
+        return "vacancies/create_vacancy";
     }
 
     @PostMapping("/create")
@@ -54,4 +55,28 @@ public class VacancyController {
         vacancyService.createVacancy(vacancyDto);
         return "redirect:/vacancies";
     }
+
+    // Метод для обработки создания вакансии
+    @PostMapping("vacancies")
+    public String createVacancy(@ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
+        vacancyService.createVacancy(vacancyDto);
+        return "redirect:/vacancies";
+    }
+
+    // Метод для отображения формы редактирования вакансии
+    @GetMapping("vacancies/edit/{vacancyId}")
+    public String showEditVacancyForm(@PathVariable Integer vacancyId, Model model, Authentication authentication) {
+        VacancyDto vacancyDto = vacancyService.getVacancyById(vacancyId);
+        model.addAttribute("vacancy", vacancyDto);
+        MvcConrollersUtil.authCheck(model, authentication);
+        return "vacancies/edit_vacancy";
+    }
+
+    // Метод для обработки редактирования вакансии
+    @PostMapping("vacancies/edit/{vacancyId}")
+    public String editVacancy(@PathVariable Integer vacancyId, @ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
+        vacancyService.updateVacancy(vacancyId, vacancyDto);
+        return "redirect:/vacancies";
+    }
+
 }

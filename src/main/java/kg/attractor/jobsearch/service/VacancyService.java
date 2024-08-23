@@ -23,4 +23,8 @@ public interface VacancyService {
     List<VacancyDto> getVacanciesByCategory(String category);
 
     List<VacancyDto> getVacancyByAuthorId(Integer id);
+
+    // Новый метод для обновления вакансии
+    void updateVacancy(Integer id, VacancyDto vacancyDto);
+
 }
