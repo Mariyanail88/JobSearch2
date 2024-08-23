@@ -147,9 +147,26 @@ public class VacancyServiceImpl implements VacancyService {
         return dtos;
     }
 
+
     @Override
     public void editVacancy(Long id, VacancyDto vacancyDto) {
+        // Реализация метода editVacancy
+        Vacancy vacancy = vacancyDao.getVacancyById(id)
+                .orElseThrow(() -> new RuntimeException("Vacancy not found with id " + id));
 
+        vacancy.setName(vacancyDto.getName());
+        vacancy.setDescription(vacancyDto.getDescription());
+        vacancy.setCategoryId(vacancyDto.getCategoryId());
+        vacancy.setSalary(vacancyDto.getSalary());
+        vacancy.setExpFrom(vacancyDto.getExpFrom());
+        vacancy.setExpTo(vacancyDto.getExpTo());
+        vacancy.setIsActive(vacancyDto.getIsActive());
+        vacancy.setAuthorId(vacancyDto.getAuthorId());
+        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
+        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
+
+        vacancyDao.updateVacancy(vacancy);
+        log.info("edited vacancy {}", vacancy.getName());
     }
 
     @Override
@@ -165,6 +182,25 @@ public class VacancyServiceImpl implements VacancyService {
                 .map(VacancyMapper::toDto)
                 .toList();
 
+    }
+    @Override
+    public void updateVacancy(Integer id, VacancyDto vacancyDto) {
+        Vacancy vacancy = vacancyDao.getVacancyById(id)
+                .orElseThrow(() -> new RuntimeException("Vacancy not found with id " + id));
+
+        vacancy.setName(vacancyDto.getName());
+        vacancy.setDescription(vacancyDto.getDescription());
+        vacancy.setCategoryId(vacancyDto.getCategoryId());
+        vacancy.setSalary(vacancyDto.getSalary());
+        vacancy.setExpFrom(vacancyDto.getExpFrom());
+        vacancy.setExpTo(vacancyDto.getExpTo());
+        vacancy.setIsActive(vacancyDto.getIsActive());
+        vacancy.setAuthorId(vacancyDto.getAuthorId());
+        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
+        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
+
+        vacancyDao.updateVacancy(vacancy);
+        log.info("updated vacancy {}", vacancy.getName());
     }
 
 }
