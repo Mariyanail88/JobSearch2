@@ -37,7 +37,7 @@
             <div class="profile-actions">
                 <div class="create-resume">
                     <#if userDto.accountType == "employer">
-                        <form action="/vacancies/create" method="get">
+                        <form action="/vacancies/create}" method="get">
                             <button class="create-btn" id="create-btn">
                                 Создать<br>вакансию
                             </button>
@@ -89,9 +89,10 @@
                                 <p class="resume-title">${resume.name}</p>
                                 <p class="resume-date">Дата обновления: ${resume.getFormattedUpdatedDate()}</p>
                                 <div class="resume-actions">
-                                    <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn">Ред.</button>
+                                    <button class="update-resume-btn" onclick="location.href='/resumes/update/${resume.id}'">Обновить</button>
+                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${resume.id}'">Ред.</button>
                                 </div>
+
                             </div>
                         </#list>
                     </#if>

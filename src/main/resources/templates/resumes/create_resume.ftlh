@@ -2,7 +2,7 @@
 <@layout.layout>
     <div class="container">
         <h1>Создать резюме</h1>
-        <form action="/resumes" method="post">
+        <form action="/resumes/create" method="post">
             <div class="form-group">
                 <label for="name">Название</label>
                 <input type="text" class="form-control" id="name" name="name" required>
