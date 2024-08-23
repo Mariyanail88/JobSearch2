@@ -1,5 +1,4 @@
 <#import "../layout.ftlh" as layout>
-<#--<@layout.layout isAuthenticated=isAuthenticated username=username>-->
 <@layout.layout>
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" type="text/css" href="/static/css/profile.css">
@@ -10,28 +9,21 @@
 
         <div class="profile-section">
             <div class="profile-info">
-                <#--                <img id="profile-avatar"-->
-                <#--                     src="/avatars/${userDto.avatar}"-->
-                <#--                     alt="User Avatar"-->
-                <#--                     class="profile-avatar"-->
-                <#--                     onerror="this.onerror=null;this.src='/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>ava.png</#if>';">-->
-
                 <img id="profile-avatar"
                      src="/avatars/${userDto.avatar}"
                      alt="User Avatar"
                      class="profile-avatar"
-
                      onerror="this.onerror=null; this.src='/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>';
                              this.onerror=function(){ this.src='/static/images/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>'; };">
 
                 <div id="profile-details">
                     <#if userDto.accountType == "employer">
                         <p class="profile-name" id="profile-name">company name</p><br>
-                        <button class="edit-profile-btn" onclick="location.href='/profile/edit'">Редактировать</button>
+                        <button class="edit-profile-btn" onclick="location.href='/profile/edit?id=${userDto.id}'">Редактировать</button>
                     <#else>
                         <p class="profile-name" id="profile-name">${userDto.name}</p>
                         <p class="profile-age" id="profile-age">Возраст: ${userDto.age}</p>
-                        <button class="edit-profile-btn" onclick="location.href='/profile/edit'">Редактировать</button>
+                        <button class="edit-profile-btn" onclick="location.href='/profile/edit?id=${userDto.id}'">Редактировать</button>
                     </#if>
                 </div>
             </div>

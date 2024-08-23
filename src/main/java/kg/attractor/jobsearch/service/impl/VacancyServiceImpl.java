@@ -3,6 +3,7 @@ package kg.attractor.jobsearch.service.impl;
 import kg.attractor.jobsearch.dao.VacancyDao;
 import kg.attractor.jobsearch.dao.mappers.VacancyMapper;
 import kg.attractor.jobsearch.dto.VacancyDto;
+import kg.attractor.jobsearch.errors.VacancyNotFoundException;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class VacancyServiceImpl implements VacancyService {
     public VacancyDto getVacancyById(long id) {
         try {
             Vacancy vacancy = vacancyDao.getVacancyById(id)
-                    .orElseThrow(() -> new Exception("Can't find Vacancy with id " + id));
+                    .orElseThrow(() -> new VacancyNotFoundException("Can't find Vacancy with id " + id));
             return VacancyDto.builder()
                     .id(vacancy.getId())
                     .name(vacancy.getName())

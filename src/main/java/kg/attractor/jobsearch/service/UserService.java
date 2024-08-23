@@ -6,6 +6,7 @@ import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
 
 import kg.attractor.jobsearch.errors.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,5 +37,11 @@ public interface UserService {
     ResponseEntity<?> getAvatar(Integer userId) throws UserNotFoundException;
 
     void updateUser(UserDto userDto);
+    // Получение текущего пользователя по аутентификации
+    UserDto getCurrentUser(Authentication authentication);
+
+    // Обновление профиля пользователя с возможностью загрузки аватара
+    void updateUserProfile(UserWithAvatarFileDto userDto) throws IOException, UserNotFoundException;
+
 }
 

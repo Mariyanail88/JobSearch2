@@ -7,7 +7,6 @@ import kg.attractor.jobsearch.dao.mappers.UserMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
-
 import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.model.User;
@@ -15,14 +14,15 @@ import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.util.ConsoleColors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,8 +47,7 @@ public class UserServiceImpl implements UserService {
     private final ResumeDao resumeDao;
 
     @Value("${app.avatar_dir}")
-    private  String AVATAR_DIR;
-
+    private String AVATAR_DIR;
 
 
     @Override
@@ -135,14 +134,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDto userDto) {
         if (userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
-            if (userDto.getAccountType().equals("applicant")){
+            if (userDto.getAccountType().equals("applicant")) {
                 userDto.setAvatar("default_avatar.jpg");
-            }else {
+            } else {
                 userDto.setAvatar("No_Image_Available.jpg");
             }
             log.info(ConsoleColors.YELLOW +
-                    "user with email {} didn't choose avatar, so default avatar is set" +
-                    ConsoleColors.RESET,
+                            "user with email {} didn't choose avatar, so default avatar is set" +
+                            ConsoleColors.RESET,
                     userDto.getEmail());
         }
         User user = UserMapper.fromUserDto(userDto);
@@ -274,4 +273,28 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public UserDto getCurrentUser(Authentication authentication) {
+        // Получение текущего пользователя по аутентификации
+        String username = authentication.getName();
+        User user = userDao.getUserByName(username).orElseThrow(
+                () -> new UsernameNotFoundException("Can't find user with username: " + username)
+        );
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .enabled(user.isEnabled())
+                .build();
+    }
+
+    @Override
+    public void updateUserProfile(UserWithAvatarFileDto userWithAvatarFileDto) throws IOException, UserNotFoundException {
+        addUserWithAvatar(userWithAvatarFileDto);
+    }
 }
