@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 @Slf4j
@@ -72,6 +73,7 @@ public class ResumeController {
     // Метод для обработки редактирования резюме
     @PostMapping("resumes/edit/{resumeId}")
     public String editResume(@PathVariable Integer resumeId, @ModelAttribute("resume") ResumeDto resumeDto, Authentication authentication) {
+
         resumeService.updateResume(resumeId, resumeDto);
         return "redirect:/resumes";
     }

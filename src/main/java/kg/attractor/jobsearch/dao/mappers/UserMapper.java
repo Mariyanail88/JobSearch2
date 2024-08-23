@@ -22,6 +22,7 @@ public class UserMapper implements RowMapper<User> {
         user.setAccountType(rs.getString("account_type"));
         return user;
     }
+
     public static UserDto toUserDto(UserWithAvatarFileDto userWithAvatarFileDto) {
         return UserDto.builder()
                 .name(userWithAvatarFileDto.getName())
@@ -32,6 +33,19 @@ public class UserMapper implements RowMapper<User> {
                 .avatar(userWithAvatarFileDto.getAvatar().getOriginalFilename())
                 .accountType(userWithAvatarFileDto.getAccountType())
                 .enabled(userWithAvatarFileDto.isEnabled())
+                .build();
+    }
+
+    public static UserDto toUserDto(User user) {
+        return UserDto.builder()
+                .name(user.getName())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .enabled(user.isEnabled())
                 .build();
     }
 

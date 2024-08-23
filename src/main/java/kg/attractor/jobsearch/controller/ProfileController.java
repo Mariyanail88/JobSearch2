@@ -27,7 +27,7 @@ public class ProfileController {
     private final UserService userService;
 
     @GetMapping("/edit")
-    public String showEditProfileForm(@RequestParam("id") long id, Model model, Authentication authentication) {
+    public String showEditProfileForm(@RequestParam("id") Integer id, Model model, Authentication authentication) {
         try {
 
             UserDto userDto = userService.getUserById(id);

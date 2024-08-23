@@ -5,6 +5,7 @@ import kg.attractor.jobsearch.dao.mappers.VacancyMapper;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.errors.VacancyNotFoundException;
 import kg.attractor.jobsearch.model.Vacancy;
+import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
+    private final VacancyRepository vacancyRepository;
 
     @Override
     public List<VacancyDto> getVacancies() {
-        List<Vacancy> vacancies = vacancyDao.getVacancies();
+        List<Vacancy> vacancies = vacancyRepository.findAll();
         List<VacancyDto> dtos = new ArrayList<>();
         vacancies.forEach(e -> dtos.add(VacancyDto.builder()
                 .id(e.getId())
@@ -42,9 +44,9 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public VacancyDto getVacancyById(long id) {
+    public VacancyDto getVacancyById(Integer id) {
         try {
-            Vacancy vacancy = vacancyDao.getVacancyById(id)
+            Vacancy vacancy = vacancyRepository.findById(id)
                     .orElseThrow(() -> new VacancyNotFoundException("Can't find Vacancy with id " + id));
             return VacancyDto.builder()
                     .id(vacancy.getId())
@@ -80,13 +82,13 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setCreatedDate(vacancyDto.getCreatedDate());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
 
-        vacancyDao.addVacancy(vacancy);
+        vacancyRepository.save(vacancy);
         log.info("added vacancy {}", vacancy.getName());
     }
 
     @Override
     public boolean deleteVacancy(Integer id) {
-        Optional<Vacancy> vacancy = vacancyDao.getVacancyById(id);
+        Optional<Vacancy> vacancy = vacancyRepository.findById(id);
         if (vacancy.isPresent()) {
             vacancyDao.delete(id);
             log.info("vacancy deleted: {}", vacancy.get().getName());
@@ -98,7 +100,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyDto> getVacanciesUserResponded(Integer userId) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesUserResponded(userId);
+        List<Vacancy> vacancies = vacancyRepository.findVacanciesByAuthorId(userId);
         List<VacancyDto> dtos = vacancies.stream()
                 .map(vacancy -> VacancyDto.builder()
                         .name(vacancy.getName())
@@ -124,7 +126,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyDto> getVacanciesByCategoryId(Integer categoryId) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryId(categoryId);
+        List<Vacancy> vacancies = vacancyRepository.findVacanciesByCategoryId(categoryId);
         List<VacancyDto> dtos = vacancies.stream()
                 .map(vacancy -> VacancyDto.builder()
                         .name(vacancy.getName())
@@ -150,9 +152,9 @@ public class VacancyServiceImpl implements VacancyService {
 
 
     @Override
-    public void editVacancy(Long id, VacancyDto vacancyDto) {
+    public void editVacancy(Integer id, VacancyDto vacancyDto) {
         // Реализация метода editVacancy
-        Vacancy vacancy = vacancyDao.getVacancyById(id)
+        Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vacancy not found with id " + id));
 
         vacancy.setName(vacancyDto.getName());
@@ -178,7 +180,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyDto> getVacancyByAuthorId(Integer id) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesByAuthorId(id);
+        List<Vacancy> vacancies = vacancyRepository.findVacanciesByAuthorId(id);
         return vacancies.stream()
                 .map(VacancyMapper::toDto)
                 .toList();
@@ -186,7 +188,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
     @Override
     public void updateVacancy(Integer id, VacancyDto vacancyDto) {
-        Vacancy vacancy = vacancyDao.getVacancyById(id)
+        Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vacancy not found with id " + id));
 
         vacancy.setName(vacancyDto.getName());
@@ -200,7 +202,7 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setCreatedDate(vacancyDto.getCreatedDate());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
 
-        vacancyDao.updateVacancy(vacancy);
+        vacancyRepository.save(vacancy);
         log.info("updated vacancy {}", vacancy.getName());
     }
 

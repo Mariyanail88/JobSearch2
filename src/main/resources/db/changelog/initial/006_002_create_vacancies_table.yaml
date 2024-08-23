@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create table for vacancies
-      author: Mariya
+      author: Mari
       preConditions:
         - onFail: MARK_RAN
           not:
@@ -33,10 +33,10 @@ databaseChangeLog:
                   name: salary
                   type: DOUBLE
               - column:
-                  name: expFrom
+                  name: exp_from
                   type: INT
               - column:
-                  name: expTo
+                  name: exp_to
                   type: INT
               - column:
                   name: is_active

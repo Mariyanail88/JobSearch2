@@ -11,6 +11,9 @@ import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
+import kg.attractor.jobsearch.repository.ResumeRepository;
+import kg.attractor.jobsearch.repository.UserRepository;
+import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.util.ConsoleColors;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +48,9 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final ResumeDao resumeDao;
+    private final UserRepository userRepository;
+    private final ResumeRepository resumeRepository;
+    private final VacancyRepository vacancyRepository;
 
     @Value("${app.avatar_dir}")
     private String AVATAR_DIR;
@@ -52,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers() {
-        List<User> users = userDao.getUser();
+        List<User> users = userRepository.findAll();
         List<UserDto> dtos = new ArrayList<>();
         users.forEach(e -> dtos.add(UserDto.builder()
                 .id(e.getId())
@@ -69,20 +75,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByName(String name) throws UserNotFoundException {
-        User user = userDao.getUserByName(name).orElseThrow(
-                () -> new UserNotFoundException("Can't find user with name: " + name)
-        );
-        return UserDto.builder().
-                id(user.getId())
-                .name(user.getName())
-                .password(user.getPassword())
-                .build();
+    public List<UserDto> getUserByName(String name) throws UserNotFoundException {
+        List<User> users = userRepository.findByName(name);
+        return users.stream()
+                .map(UserMapper::toUserDto)
+                .toList();
     }
 
     @Override
     public UserDto getUserByPhone(String phoneNumber) throws UserNotFoundException {
-        User user = userDao.getUserByPhone(phoneNumber).orElseThrow(
+        User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(
                 () -> new UserNotFoundException("Can't find user with phone: " + phoneNumber)
         );
         return UserDto.builder().
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) throws UserNotFoundException {
-        User user = userDao.getUserByEmail(email).orElseThrow(
+        User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("Can't find user with email: " + email)
         );
         return UserDto.builder().
@@ -111,8 +113,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(long id) {//throws UserNotFoundException {
-        User user = userDao.getUserById(id).orElseThrow(
+    public UserDto getUserById(Integer id) {//throws UserNotFoundException {
+        User user = userRepository.findById(id).orElseThrow(
                 () -> {
                     log.error("Can't find user with ID: {}", id);
                     return new NoSuchElementException("Can't find user with ID: " + id);
@@ -145,7 +147,7 @@ public class UserServiceImpl implements UserService {
                     userDto.getEmail());
         }
         User user = UserMapper.fromUserDto(userDto);
-        userDao.addUser(user);
+        userRepository.save(user);
         if (user.getAccountType().equals("applicant")) {
             log.info("added applicant with email {}", user.getEmail());
         } else {
@@ -159,7 +161,7 @@ public class UserServiceImpl implements UserService {
             addUser(UserMapper.toUserDto(userWithAvatarFileDto));
         } else {
             addUser(UserMapper.toUserDto(userWithAvatarFileDto));
-            Optional<User> user = userDao.getUserByEmail(userWithAvatarFileDto.getEmail());
+            Optional<User> user = userRepository.findByEmail(userWithAvatarFileDto.getEmail());
             if (user.isPresent()) {
                 saveAvatar(
                         user.get().getId(),
@@ -176,7 +178,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsersRespondedToVacancy(Integer vacancyId) {
-        List<User> users = userDao.getUsersRespondedToVacancy(vacancyId);
+        List<User> users = userRepository.findUsersRespondedToVacancy(vacancyId);
         List<UserDto> dtos = users.stream()
                 .map(user -> UserDto.builder()
                         .id(user.getId())
@@ -198,13 +200,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void applyForVacancy(Long vacancyId, ResumeDto resumeDto) {
-        Resume resume = resumeDao.getResumeById(resumeDto.getApplicantId()).orElseThrow(
+    public void applyForVacancy(Integer vacancyId, ResumeDto resumeDto) {
+        Resume resume = resumeRepository.findById(resumeDto.getApplicantId()).orElseThrow(
                 () -> new UsernameNotFoundException(
                         "Can't find resume with applicant id: " + resumeDto.getApplicantId()
                 )
         );
-        Vacancy vacancy = vacancyDao.getVacancyById(vacancyId).orElseThrow(
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(
                 () -> new NoSuchElementException("Can't find vacancy with ID: " + vacancyId)
         );
         vacancyDao.applyForVacancy(resume.getId(), vacancy.getId());
@@ -224,7 +226,7 @@ public class UserServiceImpl implements UserService {
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, avatar.getBytes());
 
-            User user = userDao.getUserById(userId).orElseThrow(
+            User user = userRepository.findById(userId).orElseThrow(
                     () -> new UserNotFoundException("can't find user with id: " + userId));
 
             userDao.updateAvatar(user.getId(), fileName);
@@ -262,10 +264,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
-        Optional<User> user = userDao.getUserById(id);
+    public boolean deleteUser(Integer id) {
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            userDao.delete(id);
+            userRepository.delete(user.get());
             log.info("user deleted: {}", user.get().getName());
             return true;
         }

@@ -4,6 +4,7 @@ import kg.attractor.jobsearch.dao.VacancyDao;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
 import kg.attractor.jobsearch.model.Vacancy;
+import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.EmployerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class EmployerServiceImpl implements EmployerService {
 
     private final VacancyDao vacancyDao;
+    private final VacancyRepository vacancyRepository;
 
     @Override
     public void createVacancy(VacancyDto vacancyDto) {
@@ -47,7 +49,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     public void updateVacancy(Integer id, VacancyDto vacancyDto) {
-        Optional<Vacancy> existingVacancy = vacancyDao.getVacancyById(id);
+        Optional<Vacancy> existingVacancy = vacancyRepository.findById(id);
         if (existingVacancy.isEmpty()) {
             throw new ResourceNotFoundException("Vacancy not found with id: " + id);
         }
@@ -63,22 +65,22 @@ public class EmployerServiceImpl implements EmployerService {
         vacancy.setAuthorId(vacancyDto.getAuthorId());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
 
-        vacancyDao.addVacancy(vacancy);
+        vacancyRepository.save(vacancy);
     }
 
     @Override
     public void deleteVacancy(Integer id) {
-        Optional<Vacancy> existingVacancy = vacancyDao.getVacancyById(id);
+        Optional<Vacancy> existingVacancy = vacancyRepository.findById(id);
         if (existingVacancy.isEmpty()) {
             throw new ResourceNotFoundException("Vacancy not found with id: " + id);
         }
 
-        vacancyDao.delete(id);
+        vacancyRepository.delete(existingVacancy.get());
     }
 
     @Override
     public List<VacancyDto> getAllVacancies() {
-        List<Vacancy> vacancies = vacancyDao.getVacancies();
+        List<Vacancy> vacancies = vacancyRepository.findAll();
         return vacancies.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -86,7 +88,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     public List<VacancyDto> getVacanciesByCategoryId(Integer categoryId) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryId(categoryId);
+        List<Vacancy> vacancies = vacancyRepository.findAll();
         return vacancies.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

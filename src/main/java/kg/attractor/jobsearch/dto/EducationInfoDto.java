@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EducationInfoDto {
     private Integer id;
+    private Integer resumeId;
     private String institution;
     private String program;
     private LocalDateTime startDate;

@@ -5,6 +5,7 @@ import kg.attractor.jobsearch.dao.mappers.ResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.model.Resume;
+import kg.attractor.jobsearch.repository.ResumeRepository;
 import kg.attractor.jobsearch.service.ApplicantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApplicantServiceImpl implements ApplicantService {
     private final ResumeDao resumeDao;
+    private final ResumeRepository resumeRepository;
 
 
 
     @Override
     public List<ResumeDto> getAllResumes() {
-        List<Resume> resumes = resumeDao.getAllResumes();
+        List<Resume> resumes = resumeRepository.findAll();
         return resumes.stream()
                 .map(ResumeMapper::convertToDto)
                 .collect(Collectors.toList());
