@@ -126,8 +126,8 @@ public class ResumeServiceImpl implements ResumeService {
                 .categoryId(resumeDto.getCategoryId())
                 .salary(resumeDto.getSalary())
                 .isActive(resumeDto.getIsActive())
-                .createdDate(resumeDto.getCreatedDate())
-                .updateTime(resumeDto.getUpdateTime())
+                .createdDate(LocalDateTime.now()) // Устанавливаем текущую дату и время
+                .updateTime(LocalDateTime.now()) // Устанавливаем текущую дату и время
                 .build();
         resumeRepository.save(resume);
         return convertToDto(resume);

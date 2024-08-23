@@ -1,44 +1,57 @@
 <#import "../layout.ftlh" as layout>
+<#--<@layout.layout isAuthenticated=isAuthenticated username=username>-->
 <@layout.layout>
     <!-- Link to the external CSS file -->
-    <link rel="stylesheet" type="text/css" href="/static/css/profile.css">
-    <p>/avatars/${userDto.avatar}</p>
+    <link rel="stylesheet" type="text/css" href="/static/css/profile.css" xmlns="http://www.w3.org/1999/html">
 
     <div class="profile-container">
         <h1 class="profile-header" id="profile-header"></h1>
 
         <div class="profile-section">
             <div class="profile-info">
+                <#--                <img id="profile-avatar"-->
+                <#--                     src="/avatars/${userDto.avatar}"-->
+                <#--                     alt="User Avatar"-->
+                <#--                     class="profile-avatar"-->
+                <#--                     onerror="this.onerror=null;this.src='/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>ava.png</#if>';">-->
+
                 <img id="profile-avatar"
                      src="/avatars/${userDto.avatar}"
                      alt="User Avatar"
                      class="profile-avatar"
-                     onerror="this.onerror=null; this.src='/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>';
-                             this.onerror=function(){ this.src='/static/images/avatars/<#if userDto.accountType == 'employer'>No_Image_Available.jpg<#else>default_avatar.jpg</#if>'; };">
+                     onerror="this.onerror=null; this.src='/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>default_user_avatar.png</#if>';
+                             this.onerror=function(){ this.src='/static/images/avatars/<#if userDto.accountType == 'employer'>default_company_avatar.png<#else>default_user_avatar.png</#if>'; };">
 
                 <div id="profile-details">
                     <#if userDto.accountType == "employer">
                         <p class="profile-name" id="profile-name">company name</p><br>
-                        <button class="edit-profile-btn" onclick="location.href='/profile/edit?id=${userDto.id}'">Редактировать</button>
+                        <a href="/profile/edit" class="btn btn-primary edit-profile-btn">Редактировать</a>
                     <#else>
                         <p class="profile-name" id="profile-name">${userDto.name}</p>
                         <p class="profile-age" id="profile-age">Возраст: ${userDto.age}</p>
-                        <button class="edit-profile-btn" onclick="location.href='/profile/edit?id=${userDto.id}'">Редактировать</button>
+                        <a href="/profile/edit" class="btn btn-primary edit-profile-btn">Редактировать</a>
                     </#if>
                 </div>
             </div>
+
             <div class="profile-actions">
                 <div class="create-resume">
-                    <button class="create-resume-btn" id="create-resume-btn" onclick="location.href='/resumes/new'">
-                        <#if userDto.accountType == "employer">
-                            Создать<br>вакансию
-                        <#else>
-                            Создать<br>резюме
-                        </#if>
-                    </button>
+                    <#if userDto.accountType == "employer">
+                        <form action="/vacancies/create" method="get">
+                            <button class="create-btn" id="create-btn">
+                                Создать<br>вакансию
+                            </button>
+                        </form>
+                    <#else>
+                        <form action="/resumes/create" method="get">
+                            <button type="submit" class="create-btn" id="create-btn">
+                                Создать<br>резюме
+                            </button>
+                        </form>
+                    </#if>
                 </div>
                 <div class="responses">
-                    <button class="create-resume-btn">отклики: 42</button>
+                    <button class="create-btn">отклики: 42</button>
                 </div>
             </div>
         </div>
@@ -62,7 +75,7 @@
                                 <p class="resume-date">Дата обновления: ${vacancy.getFormattedUpdatedDate()}</p>
                                 <div class="resume-actions">
                                     <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${vacancy.id}'">Ред.</button>
+                                    <button class="edit-resume-btn">Ред.</button>
                                 </div>
                             </div>
                         </#list>
@@ -77,7 +90,7 @@
                                 <p class="resume-date">Дата обновления: ${resume.getFormattedUpdatedDate()}</p>
                                 <div class="resume-actions">
                                     <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${resume.id}'">Ред.</button>
+                                    <button class="edit-resume-btn">Ред.</button>
                                 </div>
                             </div>
                         </#list>

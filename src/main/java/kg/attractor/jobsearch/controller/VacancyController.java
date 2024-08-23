@@ -44,7 +44,7 @@ public class VacancyController {
     }
 
 
-    @GetMapping("/create")
+    @GetMapping("vacancies/create")
     public String createVacancy(Model model) {
         model.addAttribute("vacancyDto", new VacancyDto());
         return "vacancies/create_vacancy";
