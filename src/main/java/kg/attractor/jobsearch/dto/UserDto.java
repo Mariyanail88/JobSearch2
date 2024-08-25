@@ -36,8 +36,8 @@ public class UserDto {
     @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 3, max = 24, message = "Length must be >= 4 and <= 24")
+//    @NotBlank(message = "Password is mandatory")
+//    @Size(min = 3, max = 24, message = "Length must be >= 4 and <= 24")
     // @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "Password should contain at least one uppercase letter, one number")
     private String password;
 

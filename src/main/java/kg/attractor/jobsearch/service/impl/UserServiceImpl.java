@@ -3,15 +3,21 @@ package kg.attractor.jobsearch.service.impl;
 import kg.attractor.jobsearch.dao.ResumeDao;
 import kg.attractor.jobsearch.dao.UserDao;
 import kg.attractor.jobsearch.dao.VacancyDao;
-import kg.attractor.jobsearch.dao.mappers.UserMapper;
+import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
+
 import kg.attractor.jobsearch.errors.UserNotFoundException;
+import kg.attractor.jobsearch.mappers.UserMapper;
 import kg.attractor.jobsearch.model.Resume;
+
+import kg.attractor.jobsearch.model.Role;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.repository.ResumeRepository;
+
+import kg.attractor.jobsearch.repository.RoleRepository;
 import kg.attractor.jobsearch.repository.UserRepository;
 import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.UserService;
@@ -25,8 +31,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,12 +40,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,37 +54,41 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final ResumeDao resumeDao;
+
     private final UserRepository userRepository;
-    private final ResumeRepository resumeRepository;
     private final VacancyRepository vacancyRepository;
+    private final ResumeRepository resumeRepository;
+    private final RoleRepository roleRepository;
+
+    private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final PasswordEncoder encoder;
 
     @Value("${app.avatar_dir}")
     private String AVATAR_DIR;
 
+    private final Map<String, Integer> userAuthorityMap = new HashMap<>() {{
+        put("ADMIN", 1);
+        put("USER", 2);
+        put("MANAGER", 3);
+        put("GUEST", 4);
+        put("SUPERUSER", 5);
+    }};
+
+//    private final String UPLOAD_DIR = "avatars";
 
     @Override
     public List<UserDto> getUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserDto> dtos = new ArrayList<>();
-        users.forEach(e -> dtos.add(UserDto.builder()
-                .id(e.getId())
-                .name(e.getName())
-                .age(e.getAge())
-                .email(e.getEmail())
-                .password(e.getPassword())
-                .phoneNumber(e.getPhoneNumber())
-                .avatar(e.getAvatar())
-                .accountType(e.getAccountType())
-                .enabled(e.isEnabled())
-                .build()));
-        return dtos;
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toUserDto)
+                .toList();
     }
 
     @Override
-    public List<UserDto> getUserByName(String name) throws UserNotFoundException {
-        List<User> users = userRepository.findByName(name);
-        return users.stream()
-                .map(UserMapper::toUserDto)
+    public List<UserDto> getUsersByName(String name) {
+        return userRepository.findByName(name)
+                .stream()
+                .map(userMapper::toUserDto)
                 .toList();
     }
 
@@ -87,11 +97,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(
                 () -> new UserNotFoundException("Can't find user with phone: " + phoneNumber)
         );
-        return UserDto.builder().
-                id(user.getId())
-                .name(user.getName())
-                .password(user.getPassword())
-                .build();
+        return userMapper.toUserDto(user);
     }
 
     @Override
@@ -99,17 +105,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("Can't find user with email: " + email)
         );
-        return UserDto.builder().
-                id(user.getId())
-                .name(user.getName())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .enabled(user.isEnabled())
-                .build();
+        return userMapper.toUserDto(user);
     }
 
     @Override
@@ -121,33 +117,37 @@ public class UserServiceImpl implements UserService {
                 }
         );
         log.info("User found with ID: {}", id);
-        return UserDto.builder().
-                id(user.getId())
-                .name(user.getName())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .build();
+        return userMapper.toUserDto(user);
     }
 
     @Override
     public void addUser(UserDto userDto) {
         if (userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
-            if (userDto.getAccountType().equals("applicant")) {
-                userDto.setAvatar("default_avatar.jpg");
-            } else {
-                userDto.setAvatar("No_Image_Available.jpg");
-            }
+            userDto.setAvatar("default_user_avatar.png");
             log.info(ConsoleColors.YELLOW +
                             "user with email {} didn't choose avatar, so default avatar is set" +
                             ConsoleColors.RESET,
-                    userDto.getEmail());
+                    userDto.getEmail()
+            );
         }
-        User user = UserMapper.fromUserDto(userDto);
+        User user = CustomUserMapper.toUser(userDto);
+//        userDao.addUser(user);
+        // if user updated their profile we don't need to encode already encoded password
+        if (user.getPassword().length() < 20) {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
+
         userRepository.save(user);
+
+        // if user edits their profile, no need to add role
+        if (roleRepository.findRolesByUserId(user.getId()).isEmpty()) {
+            roleRepository.save(new Role(
+                    null,
+                    user.getId(),
+                    userAuthorityMap.get("USER")
+            ));
+        }
+
         if (user.getAccountType().equals("applicant")) {
             log.info("added applicant with email {}", user.getEmail());
         } else {
@@ -158,9 +158,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUserWithAvatar(UserWithAvatarFileDto userWithAvatarFileDto) throws UserNotFoundException, IOException {
         if (userWithAvatarFileDto.getAvatar().isEmpty()) {
-            addUser(UserMapper.toUserDto(userWithAvatarFileDto));
+            addUser(CustomUserMapper.toUserDto(userWithAvatarFileDto));
         } else {
-            addUser(UserMapper.toUserDto(userWithAvatarFileDto));
+            addUser(CustomUserMapper.toUserDto(userWithAvatarFileDto));
             Optional<User> user = userRepository.findByEmail(userWithAvatarFileDto.getEmail());
             if (user.isPresent()) {
                 saveAvatar(
@@ -178,25 +178,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsersRespondedToVacancy(Integer vacancyId) {
-        List<User> users = userRepository.findUsersRespondedToVacancy(vacancyId);
-        List<UserDto> dtos = users.stream()
-                .map(user -> UserDto.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .age(user.getAge())
-                        .email(user.getEmail())
-                        .password(user.getPassword())
-                        .phoneNumber(user.getPhoneNumber())
-                        .avatar(user.getAvatar())
-                        .accountType(user.getAccountType())
-                        .build())
-                .collect(Collectors.toList());
-        if (dtos.isEmpty()) {
+        List<UserDto> users = userRepository.findUsersRespondedToVacancy(vacancyId)
+                .stream()
+                .map(CustomUserMapper::toUserDto)
+                .toList();
+        if (users.isEmpty()) {
             log.error("Can't find users with vacancy id {}", vacancyId);
         } else {
             log.info("found users with vacancy id {}", vacancyId);
         }
-        return dtos;
+        return users;
     }
 
     @Override
@@ -229,7 +220,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(userId).orElseThrow(
                     () -> new UserNotFoundException("can't find user with id: " + userId));
 
-            userDao.updateAvatar(user.getId(), fileName);
+            userRepository.updateAvatar(user.getId(), fileName);
 
             log.warn(ConsoleColors.YELLOW_BACKGROUND + "saved avatar to path {}" + ConsoleColors.RESET, filePath.getFileName().getFileName());
         } else {
@@ -238,8 +229,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> getAvatar(Integer userId) throws UserNotFoundException {
-        Optional<User> user = userDao.getUserById(userId);
+    public ResponseEntity<Resource> getAvatar(Integer userId) throws UserNotFoundException {
+//        Optional<User> user = userDao.getUserById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             try {
                 byte[] image = Files.readAllBytes(Paths.get(AVATAR_DIR + user.get().getAvatar()));
@@ -250,7 +242,7 @@ public class UserServiceImpl implements UserService {
                         .contentType(MediaType.IMAGE_JPEG)
                         .body(resource);
             } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("avatar not found");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
             }
         } else {
             log.error("Can't find user with id {}", userId);
@@ -259,8 +251,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserDto userDto) {
-        // todo - implement
+    public void updateUser(UserWithAvatarFileDto userWithAvatarFileDto) throws IOException, UserNotFoundException {
+        UserDto existingUser = getUserByEmail(userWithAvatarFileDto.getEmail());
+        userWithAvatarFileDto.setPassword(existingUser.getPassword());
+        if (userWithAvatarFileDto.getAvatar() == null || userWithAvatarFileDto.getAvatar().isEmpty()) {
+            log.info(ConsoleColors.YELLOW +
+                            "user with email {} didn't choose new avatar, so previous avatar is used" +
+                            ConsoleColors.RESET,
+                    userWithAvatarFileDto.getEmail()
+            );
+            UserDto updatedUser = CustomUserMapper.toUserDto(userWithAvatarFileDto);
+            updatedUser.setAvatar(existingUser.getAvatar());
+            addUser(updatedUser);
+        } else {
+            addUserWithAvatar(userWithAvatarFileDto);
+        }
     }
 
     @Override
@@ -275,28 +280,4 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
-    public UserDto getCurrentUser(Authentication authentication) {
-        // Получение текущего пользователя по аутентификации
-        String username = authentication.getName();
-        User user = userDao.getUserByName(username).orElseThrow(
-                () -> new UsernameNotFoundException("Can't find user with username: " + username)
-        );
-        return UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .enabled(user.isEnabled())
-                .build();
-    }
-
-    @Override
-    public void updateUserProfile(UserWithAvatarFileDto userWithAvatarFileDto) throws IOException, UserNotFoundException {
-        addUserWithAvatar(userWithAvatarFileDto);
-    }
 }

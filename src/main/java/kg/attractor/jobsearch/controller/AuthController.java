@@ -105,6 +105,18 @@ public class AuthController {
 
     @GetMapping("profile")
     public String profile(Model model, Principal principal, Authentication authentication) throws IOException, UserNotFoundException {
+// Add the flag to the model if it exists
+        Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
+        log.info("ifEntityUpdated: {}", ifEntityUpdated);
+        if (ifEntityUpdated != null) {
+            String entityTitle = (String) model.asMap().get("entityTitle");
+            String entityName = (String) model.asMap().get("entityName");
+
+            model.addAttribute("entityUpdated", ifEntityUpdated);
+            model.addAttribute("entityTitle", entityTitle);
+            model.addAttribute("entityName", entityName);
+        }
+
         if (principal == null) {
             log.error("Principal is null. User is not authenticated.");
             return "redirect:/auth/login";

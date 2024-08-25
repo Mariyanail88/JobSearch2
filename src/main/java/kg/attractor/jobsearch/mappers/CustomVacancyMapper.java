@@ -1,4 +1,4 @@
-package kg.attractor.jobsearch.dao.mappers;
+package kg.attractor.jobsearch.mappers;
 
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.model.Vacancy;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class VacancyMapper implements RowMapper<Vacancy> {
+public class CustomVacancyMapper implements RowMapper<Vacancy> {
     @Override
     public Vacancy mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Vacancy.builder()

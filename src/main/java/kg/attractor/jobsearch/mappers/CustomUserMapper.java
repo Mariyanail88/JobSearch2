@@ -1,4 +1,4 @@
-package kg.attractor.jobsearch.dao.mappers;
+package kg.attractor.jobsearch.mappers;
 
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper implements RowMapper<User> {
+public class CustomUserMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
@@ -25,6 +25,7 @@ public class UserMapper implements RowMapper<User> {
 
     public static UserDto toUserDto(UserWithAvatarFileDto userWithAvatarFileDto) {
         return UserDto.builder()
+                .id(userWithAvatarFileDto.getId())
                 .name(userWithAvatarFileDto.getName())
                 .age(userWithAvatarFileDto.getAge())
                 .email(userWithAvatarFileDto.getEmail())
@@ -49,7 +50,7 @@ public class UserMapper implements RowMapper<User> {
                 .build();
     }
 
-    public static User fromUserDto(UserDto userDto) {
+    public static User toUser(UserDto userDto) {
         if (userDto == null) {
             return null;
         }

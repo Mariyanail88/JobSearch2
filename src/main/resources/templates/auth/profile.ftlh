@@ -1,8 +1,19 @@
 <#import "../layout.ftlh" as layout>
+<#import "../modal.ftlh" as modalTemplates>
 <#--<@layout.layout isAuthenticated=isAuthenticated username=username>-->
 <@layout.layout>
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" type="text/css" href="/static/css/profile.css" xmlns="http://www.w3.org/1999/html">
+
+    <#assign title = entityTitle!"Default Title">
+    <#assign name = entityName!"Default Name">
+    <#assign updated = entityUpdated!false>
+
+    <p>updated: <#if updated>yes<#else>no</#if></p>
+
+    <!-- Include the modal template and pass variables -->
+    <@modalTemplates.modal modalTitle=title modalName=name />
+
 
     <div class="profile-container">
         <h1 class="profile-header" id="profile-header"></h1>
@@ -37,7 +48,7 @@
             <div class="profile-actions">
                 <div class="create-resume">
                     <#if userDto.accountType == "employer">
-                        <form action="/vacancies/create}" method="get">
+                        <form action="/vacancies/create" method="get">
                             <button class="create-btn" id="create-btn">
                                 Создать<br>вакансию
                             </button>
@@ -50,9 +61,18 @@
                         </form>
                     </#if>
                 </div>
-                <div class="responses">
-                    <button class="create-btn">отклики: 42</button>
-                </div>
+
+
+                <#if userDto.accountType == "employer">
+                    <div class="responses">
+                        <button class="create-btn">отклики: 24</button>
+                    </div>
+                <#else>
+                    <div class="responses">
+                        <button class="create-btn">отклики: 42</button>
+                    </div>
+                </#if>
+
             </div>
         </div>
 
@@ -70,12 +90,19 @@
                         <p class="no-resumes">No vacancies added yet</p>
                     <#else>
                         <#list userVacancies as vacancy>
-                            <div class="resume-card">
-                                <p class="resume-title">${vacancy.name}</p>
-                                <p class="resume-date">Дата обновления: ${vacancy.getFormattedUpdatedDate()}</p>
-                                <div class="resume-actions">
-                                    <button class="update-resume-btn">Обновить</button>
-                                    <button class="edit-resume-btn">Ред.</button>
+                            <div class="vacancy-or-resume-card">
+                                <p class="vacancy-or-resume-title">${vacancy.name}</p>
+                                <p class="vacancy-or-resume-title">${vacancy.id}</p>
+                                <p class="vacancy-or-resume-date">Дата
+                                    обновления: ${vacancy.getFormattedUpdatedDate()}</p>
+                                <div class="vacancy-or-resume-actions">
+                                    <form action="/vacancies/update/${vacancy.id}" method="post"
+                                          style="display:inline;">
+                                        <button type="submit" class="update-vacancy-or-resume-btn">Обновить</button>
+                                    </form>
+                                    <button class="edit-vacancy-or-resume-btn"
+                                            onclick="location.href='/vacancies/edit/${vacancy.id}'">Ред.
+                                    </button>
                                 </div>
                             </div>
                         </#list>
@@ -85,14 +112,19 @@
                         <p class="no-resumes">No resume added yet</p>
                     <#else>
                         <#list userResumes as resume>
-                            <div class="resume-card">
-                                <p class="resume-title">${resume.name}</p>
-                                <p class="resume-date">Дата обновления: ${resume.getFormattedUpdatedDate()}</p>
-                                <div class="resume-actions">
-                                    <button class="update-resume-btn" onclick="location.href='/resumes/update/${resume.id}'">Обновить</button>
-                                    <button class="edit-resume-btn" onclick="location.href='/resumes/edit/${resume.id}'">Ред.</button>
+                            <div class="vacancy-or-resume-card">
+                                <p class="vacancy-or-resume-title">${resume.name}</p>
+                                <p class="vacancy-or-resume-title">${resume.id}</p>
+                                <p class="vacancy-or-resume-date">Дата
+                                    обновления: ${resume.getFormattedUpdatedDate()}</p>
+                                <div class="vacancy-or-resume-actions">
+                                    <form action="/resumes/update/${resume.id}" method="post" style="display:inline;">
+                                        <button type="submit" class="update-vacancy-or-resume-btn">Обновить</button>
+                                    </form>
+                                    <button class="edit-vacancy-or-resume-btn"
+                                            onclick="location.href='/resumes/edit/${resume.id}'">Ред.
+                                    </button>
                                 </div>
-
                             </div>
                         </#list>
                     </#if>
@@ -103,6 +135,26 @@
             <a href="/" class="home-btn">Home</a>
         </div>
     </div>
+
+
+<#--    <!-- Modal &ndash;&gt;-->
+<#--    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">-->
+<#--        <div class="modal-dialog">-->
+<#--            <div class="modal-content">-->
+<#--                <div class="modal-header">-->
+<#--                    <h5 class="modal-title" id="successModalLabel">Success</h5>-->
+<#--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<#--                </div>-->
+<#--                <div class="modal-body">-->
+<#--                    Test message-->
+<#--                </div>-->
+<#--                <div class="modal-footer">-->
+<#--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<#--                </div>-->
+<#--            </div>-->
+<#--        </div>-->
+<#--    </div>-->
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -118,6 +170,32 @@
             } else {
                 profileHeader.textContent = "Личный кабинет Соискателя";
             }
+
+            <#assign updated = entityUpdated!false>
+            <#assign title = entityTitle!"">
+            <#assign name = entityName!"">
+
+            const vacancyUpdated = ${updated?c};
+            if (vacancyUpdated) {
+                // Set the title and body text of the modal dynamically
+                const title = "${title}";
+                const name = "${name}";
+                const successModalElement = document.getElementById('successModal');
+
+                // Set the modal title and body content
+                successModalElement.querySelector('.modal-title').textContent = `${title} updated`;
+                successModalElement.querySelector('.modal-body').textContent = `${title} ${name} successfully updated`;
+
+                // Initialize and show the modal
+                const successModal = new bootstrap.Modal(successModalElement);
+                successModal.show();
+
+                // Auto-close the modal after 3 seconds (3000 milliseconds)
+                setTimeout(() => {
+                    successModal.hide();
+                }, 3000);
+            }
+
         });
     </script>
 </@layout.layout>

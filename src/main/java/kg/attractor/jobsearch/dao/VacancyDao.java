@@ -1,10 +1,6 @@
 package kg.attractor.jobsearch.dao;
 
-import kg.attractor.jobsearch.dao.mappers.UserMapper;
-import kg.attractor.jobsearch.dao.mappers.VacancyMapper;
-import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

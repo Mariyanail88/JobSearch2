@@ -1,7 +1,7 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.ResumeDao;
-import kg.attractor.jobsearch.dao.mappers.ResumeMapper;
+import kg.attractor.jobsearch.mappers.CustomResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
 import kg.attractor.jobsearch.model.Resume;
@@ -26,7 +26,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeDto> getResumes() {
         List<Resume> resumes = resumeRepository.findAll();
         return resumes.stream()
-                .map(ResumeMapper::convertToDto)
+                .map(CustomResumeMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -36,7 +36,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (resume.isEmpty()) {
             throw new ResourceNotFoundException("Resume not found with id: " + id);
         }
-        return ResumeMapper.convertToDto(resume.get());
+        return CustomResumeMapper.convertToDto(resume.get());
     }
     @Override
     public ResumeDto getResumeByCategoryId(Integer categoryId) {
@@ -44,7 +44,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (resumes.isEmpty()) {
             throw new ResourceNotFoundException("No resumes found for category id: " + categoryId);
         }
-        return ResumeMapper. convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
+        return CustomResumeMapper. convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeDto> getResumeByUserId(Integer userId) {
         List<Resume> resumes = resumeRepository.findAll();
         return resumes.stream()
-                .map(ResumeMapper::convertToDto)
+                .map(CustomResumeMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 

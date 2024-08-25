@@ -1,4 +1,4 @@
-package kg.attractor.jobsearch.dao.mappers;
+package kg.attractor.jobsearch.mappers;
 
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.model.Resume;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ResumeMapper implements RowMapper<Resume> {
+public class CustomResumeMapper implements RowMapper<Resume> {
     @Override
     public Resume mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Resume.builder()

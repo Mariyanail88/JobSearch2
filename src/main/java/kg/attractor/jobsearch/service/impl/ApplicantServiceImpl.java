@@ -1,7 +1,7 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.ResumeDao;
-import kg.attractor.jobsearch.dao.mappers.ResumeMapper;
+import kg.attractor.jobsearch.mappers.CustomResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.model.Resume;
@@ -25,7 +25,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     public List<ResumeDto> getAllResumes() {
         List<Resume> resumes = resumeRepository.findAll();
         return resumes.stream()
-                .map(ResumeMapper::convertToDto)
+                .map(CustomResumeMapper::convertToDto)
                 .collect(Collectors.toList());
 
     }
