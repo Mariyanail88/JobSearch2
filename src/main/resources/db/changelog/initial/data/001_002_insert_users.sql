@@ -1,5 +1,4 @@
 INSERT INTO users (NAME, AGE, EMAIL, PASSWORD, PHONE_NUMBER, AVATAR, ACCOUNT_TYPE, ENABLED)
-
 VALUES
     ('Alice Johnson', 29, 'alice@example.com', '$2a$10$T9MogeOPyAHHydm1qitCEummosIoVPZSjJc2SXufJJhjuCi8ieCrS', '1234567890', 'default_avatar.jpg', 'applicant', true),
     ('Charlie Brown', 40, 'charlie@example.com', '$2a$10$T9MogeOPyAHHydm1qitCEummosIoVPZSjJc2SXufJJhjuCi8ieCrS', '5555555555', 'No_Image_Available.jpg', 'employer', true),
