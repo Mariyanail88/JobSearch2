@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+
 @Slf4j
 @Controller
 @RequestMapping("auth")
@@ -54,23 +55,21 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             log.error(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
             model.addAttribute("bindingResult", bindingResult);
-            model.addAttribute("userDto", userDto); // Keep the form fields with the entered values
+            model.addAttribute("userDto", userDto);
             return "auth/register";
         }
 
         try {
-            // Debugging output
             MultipartFile avatar = userDto.getAvatar();
             if (avatar != null) {
                 log.info("Received avatar: name={}, size={}, originalFilename={}",
                         avatar.getName(), avatar.getSize(), avatar.getOriginalFilename());
-                if(avatar.getOriginalFilename() == null || avatar.getOriginalFilename().isEmpty()){
+                if (avatar.getOriginalFilename() == null || avatar.getOriginalFilename().isEmpty()) {
                     log.info("Received empty avatar, default avatar will be used");
                 }
             } else {
                 log.warn("Avatar file is null!");
             }
-
             userDto.setEnabled(true);
             userService.addUserWithAvatar(userDto);
 
@@ -81,31 +80,24 @@ public class AuthController {
             return "auth/register";
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-
-            // сообщение появляется под полем
             bindingResult.rejectValue("email", "error.userDto", String.format("User with email %s already exists.", userDto.getEmail()));
             model.addAttribute("bindingResult", bindingResult);
             model.addAttribute("userDto", userDto);
 
-            // сообщение появляется над формой
-//            model.addAttribute("errorMessage", String.format("User with email %s already exists.", userDto.getEmail()));
+
             return "auth/register";
         } catch (Exception e) {
             log.error(e.getMessage());
-            // сообщение появляется над формой
             model.addAttribute("errorMessage", e.getMessage());
             return "auth/register";
         }
 
         model.addAttribute("successMessage", "Registration successful! Redirecting to the main page...");
-        // Redirect to the profile page after successful registration
-//        return "auth/profile";
-        return "redirect:/auth/profile";
+        return "redirect:/";
     }
 
     @GetMapping("profile")
     public String profile(Model model, Principal principal, Authentication authentication) throws IOException, UserNotFoundException {
-// Add the flag to the model if it exists
         Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
         log.info("ifEntityUpdated: {}", ifEntityUpdated);
         if (ifEntityUpdated != null) {

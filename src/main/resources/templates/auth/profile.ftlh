@@ -55,11 +55,11 @@
 
                 <#if userDto.accountType == "employer">
                     <div class="responses">
-                        <button class="create-btn">отклики: 24</button>
+                        <button class="create-btn">отклики: 0</button>
                     </div>
                 <#else>
                     <div class="responses">
-                        <button class="create-btn">отклики: 42</button>
+                        <button class="create-btn">отклики: 0</button>
                     </div>
                 </#if>
             </div>
