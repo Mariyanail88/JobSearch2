@@ -104,7 +104,7 @@ public class ProfileController {
             model.addAttribute("successMessage", "Profile updated successfully");
             model.addAttribute("hasUpdated", true);
             model.addAttribute("entityName", userDto.getName());
-//           return "redirect:/auth/profile"; // Redirect to the profile
+
             return "auth/profile-edit";
         }
         return "redirect:/auth/login";
