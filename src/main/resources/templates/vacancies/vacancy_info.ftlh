@@ -1,36 +1,27 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
-    <#if isAuthenticated>
-        <p class="h4 text-dark">You logged in as ${username}</p>
-    <#else>
-        <p class="h4 text-dark">You are not logged in</p>
-    </#if>
+    <body>
     <div class="container">
-        <#if vacancy??>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h1 class="card-title">${vacancy.name?if_exists}</h1>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h1 class="card-title">${vacancy.name}</h1>
 
-                    <p class="card-text"><strong>Vacancy ID:</strong> ${vacancy.id?if_exists}</p>
-                    <p class="card-text"><strong>Description:</strong> ${vacancy.description?if_exists}</p>
-                    <p class="card-text"><strong>Category:</strong> ${vacancy.categoryId?if_exists}</p>
-                    <p class="card-text"><strong>Salary:</strong> ${vacancy.salary?if_exists}</p>
-                    <p class="card-text">
-                        <strong>Work Experience:</strong> From ${vacancy.expFrom?if_exists} to ${vacancy.expTo?if_exists} years</p>
-                    <p class="card-text"><strong>Active:</strong> ${vacancy.isActive?string('Yes', 'No')}</p>
-                    <p class="card-text"><strong>Author ID:</strong> ${vacancy.authorId?if_exists}</p>
-                    <p class="card-text"><strong>Created Date:</strong> ${vacancy.createdDate?if_exists}</p>
-                    <p class="card-text"><strong>Updated Time:</strong> ${vacancy.updateTime?if_exists}</p>
-                </div>
+                <p class="card-text"><strong>Описание:</strong> ${vacancy.description}</p>
+                <p class="card-text"><strong>Категория:</strong> ${category.name}</p>
+                <p class="card-text"><strong>Зарплата:</strong> ${vacancy.salary}</p>
+                <p class="card-text">
+                    <strong>Опыт работы:</strong> От ${vacancy.expFrom} до ${vacancy.expTo} лет</p>
+                <p class="card-text"><strong>Активно:</strong> ${vacancy.isActive?string('Да', 'Нет')}</p>
+                <p class="card-text"><strong>Автор:</strong> ${user.name}</p>
+                <p class="card-text"><strong>Дата создания:</strong> ${vacancy.getFormattedCreatedDate()}</p>
+                <p class="card-text"><strong>Время обновления:</strong> ${vacancy.getFormattedUpdatedDate()}</p>
             </div>
-        <#else>
-            <p class="h4 text-dark">Vacancy not found.</p>
-        </#if>
-        <!-- Centering the Home button -->
+        </div>
         <div class="row">
-            <div class="col text-center"> <!-- This div centers the button -->
-                <a href="/" class="btn btn-primary">Home</a>
+            <div class="col text-center">
+                <a href="/" class="btn btn-primary">Домой</a>
             </div>
         </div>
     </div>
+    </body>
 </@main.layout>

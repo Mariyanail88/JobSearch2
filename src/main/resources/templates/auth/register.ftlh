@@ -1,7 +1,7 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
     <div class="container mt-4">
-        <h2>Register</h2>
+        <h2>Регистрация</h2>
         <#if errorMessage??>
             <div class="alert alert-danger" role="alert">
                 ${errorMessage}
@@ -15,21 +15,21 @@
                         ${successMessage}
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+                            aria-label="Закрыть"></button>
                 </div>
             </div>
         </#if>
 
-        <!-- Display the list of errors in a styled alert box with a title -->
+        <!-- Отображение списка ошибок в стилизованном блоке с заголовком -->
         <#if bindingResult?has_content>
             <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Please correct the following errors:</h4>
+                <h4 class="alert-heading">Пожалуйста, исправьте следующие ошибки:</h4>
                 <hr>
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>Field Name</th>
-                        <th>Error Description</th>
+                        <th>Название поля</th>
+                        <th>Описание ошибки</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,31 +49,29 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </#if>
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
+                <label for="name" class="form-label">Имя</label>
                 <input type="text" class="form-control" id="name" name="name" value="${userDto.name!'Sid W'}" required>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("name")>
                     <span class="error-message">${bindingResult.getFieldError("name").defaultMessage}</span>
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="age" class="form-label">Age</label>
+                <label for="age" class="form-label">Возраст</label>
                 <input type="number" class="form-control" id="age" name="age" value="${userDto.age!'42'}" required>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("age")>
-<#--                    <div class="text-danger">${bindingResult.getFieldError("age").defaultMessage}</div>-->
                     <span class="error-message">${bindingResult.getFieldError("age").defaultMessage}</span>
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">Электронная почта</label>
                 <input type="email" class="form-control" id="email" name="email"
                        value="${userDto.email!'sid.w1@example.com'}" required>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("email")>
-                <#--                    <div class="text-danger">${bindingResult.getFieldError("email").defaultMessage}</div>-->
                     <span class="error-message">${bindingResult.getFieldError("email").defaultMessage}</span>
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">Пароль</label>
                 <input type="password" class="form-control" id="password" name="password"
                        value="${userDto.password!'123'}" required>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("password")>
@@ -81,7 +79,7 @@
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <label for="phoneNumber" class="form-label">Номер телефона</label>
                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
                        value="${userDto.phoneNumber!'+9961234783'}" required>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("phoneNumber")>
@@ -89,13 +87,13 @@
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="accountType" class="form-label">Account Type</label>
+                <label for="accountType" class="form-label">Тип аккаунта</label>
                 <select class="form-control" id="accountType" name="accountType" required>
                     <option value="applicant"
-                            <#if userDto.accountType?? && userDto.accountType == "applicant">selected</#if>>Applicant
+                            <#if userDto.accountType?? && userDto.accountType == "applicant">selected</#if>>Соискатель
                     </option>
                     <option value="employer"
-                            <#if userDto.accountType?? && userDto.accountType == "employer">selected</#if>>Employer
+                            <#if userDto.accountType?? && userDto.accountType == "employer">selected</#if>>Работодатель
                     </option>
                 </select>
                 <#if bindingResult?has_content && bindingResult.hasFieldErrors("accountType")>
@@ -103,10 +101,10 @@
                 </#if>
             </div>
             <div class="mb-3">
-                <label for="avatar" class="form-label">Avatar (optional)</label>
+                <label for="avatar" class="form-label">Аватар (необязательно)</label>
                 <input type="file" class="form-control" id="avatar" name="avatar">
             </div>
-            <button type="submit" class="btn btn-primary w-100">Register</button>
+            <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
         </form>
     </div>
 
@@ -116,13 +114,10 @@
             if (successToast) {
                 const toast = new bootstrap.Toast(successToast);
                 toast.show();
-                // setTimeout(() => {
-                //     window.location.href = '/';
-                // }, 3000); // Redirect after 3 seconds
 
                 setTimeout(() => {
-                    window.location.href = '/auth/profile'; // Redirect to profile page
-                }, 3000); // Redirect after 3 seconds
+                    window.location.href = '/auth/profile';
+                }, 3000);
             }
         });
     </script>

@@ -28,18 +28,18 @@
                     <div class="card-body py-5 px-md-5">
 
                         <form id="login-form" action="/auth/login" method="post">
-                            <!-- Email input -->
+
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <input type="email" id="form2Example1" class="form-control" name="username"/>
                                 <label class="form-label" for="form2Example1">Email address</label>
                             </div>
 
-                            <!-- Password input -->
+
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <input type="password" id="form2Example2" class="form-control" name="password"/>
-                                <label class="form-label" for="form2Example2">Password</label>
+                                <label class="form-label" for="form2Example2">пароль</label>
                             </div>
-                            <!-- Submit button -->
+
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-primary btn-block mb-4">Sign in
                             </button>
