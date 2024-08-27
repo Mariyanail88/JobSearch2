@@ -29,6 +29,5 @@ public interface UserMapper {
 //        return avatar != null ? avatar.getOriginalFilename() : null;
 //    }
 
-    // New method to update an existing User entity with values from UserDto
     void updateUserFromDto(UserDto userDto, @MappingTarget User user);
 }

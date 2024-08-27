@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         put("SUPERUSER", 5);
     }};
 
-//    private final String UPLOAD_DIR = "avatars";
+
 
     @Override
     public List<UserDto> getUsers() {

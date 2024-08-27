@@ -41,7 +41,7 @@ public class ProfileController {
             Principal principal,
             Authentication authentication) throws IOException, UserNotFoundException {
 
-        // Add the flag to the model if it exists
+
         Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
         log.info("ifEntityUpdated: {}", ifEntityUpdated);
         if (ifEntityUpdated != null) {
@@ -82,7 +82,7 @@ public class ProfileController {
             model.addAttribute("user", userDto);
             return "auth/profile-edit";
         }
-        return "redirect:/auth/login"; // Redirect to login if not authenticated
+        return "redirect:/auth/login";
     }
 
     @PostMapping("edit")
@@ -107,6 +107,6 @@ public class ProfileController {
 //           return "redirect:/auth/profile"; // Redirect to the profile
             return "auth/profile-edit";
         }
-        return "redirect:/auth/login"; // Redirect to login if not authenticated
+        return "redirect:/auth/login";
     }
 }

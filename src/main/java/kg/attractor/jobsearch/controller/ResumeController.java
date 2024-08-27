@@ -48,7 +48,7 @@ public class ResumeController {
         );
         return "resumes/resume_info";
     }
-    // Метод для отображения формы создания резюме
+
     @GetMapping("resumes/create")
     public String showCreateResumeForm(Model model, Authentication authentication) {
         model.addAttribute("resume", new ResumeDto());
@@ -56,13 +56,13 @@ public class ResumeController {
         return "resumes/create_resume";
     }
 
-    // Метод для обработки создания резюме
+
     @PostMapping("resumes/create")
     public String createResume(@ModelAttribute("resume") ResumeDto resumeDto, Authentication authentication) {
         resumeService.createResume(resumeDto);
         return "redirect:/auth/profile";
     }
-    // Метод для отображения формы редактирования резюме
+
     @GetMapping("resumes/edit/{resumeId}")
     public String showEditResumeForm(@PathVariable Integer resumeId, Model model, Authentication authentication) {
         ResumeDto resumeDto = resumeService.getResumeById(resumeId);
@@ -70,7 +70,7 @@ public class ResumeController {
         MvcConrollersUtil.authCheck(model, authentication);
         return "resumes/edit_resume";
     }
-    // Метод для обработки редактирования резюме
+
     @PostMapping("resumes/edit/{resumeId}")
     public String editResume(@PathVariable Integer resumeId, @ModelAttribute("resume") ResumeDto resumeDto, Authentication authentication) {
 

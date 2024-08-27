@@ -56,14 +56,14 @@ public class VacancyController {
         return "redirect:/vacancies";
     }
 
-    // Метод для обработки создания вакансии
+
     @PostMapping("vacancies")
     public String createVacancy(@ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
         vacancyService.createVacancy(vacancyDto);
         return "redirect:/vacancies";
     }
 
-    // Метод для отображения формы редактирования вакансии
+
     @GetMapping("vacancies/edit/{vacancyId}")
     public String showEditVacancyForm(@PathVariable Integer vacancyId, Model model, Authentication authentication) {
         VacancyDto vacancyDto = vacancyService.getVacancyById(vacancyId);
@@ -72,7 +72,7 @@ public class VacancyController {
         return "vacancies/edit_vacancy";
     }
 
-    // Метод для обработки редактирования вакансии
+
     @PostMapping("vacancies/edit/{vacancyId}")
     public String editVacancy(@PathVariable Integer vacancyId, @ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
         vacancyService.updateVacancy(vacancyId, vacancyDto);

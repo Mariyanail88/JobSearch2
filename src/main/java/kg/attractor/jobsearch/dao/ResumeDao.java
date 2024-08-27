@@ -76,7 +76,7 @@ public class ResumeDao {
         template.update(sql, id);
     }
 
-    // Метод для сохранения нового резюме
+
     public void save(Resume resume) {
         String sql = """
                 insert into resumes (APPLICANT_ID, NAME, CATEGORY_ID, SALARY, IS_ACTIVE, CREATED_DATE, UPDATE_TIME)
@@ -92,7 +92,7 @@ public class ResumeDao {
                 .addValue("updateTime", resume.getUpdateTime()));
     }
 
-    // Метод для обновления существующего резюме
+
     public void update(Resume resume) {
         String sql = """
                 update resumes set

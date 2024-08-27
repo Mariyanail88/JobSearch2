@@ -32,31 +32,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorService.makeResponse(e.getBindingResult()), HttpStatus.BAD_REQUEST);
     }
 
-    // Обработка IllegalArgumentException
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseBody> handleIllegalArgumentException(IllegalArgumentException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.BAD_REQUEST);
     }
 
-    // Обработка ResourceNotFoundException
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseBody> handleResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
     }
 
-    // Обработка EntityNotFoundException
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseBody> handleEntityNotFoundException(EntityNotFoundException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
     }
 
-    // Обработка CanNotFindImageException
     @ExceptionHandler(CanNotFindImageException.class)
     public ResponseEntity<ErrorResponseBody> handleCanNotFindImageException(CanNotFindImageException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.NOT_FOUND);
     }
 
-    // Обработка DataIntegrityViolationException
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseBody> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return new ResponseEntity<>(errorService.makeResponse(e), HttpStatus.CONFLICT);

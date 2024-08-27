@@ -21,7 +21,7 @@ public class CustomResumeMapper implements RowMapper<Resume> {
                 .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
                 .build();
     }
-    // Метод для преобразования Resume в ResumeDto
+
     public static ResumeDto convertToDto(Resume resume) {
         return ResumeDto.builder()
                 .id(resume.getId())

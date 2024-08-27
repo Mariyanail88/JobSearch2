@@ -94,7 +94,6 @@ public class EmployerServiceImpl implements EmployerService {
                 .collect(Collectors.toList());
     }
 
-    // Метод для преобразования Vacancy в VacancyDto
     private VacancyDto convertToDto(Vacancy vacancy) {
         return VacancyDto.builder()
                 .id(vacancy.getId())

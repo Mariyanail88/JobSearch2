@@ -9,7 +9,7 @@ public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/error")
     public String handleError() {
-        // Возвращаем шаблон ошибки
+
         return "error";
     }
 
