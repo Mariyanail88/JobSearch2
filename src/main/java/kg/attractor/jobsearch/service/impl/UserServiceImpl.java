@@ -208,8 +208,6 @@ public class UserServiceImpl implements UserService {
     public void saveAvatar(Integer userId, MultipartFile avatar) throws IOException, UserNotFoundException {
         if (!avatar.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
-            // in users table avatar field length is only 45
-            // if it's more - we get sql exception
             if (fileName.length() > 45) {
                 fileName = fileName.substring(fileName.length() - 45);
             }
