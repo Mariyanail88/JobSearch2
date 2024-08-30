@@ -5,13 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.AllArgsConstructor;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name ="RESPONDED_APPLICANTS")
+@Table(name = "RESPONDED_APPLICANTS")
 public class RespondedApplicants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

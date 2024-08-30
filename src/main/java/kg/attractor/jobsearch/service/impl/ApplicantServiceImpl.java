@@ -1,9 +1,9 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.ResumeDao;
-import kg.attractor.jobsearch.mappers.CustomResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
+import kg.attractor.jobsearch.mappers.CustomResumeMapper;
 import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.repository.ResumeRepository;
 import kg.attractor.jobsearch.service.ApplicantService;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class ApplicantServiceImpl implements ApplicantService {
     private final ResumeDao resumeDao;
     private final ResumeRepository resumeRepository;
-
 
 
     @Override

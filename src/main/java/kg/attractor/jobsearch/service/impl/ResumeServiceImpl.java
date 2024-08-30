@@ -1,9 +1,10 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.ResumeDao;
-import kg.attractor.jobsearch.mappers.CustomResumeMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
+import kg.attractor.jobsearch.mappers.CustomResumeMapper;
+import kg.attractor.jobsearch.mappers.ResumeMapper;
 import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.repository.ResumeRepository;
 import kg.attractor.jobsearch.service.ResumeService;
@@ -21,6 +22,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeDao resumeDao;
     private final ResumeRepository resumeRepository;
+    private final ResumeMapper resumeMapper;
 
     @Override
     public List<ResumeDto> getResumes() {
@@ -38,13 +40,14 @@ public class ResumeServiceImpl implements ResumeService {
         }
         return CustomResumeMapper.convertToDto(resume.get());
     }
+
     @Override
     public ResumeDto getResumeByCategoryId(Integer categoryId) {
         List<Resume> resumes = resumeRepository.findAll();
         if (resumes.isEmpty()) {
             throw new ResourceNotFoundException("No resumes found for category id: " + categoryId);
         }
-        return CustomResumeMapper. convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
+        return CustomResumeMapper.convertToDto(resumes.get(0)); // Возвращаем первый найденный резюме
     }
 
     @Override
@@ -117,7 +120,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .updateTime(resume.getUpdateTime())
                 .build();
     }
-    // Метод для создания резюме
+
     @Override
     public ResumeDto createResume(ResumeDto resumeDto) {
         Resume resume = Resume.builder()
@@ -133,7 +136,6 @@ public class ResumeServiceImpl implements ResumeService {
         return convertToDto(resume);
     }
 
-    // Метод для обновления резюме
     @Override
     public ResumeDto updateResume(Integer id, ResumeDto resumeDto) {
         resumeDto.setUpdateTime(LocalDateTime.now());
@@ -156,6 +158,13 @@ public class ResumeServiceImpl implements ResumeService {
         return convertToDto(resume);
     }
 
-
-
+    @Override
+    public List<ResumeDto> getResumesRespondedToEmployerVacancies(Integer userId) {
+        return resumeRepository.findResumesRespondedToEmployerVacancies(userId)
+                .stream()
+                .map(resumeMapper::toResumeDto)
+                .toList();
+    }
 }
+
+

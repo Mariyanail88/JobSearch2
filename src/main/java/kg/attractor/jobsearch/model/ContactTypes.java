@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name ="CONTACT_TYPE")
+@Table(name = "CONTACT_TYPE")
 public class ContactTypes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -24,6 +24,7 @@ public class CustomVacancyMapper implements RowMapper<Vacancy> {
                 .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
                 .build();
     }
+
     public static VacancyDto toDto(Vacancy vacancy) {
         if (vacancy == null) {
             return null;

@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name ="WORK_EXPERIENCE_INFO")
+@Table(name = "WORK_EXPERIENCE_INFO")
 public class WorkExperienceInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

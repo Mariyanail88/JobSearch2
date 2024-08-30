@@ -1,10 +1,7 @@
 package kg.attractor.jobsearch.controller;
 
 import jakarta.validation.Valid;
-import kg.attractor.jobsearch.dto.ResumeDto;
-import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
-import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.service.ResumeService;
 import kg.attractor.jobsearch.service.UserService;
@@ -12,8 +9,6 @@ import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -96,39 +89,5 @@ public class AuthController {
         return "redirect:/";
     }
 
-    @GetMapping("profile")
-    public String profile(Model model, Principal principal, Authentication authentication) throws IOException, UserNotFoundException {
-        Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
-        log.info("ifEntityUpdated: {}", ifEntityUpdated);
-        if (ifEntityUpdated != null) {
-            String entityTitle = (String) model.asMap().get("entityTitle");
-            String entityName = (String) model.asMap().get("entityName");
-
-            model.addAttribute("entityUpdated", ifEntityUpdated);
-            model.addAttribute("entityTitle", entityTitle);
-            model.addAttribute("entityName", entityName);
-        }
-
-        if (principal == null) {
-            log.error("Principal is null. User is not authenticated.");
-            return "redirect:/auth/login";
-        }
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
-        model.addAttribute("isAuthenticated", isAuthenticated);
-        if (isAuthenticated && authentication.getPrincipal() instanceof UserDetails) {
-            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
-            model.addAttribute("username", username);
-        }
-        log.info("isAuthenticated: {}", isAuthenticated);
-        log.info("Fetching profile for user: {}", principal.getName());
-
-        UserDto userDto = userService.getUserByEmail(principal.getName());
-        List<ResumeDto> resumes = resumeService.getResumeByUserId(userDto.getId());
-        List<VacancyDto> vacancies = vacancyService.getVacancyByAuthorId(userDto.getId());
-        model.addAttribute("userVacancies", vacancies);
-        model.addAttribute("userResumes", resumes);
-        model.addAttribute("userDto", userDto);
-        return "auth/profile";
-    }
 
 }

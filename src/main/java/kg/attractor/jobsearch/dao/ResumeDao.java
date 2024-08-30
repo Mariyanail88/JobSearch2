@@ -115,6 +115,7 @@ public class ResumeDao {
                 .addValue("updateTime", resume.getUpdateTime())
                 .addValue("id", resume.getId()));
     }
+
     public List<Resume> getAllResumes() {
         String sql = """
                 select * from resumes

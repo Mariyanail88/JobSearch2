@@ -3,20 +3,17 @@ package kg.attractor.jobsearch.service.impl;
 import kg.attractor.jobsearch.dao.ResumeDao;
 import kg.attractor.jobsearch.dao.UserDao;
 import kg.attractor.jobsearch.dao.VacancyDao;
-import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
-
 import kg.attractor.jobsearch.errors.UserNotFoundException;
+import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.mappers.UserMapper;
 import kg.attractor.jobsearch.model.Resume;
-
 import kg.attractor.jobsearch.model.Role;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.repository.ResumeRepository;
-
 import kg.attractor.jobsearch.repository.RoleRepository;
 import kg.attractor.jobsearch.repository.UserRepository;
 import kg.attractor.jobsearch.repository.VacancyRepository;
@@ -73,7 +70,6 @@ public class UserServiceImpl implements UserService {
         put("GUEST", 4);
         put("SUPERUSER", 5);
     }};
-
 
 
     @Override

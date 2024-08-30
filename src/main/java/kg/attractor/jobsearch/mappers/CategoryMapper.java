@@ -3,7 +3,6 @@ package kg.attractor.jobsearch.mappers;
 import kg.attractor.jobsearch.dto.CategoryDto;
 import kg.attractor.jobsearch.model.Category;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -11,7 +10,9 @@ import org.mapstruct.factory.Mappers;
 
 public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
-    CategoryDto toDto(Category category) ;
-    Category toCategory(CategoryDto categoryDto) ;
+
+    CategoryDto toDto(Category category);
+
+    Category toCategory(CategoryDto categoryDto);
 
 }

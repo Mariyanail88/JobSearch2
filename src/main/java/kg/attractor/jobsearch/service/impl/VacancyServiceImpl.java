@@ -1,9 +1,9 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dao.VacancyDao;
-import kg.attractor.jobsearch.mappers.CustomVacancyMapper;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.errors.VacancyNotFoundException;
+import kg.attractor.jobsearch.mappers.CustomVacancyMapper;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.VacancyService;
@@ -186,6 +186,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .toList();
 
     }
+
     @Override
     public void updateVacancy(Integer id, VacancyDto vacancyDto) {
         Vacancy vacancy = vacancyRepository.findById(id)

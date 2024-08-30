@@ -51,16 +51,21 @@
                             </button>
                         </form>
                     </#if>
-                </div>
-
+                </div>VACANCIES
                 <#if userDto.accountType == "employer">
-                    <div class="responses">
-                        <button class="create-btn">отклики: 0</button>
-                    </div>
+                    <form action="/resumes/resumes-responded-to-employer-vacancies" method="get">
+                        <button type="submit" class="create-btn" id="create-btn">
+                            отклики на ваши вакансии: ${resumesRespondedToEmployerVacancies?size}
+                        </button>
+                    </form>
+
                 <#else>
-                    <div class="responses">
-                        <button class="create-btn">отклики: 0</button>
-                    </div>
+
+                    <form action="/vacancies/vacancies-user-responded" method="get">
+                        <button type="submit" class="create-btn" id="create-btn">
+                            вы откликнулись на вакансии: ${vacanciesUserResponded?size}
+                        </button>
+                    </form>
                 </#if>
             </div>
         </div>

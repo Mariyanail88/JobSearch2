@@ -27,8 +27,8 @@ public class IndexController {
                 authentication,
                 vacancyService.getVacancies(),
                 "vacancies");
-        if (authentication!= null) {
-        UserDto userDto = userService.getUserByEmail(authentication.getName());
+        if (authentication != null) {
+            UserDto userDto = userService.getUserByEmail(authentication.getName());
             accountType = userDto.getAccountType();
         }
         model.addAttribute("accountType", accountType);

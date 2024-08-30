@@ -3,7 +3,6 @@ package kg.attractor.jobsearch.service;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
-
 import kg.attractor.jobsearch.errors.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,7 +1,6 @@
 package kg.attractor.jobsearch.service.impl;
 
 import kg.attractor.jobsearch.dto.CategoryDto;
-
 import kg.attractor.jobsearch.errors.CategoryNotFoundException;
 import kg.attractor.jobsearch.mappers.CategoryMapper;
 import kg.attractor.jobsearch.mappers.CustomCategoryMapper;

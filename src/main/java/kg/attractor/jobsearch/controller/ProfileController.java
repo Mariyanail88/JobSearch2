@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -68,10 +67,15 @@ public class ProfileController {
 
         UserDto userDto = userService.getUserByEmail(principal.getName());
         List<ResumeDto> resumes = resumeService.getResumeByUserId(userDto.getId());
+        List<ResumeDto> resumesRespondedToEmployerVacancies = resumeService.getResumesRespondedToEmployerVacancies(userDto.getId());
+
+        List<VacancyDto> vacanciesUserResponded = vacancyService.getVacanciesUserResponded(userDto.getId());
         List<VacancyDto> vacancies = vacancyService.getVacancyByAuthorId(userDto.getId());
         model.addAttribute("userVacancies", vacancies);
         model.addAttribute("userResumes", resumes);
         model.addAttribute("userDto", userDto);
+        model.addAttribute("resumesRespondedToEmployerVacancies", resumesRespondedToEmployerVacancies);
+        model.addAttribute("vacanciesUserResponded", vacanciesUserResponded);
         return "auth/profile";
     }
 
@@ -91,7 +95,7 @@ public class ProfileController {
             BindingResult bindingResult,
             Authentication authentication,
             Model model) throws IOException, UserNotFoundException {
-            model.addAttribute("userDto", userWithAvatarFileDto);
+        model.addAttribute("userDto", userWithAvatarFileDto);
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);
             return "auth/profile-edit";
