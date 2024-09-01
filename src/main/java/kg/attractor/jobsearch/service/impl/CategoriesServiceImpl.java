@@ -29,7 +29,6 @@ public class CategoriesServiceImpl implements CategoriesService {
         return categoryRepository
                 .findAll()
                 .stream()
-                // using custom mapper or id = null in CategoryDto
                 .map(CustomCategoryMapper::toDto)
                 .toList();
     }

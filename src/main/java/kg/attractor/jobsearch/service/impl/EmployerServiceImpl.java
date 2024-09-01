@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmployerServiceImpl implements EmployerService {
 
-    private final VacancyDao vacancyDao;
+
     private final VacancyRepository vacancyRepository;
 
     @Override
@@ -44,7 +44,7 @@ public class EmployerServiceImpl implements EmployerService {
                 .createdDate(vacancyDto.getCreatedDate())
                 .updateTime(vacancyDto.getUpdateTime())
                 .build();
-        vacancyDao.addVacancy(vacancy);
+        vacancyRepository.save(vacancy);
     }
 
     @Override

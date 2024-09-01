@@ -1,15 +1,15 @@
 INSERT INTO VACANCIES (NAME, DESCRIPTION, CATEGORY_ID, SALARY, EXP_FROM, EXP_TO, IS_ACTIVE, AUTHOR_ID, CREATED_DATE, UPDATE_TIME)
 VALUES
-    ('Software Engineer', 'Develop and maintain software applications.', 1, 60000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Data Analyst', 'Analyze data and generate reports.', 2, 50000, 1, 3, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Project Manager', 'Manage software development projects.', 1, 70000, 5, 10, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('QA Engineer', 'Test software applications for bugs.', 2, 55000, 1, 4, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('DevOps Engineer', 'Maintain and improve CI/CD pipelines.', 1, 65000, 3, 6, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('UI/UX Designer', 'Design user interfaces and experiences.', 2, 60000, 2, 5, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Backend Developer', 'Develop and maintain backend services.', 1, 80000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Frontend Developer', 'Develop and maintain frontend applications.', 2, 75000, 1, 3, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('System Administrator', 'Manage and maintain IT infrastructure.', 1, 70000, 3, 7, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Product Manager', 'Oversee product development and strategy.', 2, 90000, 5, 10, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Marketing Specialist', 'Develop and execute marketing strategies.', 1, 60000, 2, 5, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('HR Manager', 'Manage recruitment and employee relations.', 2, 65000, 3, 6, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
-    ('Business Analyst', 'Analyze business processes and requirements.', 1, 70000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00');
+    ('Инженер-программист', 'Разработка и поддержка программных приложений.', 1, 60000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Аналитик данных', 'Анализ данных и создание отчетов.', 2, 50000, 1, 3, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Менеджер проекта', 'Управление проектами по разработке программного обеспечения.', 1, 70000, 5, 10, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Инженер по качеству (QA)', 'Тестирование программных приложений на наличие ошибок.', 2, 55000, 1, 4, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Инженер DevOps', 'Поддержка и улучшение CI/CD пайплайнов.', 1, 65000, 3, 6, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Дизайнер UI/UX', 'Проектирование пользовательских интерфейсов и опыта.', 2, 60000, 2, 5, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Разработчик Backend', 'Разработка и поддержка серверных сервисов.', 1, 80000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Разработчик Frontend', 'Разработка и поддержка клиентских приложений.', 2, 75000, 1, 3, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Системный администратор', 'Управление и поддержка IT-инфраструктуры.', 1, 70000, 3, 7, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Менеджер по продукту', 'Контроль разработки продукта и стратегии.', 2, 90000, 5, 10, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Маркетолог', 'Разработка и реализация маркетинговых стратегий.', 1, 60000, 2, 5, TRUE, 10, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Менеджер по персоналу (HR)', 'Управление набором и отношениями с сотрудниками.', 2, 65000, 3, 6, TRUE, 12, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00'),
+    ('Бизнес-аналитик', 'Анализ бизнес-процессов и требований.', 1, 70000, 2, 5, TRUE, 2, TIMESTAMP '2023-10-01 10:00:00', TIMESTAMP '2023-10-01 10:00:00');

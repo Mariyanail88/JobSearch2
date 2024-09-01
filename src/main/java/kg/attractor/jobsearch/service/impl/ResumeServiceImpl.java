@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
 
-    private final ResumeDao resumeDao;
+
     private final ResumeRepository resumeRepository;
     private final ResumeMapper resumeMapper;
 
@@ -98,7 +98,7 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setCreatedDate(resumeDto.getCreatedDate());
         resume.setUpdateTime(resumeDto.getUpdateTime());
 
-        resumeDao.update(resume);
+       resumeRepository.save(resume);
     }
 
     @Override

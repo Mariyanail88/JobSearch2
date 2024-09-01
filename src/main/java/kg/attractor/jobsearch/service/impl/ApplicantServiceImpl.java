@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ApplicantServiceImpl implements ApplicantService {
-    private final ResumeDao resumeDao;
     private final ResumeRepository resumeRepository;
 
 

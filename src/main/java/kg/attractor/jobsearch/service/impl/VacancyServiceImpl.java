@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-    private final VacancyDao vacancyDao;
     private final VacancyRepository vacancyRepository;
 
     @Override
@@ -90,7 +89,7 @@ public class VacancyServiceImpl implements VacancyService {
     public boolean deleteVacancy(Integer id) {
         Optional<Vacancy> vacancy = vacancyRepository.findById(id);
         if (vacancy.isPresent()) {
-            vacancyDao.delete(id);
+            vacancyRepository.delete(vacancy.get());
             log.info("vacancy deleted: {}", vacancy.get().getName());
             return true;
         }
@@ -168,7 +167,7 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setCreatedDate(vacancyDto.getCreatedDate());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
 
-        vacancyDao.updateVacancy(vacancy);
+        vacancyRepository.save(vacancy);
         log.info("edited vacancy {}", vacancy.getName());
     }
 

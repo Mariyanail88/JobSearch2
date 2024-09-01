@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByPhoneNumber(String phoneNumber);
 
-    @Query("SELECT u FROM User u JOIN RespondedApplicants ra ON u.id = ra.resumeId WHERE ra.vacancyId = :vacancyId")
+    @Query("SELECT u FROM User u JOIN RespondedApplicant ra ON u.id = ra.resumeId WHERE ra.vacancyId = :vacancyId")
     List<User> findUsersRespondedToVacancy(@Param("vacancyId") Integer vacancyId);
 
     @Modifying

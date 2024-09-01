@@ -1,17 +1,17 @@
 package kg.attractor.jobsearch.service.impl;
 
-import kg.attractor.jobsearch.dao.ResumeDao;
-import kg.attractor.jobsearch.dao.UserDao;
-import kg.attractor.jobsearch.dao.VacancyDao;
+
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
 import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.mappers.UserMapper;
+import kg.attractor.jobsearch.model.RespondedApplicant;
 import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
+import kg.attractor.jobsearch.repository.RespondedApplicantsRepository;
 import kg.attractor.jobsearch.repository.ResumeRepository;
 import kg.attractor.jobsearch.repository.UserRepository;
 import kg.attractor.jobsearch.repository.VacancyRepository;
@@ -35,9 +35,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,9 +44,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
-    private final VacancyDao vacancyDao;
-    private final ResumeDao resumeDao;
 
     private final UserRepository userRepository;
     private final VacancyRepository vacancyRepository;
@@ -59,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Value("${app.avatar_dir}")
     private String AVATAR_DIR;
+    private RespondedApplicantsRepository respondedApplicantRepository;
 
     @Override
     public List<UserDto> getUsers() {
@@ -168,7 +164,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void applyForVacancy(Integer vacancyId, ResumeDto resumeDto) {
-        Resume resume = resumeRepository.findById(resumeDto.getApplicantId()).orElseThrow(
+        Resume resume = resumeRepository.findById(resumeDto.getId()).orElseThrow(
                 () -> new UsernameNotFoundException(
                         "Can't find resume with applicant id: " + resumeDto.getApplicantId()
                 )
@@ -176,7 +172,15 @@ public class UserServiceImpl implements UserService {
         Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(
                 () -> new NoSuchElementException("Can't find vacancy with ID: " + vacancyId)
         );
-        vacancyDao.applyForVacancy(resume.getId(), vacancy.getId());
+//        vacancyDao.applyForVacancy(resume.getId(), vacancy.getId());
+        respondedApplicantRepository.save(
+                new RespondedApplicant(
+                        null,
+                        resume.getId(),
+                        vacancyId,
+                        true
+                )
+        );
         log.info("apply for vacancy {} successfully", vacancy.getName());
     }
 

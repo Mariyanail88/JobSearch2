@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     @Query("SELECT v FROM Vacancy v " +
-            "JOIN RespondedApplicants ra ON v.id = ra.vacancyId " +
+            "JOIN RespondedApplicant ra ON v.id = ra.vacancyId " +
             "JOIN Resume r ON ra.resumeId = r.id " +
             "JOIN User u ON r.applicantId = u.id " +
             "WHERE u.id = :userId")
