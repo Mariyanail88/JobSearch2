@@ -1,54 +1,21 @@
 package kg.attractor.jobsearch.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final DataSource dataSource;
-
-    private static final String USER_QUERY =
-            """
-                    SELECT EMAIL, PASSWORD, ENABLED
-                    FROM USERS
-                    WHERE EMAIL=?
-                    """;
-
-    private static final String AUTHORITIES_QUERY =
-            """
-                    select USERS.EMAIL, A.ROLE
-                    from USERS
-                    inner join ROLES UA on USERS.ID = UA.USER_ID
-                    inner join AUTHORITIES A on A.ID = UA.AUTHORITY_ID
-                    where EMAIL=?;
-                    """;
-
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(USER_QUERY)
-                .authoritiesByUsernameQuery(AUTHORITIES_QUERY)
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

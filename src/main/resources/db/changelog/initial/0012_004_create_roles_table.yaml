@@ -1,15 +1,15 @@
 databaseChangeLog:
   - changeSet:
-      id: create table authorities
+      id: create roles table
       author: Mariya
       preConditions:
         - onFail: MARK_RAN
           not:
             tableExists:
-              tableName: authorities
+              tableName: roles
       changes:
         - createTable:
-            tableName: authorities
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -19,7 +19,8 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: role
-                  type: varchar(45)
+                  name: role_name
+                  type: VARCHAR(45)
                   constraints:
                     nullable: false
+

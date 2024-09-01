@@ -10,11 +10,9 @@ import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.mappers.UserMapper;
 import kg.attractor.jobsearch.model.Resume;
-import kg.attractor.jobsearch.model.Role;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.repository.ResumeRepository;
-import kg.attractor.jobsearch.repository.RoleRepository;
 import kg.attractor.jobsearch.repository.UserRepository;
 import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.UserService;
@@ -55,22 +53,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final VacancyRepository vacancyRepository;
     private final ResumeRepository resumeRepository;
-    private final RoleRepository roleRepository;
 
     private final UserMapper userMapper = UserMapper.INSTANCE;
     private final PasswordEncoder encoder;
 
     @Value("${app.avatar_dir}")
     private String AVATAR_DIR;
-
-    private final Map<String, Integer> userAuthorityMap = new HashMap<>() {{
-        put("ADMIN", 1);
-        put("USER", 2);
-        put("MANAGER", 3);
-        put("GUEST", 4);
-        put("SUPERUSER", 5);
-    }};
-
 
     @Override
     public List<UserDto> getUsers() {
@@ -127,22 +115,14 @@ public class UserServiceImpl implements UserService {
             );
         }
         User user = CustomUserMapper.toUser(userDto);
-//        userDao.addUser(user);
-        // if user updated their profile we don't need to encode already encoded password
+
         if (user.getPassword().length() < 20) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
         userRepository.save(user);
 
-        // if user edits their profile, no need to add role
-        if (roleRepository.findRolesByUserId(user.getId()).isEmpty()) {
-            roleRepository.save(new Role(
-                    null,
-                    user.getId(),
-                    userAuthorityMap.get("USER")
-            ));
-        }
+
 
         if (user.getAccountType().equals("applicant")) {
             log.info("added applicant with email {}", user.getEmail());
