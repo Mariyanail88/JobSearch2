@@ -14,47 +14,107 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>
-
+        <!-- Link to the external CSS file -->
         <link rel="stylesheet" type="text/css" href="/static/css/layout.css">
-        <title>Document</title>
+        <!-- Link to the favicon -->
+        <link rel="icon" type="image/png" href="/static/images/hospital_favicon.png">
+        <title>HOSPITAL</title>
     </head>
-
     <body>
+
+    <#assign known = SPRING_SECURITY_CONTEXT?? >
+    <#if known>
+        <#assign
+        user = SPRING_SECURITY_CONTEXT.authentication.principal
+        name = user.getUsername()
+        >
+    </#if>
+
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Job Search</a>
+            <a class="navbar-brand" href="/">HOSPITAL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <#--                    <li class="nav-item">-->
+                    <#--                        <a class="nav-link active" aria-current="page" href="/">Home</a>-->
+                    <#--                    </li>-->
 
-            <#assign known = SPRING_SECURITY_CONTEXT??>
-            <#if known>
-                <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>
-                <#assign name = user.getUsername()>
-                <#assign accountType = user.accountType!"unknown"> <!-- Добавляем проверку наличия переменной accountType -->
-                <div class="navbar-text">
-                    <span class="navbar-text">you are logged in as ${name}!</span>
+                    <#if user?? && user.authorities?seq_contains("ADMIN")>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/create">Create</a>
+                        </li>
+                    </#if>
+
+
+                    <#--                    <li class="nav-item dropdown">-->
+                    <#--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+                    <#--                           data-bs-toggle="dropdown" aria-expanded="false">-->
+                    <#--                            Dropdown-->
+                    <#--                        </a>-->
+                    <#--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+                    <#--                            <li><a class="dropdown-item" href="#">Action</a></li>-->
+                    <#--                            <li><a class="dropdown-item" href="#">Another action</a></li>-->
+                    <#--                            <li>-->
+                    <#--                                <hr class="dropdown-divider">-->
+                    <#--                            </li>-->
+                    <#--                            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+                    <#--                        </ul>-->
+                    <#--                    </li>-->
+                    <#--                    <li class="nav-item">-->
+                    <#--                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+                    <#--                    </li>-->
+                </ul>
+                <#--                <form class="d-flex">-->
+                <#--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+                <#--                    <button class="btn btn-outline-success" type="submit">Search</button>-->
+                <#--                </form>-->
+            </div>
+
+            <#--            <#assign known = SPRING_SECURITY_CONTEXT?? >-->
+            <#--            <#if known>-->
+            <#--                <#assign-->
+            <#--                user = SPRING_SECURITY_CONTEXT.authentication.principal-->
+            <#--                name = user.getUsername()-->
+            <#--                >-->
+            <#if user??>
+                <div class="text-light m-2 m-sm-0">
+                    you logged in with email "${name}"; your role in the system is
                     <#list user.authorities as auth>
-                        <span class="navbar-text">your role is ${auth}</span>
-                        <#if auth?has_next>
-                            /
+                        <#if auth?index == 0>
+                            <span class="text-danger">${auth}</span>
+                        <#else>
                         </#if>
                     </#list>
+                    ; actions available:
+                    <#list user.authorities as auth>
+                        <#if auth?index == 0>
+                        <#else>
+                            / <span class="text-info">${auth}</span>
+                        </#if>
+                    </#list>
+
                 </div>
-                <a href="/vacancies" class="btn btn-outline-info m-2">View Vacancies</a>
-                <a href="/resumes" class="btn btn-outline-info m-2">View Resumes</a>
-                <a href="/profile" class="btn btn-outline-info ms-2">Profile</a>
-                <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
-
-            <#-- Добавляем проверку типа аккаунта -->
-                <#if accountType == "employer">
-                    <a href="/companies" class="btn btn-outline-info m-2">View Companies</a>
-                <#elseif accountType == "applicant">
-                    <a href="/resumes" class="btn btn-outline-info m-2">View Resumes</a>
+                <a href="/profile" class="btn btn-outline-info m-2">Profile</a>
+                <#if _csrf??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
+                    </form>
+                <#else>
+                    <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
                 </#if>
-
             <#else>
-                <span class="navbar-text">you are not logged in</span>
-                <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
-                <a href="/auth/register" class="btn btn-outline-info m-2">Register</a>
+                <a href="/auth/login"
+                   class="btn btn-outline-info m-2">Login</a>
+                <a href="/auth/register"
+                   class="btn btn-outline-info m-2">Register</a>
             </#if>
         </div>
     </nav>
@@ -67,4 +127,5 @@
 
     </body>
     </html>
+
 </#macro>

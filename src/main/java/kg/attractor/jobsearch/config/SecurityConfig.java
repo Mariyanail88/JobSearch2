@@ -20,6 +20,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+//                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection if you want to disable it
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
@@ -30,45 +31,15 @@ public class SecurityConfig {
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/") // Redirect to homepage after logout
                         .permitAll())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/swagger-ui/").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
-                                .requestMatchers("/avatars/").permitAll()
-                                .requestMatchers("/static/").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/auth/profile").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/applicants/register").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/users/upload-avatar").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAuthority("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/users/").hasAuthority("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/employers/vacancies/active").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/employers/vacancies/category/{category}").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/employers/{employerId}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/employers/download-avatar/{filename}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/employers/resumes").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/employers/vacancies/{vacancyId}/apply").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/employers/upload-avatar").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/employers/vacancy").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.PUT, "/employers/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.PUT, "/employers/resumes/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.DELETE, "/employers/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.DELETE, "/employers/resumes/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/applicants/resumes").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/applicants/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/applicants/vacancy/{vacancyId}/applicants").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/applicants/vacancies").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/applicants/vacancies/category/{category}").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/applicants/get-user-resumes/{user_id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/applicants/resume/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.GET, "/applicants/user/{userId}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/applicants/resume").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.PUT, "/applicants/resume/{id}").hasAnyAuthority("ADMIN", "USER")
-//                        .requestMatchers(HttpMethod.DELETE, "/applicants/resume/{id}").hasAnyAuthority("ADMIN", "USER")
-                                .anyRequest().permitAll()
-                );
+                .authorizeHttpRequests(request -> request
+//                        .requestMatchers("/").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/movies").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
+                        .requestMatchers("/create").hasAuthority("ADMIN")
+                        .anyRequest().permitAll());
         return http.build();
     }
 }
