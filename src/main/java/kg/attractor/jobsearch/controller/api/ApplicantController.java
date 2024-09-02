@@ -48,7 +48,7 @@ public class ApplicantController {
     }
     @GetMapping("get-user-resumes/{user_id}")
     public ResponseEntity<?> getResumesByUserId(@PathVariable Integer user_id) {
-        List<ResumeDto> resumes = resumeService.getResumeByUserId(user_id);
+        List<ResumeDto> resumes = resumeService.getResumesByUserId(user_id);
         if (resumes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("resumes with user_id %d not found", user_id));
         }
@@ -65,7 +65,7 @@ public class ApplicantController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ResumeDto>> getResumeByUserId(@PathVariable Integer userId) {
-        List<ResumeDto> resumes = resumeService.getResumeByUserId(userId);
+        List<ResumeDto> resumes = resumeService.getResumesByUserId(userId);
         if (resumes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

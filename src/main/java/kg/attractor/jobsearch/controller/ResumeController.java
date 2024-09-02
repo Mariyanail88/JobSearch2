@@ -35,7 +35,7 @@ public class ResumeController {
         MvcConrollersUtil.authCheckAndAddAttributes(
                 model,
                 authentication,
-                resumeService.getResumes(),
+                resumeService.getResumesByUserId(),
                 "resumes");
         return "resumes/resumes";
     }

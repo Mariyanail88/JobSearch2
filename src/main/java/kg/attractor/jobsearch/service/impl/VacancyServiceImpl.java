@@ -1,6 +1,5 @@
 package kg.attractor.jobsearch.service.impl;
 
-import kg.attractor.jobsearch.dao.VacancyDao;
 import kg.attractor.jobsearch.dto.VacancyDto;
 import kg.attractor.jobsearch.errors.VacancyNotFoundException;
 import kg.attractor.jobsearch.mappers.CustomVacancyMapper;

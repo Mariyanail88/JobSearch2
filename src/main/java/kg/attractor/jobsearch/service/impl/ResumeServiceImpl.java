@@ -1,6 +1,5 @@
 package kg.attractor.jobsearch.service.impl;
 
-import kg.attractor.jobsearch.dao.ResumeDao;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
 import kg.attractor.jobsearch.mappers.CustomResumeMapper;
@@ -25,7 +24,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeMapper resumeMapper;
 
     @Override
-    public List<ResumeDto> getResumes() {
+    public List<ResumeDto> getResumesByUserId() {
         List<Resume> resumes = resumeRepository.findAll();
         return resumes.stream()
                 .map(CustomResumeMapper::convertToDto)
@@ -75,8 +74,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getResumeByUserId(Integer userId) {
-        List<Resume> resumes = resumeRepository.findAll();
+    public List<ResumeDto> getResumesByUserId(Integer userId) {
+        List<Resume> resumes = resumeRepository.findByApplicantId(userId);
         return resumes.stream()
                 .map(CustomResumeMapper::convertToDto)
                 .collect(Collectors.toList());

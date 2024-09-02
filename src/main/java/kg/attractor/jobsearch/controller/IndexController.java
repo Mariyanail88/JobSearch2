@@ -32,7 +32,7 @@ public class IndexController {
             accountType = userDto.getAccountType();
         }
         model.addAttribute("accountType", accountType);
-        model.addAttribute("resumes", resumeService.getResumes());
+        model.addAttribute("resumes", resumeService.getResumesByUserId());
         return "index";
     }
 }

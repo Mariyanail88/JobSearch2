@@ -9,10 +9,12 @@ import kg.attractor.jobsearch.mappers.CustomUserMapper;
 import kg.attractor.jobsearch.mappers.UserMapper;
 import kg.attractor.jobsearch.model.RespondedApplicant;
 import kg.attractor.jobsearch.model.Resume;
+import kg.attractor.jobsearch.model.Role;
 import kg.attractor.jobsearch.model.User;
 import kg.attractor.jobsearch.model.Vacancy;
 import kg.attractor.jobsearch.repository.RespondedApplicantsRepository;
 import kg.attractor.jobsearch.repository.ResumeRepository;
+import kg.attractor.jobsearch.repository.RoleRepository;
 import kg.attractor.jobsearch.repository.UserRepository;
 import kg.attractor.jobsearch.repository.VacancyRepository;
 import kg.attractor.jobsearch.service.UserService;
@@ -35,7 +37,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,6 +53,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final VacancyRepository vacancyRepository;
     private final ResumeRepository resumeRepository;
+    private final RoleRepository roleRepository;
 
     private final UserMapper userMapper = UserMapper.INSTANCE;
     private final PasswordEncoder encoder;
@@ -116,7 +122,24 @@ public class UserServiceImpl implements UserService {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
+        // Initialize roles collection if null
+        user.setRoles(initializeCollectionIfNull(user.getRoles()));
+
+        // Assign the PATIENT role to the new user
+        Role userRole = roleRepository.findByRoleName(user.getAccountType().toUpperCase()).orElseThrow(
+                () -> new NoSuchElementException("Role not found")
+        );
+
+        user.getRoles().add(userRole);
         userRepository.save(user);
+
+        log.info(
+                ConsoleColors.ANSI_BLUE +
+                        "User saved to DB with email {} and role {}" +
+                        ConsoleColors.RESET,
+                userDto.getEmail(),
+                userRole.getRoleName()
+        );
 
 
 
@@ -256,6 +279,9 @@ public class UserServiceImpl implements UserService {
         }
         log.info(String.format("user with id %d not found", id));
         return false;
+    }
+    private <T> Collection<T> initializeCollectionIfNull(Collection<T> collection) {
+        return collection == null ? new HashSet<>() : collection;
     }
 
 }

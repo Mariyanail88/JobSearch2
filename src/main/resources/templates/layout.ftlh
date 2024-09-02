@@ -17,8 +17,8 @@
         <!-- Link to the external CSS file -->
         <link rel="stylesheet" type="text/css" href="/static/css/layout.css">
         <!-- Link to the favicon -->
-        <link rel="icon" type="image/png" href="/static/images/hospital_favicon.png">
-        <title>HOSPITAL</title>
+        <link rel="icon" type="image/png" href="/static/images/app_favicon.png">
+        <title>JOB SEARCH</title>
     </head>
     <body>
 
@@ -33,7 +33,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">HOSPITAL</a>
+            <a class="navbar-brand" href="/">JOB SEARCH</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

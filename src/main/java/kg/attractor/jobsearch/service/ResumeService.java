@@ -5,12 +5,12 @@ import kg.attractor.jobsearch.dto.ResumeDto;
 import java.util.List;
 
 public interface ResumeService {
-    List<ResumeDto> getResumes();
+    List<ResumeDto> getResumesByUserId();
     ResumeDto getResumeById(Integer id);
     ResumeDto getResumeByCategoryId(Integer categoryId);
     void addResume(ResumeDto resumeDto);
     boolean deleteResume(Integer id);
-    List<ResumeDto> getResumeByUserId(Integer userId);
+    List<ResumeDto> getResumesByUserId(Integer userId);
     void editResume(Integer id, ResumeDto resumeDto);
     List<ResumeDto> getResumeDtos(); // Новые методы
     ResumeDto createResume(ResumeDto resumeDto);

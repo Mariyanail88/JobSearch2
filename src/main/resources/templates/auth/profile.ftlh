@@ -51,7 +51,7 @@
                             </button>
                         </form>
                     </#if>
-                </div>VACANCIES
+                </div>
                 <#if userDto.accountType == "employer">
                     <form action="/resumes/resumes-responded-to-employer-vacancies" method="get">
                         <button type="submit" class="create-btn" id="create-btn">
