@@ -8,12 +8,12 @@
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="applicantId">ID Соискателя</label>
-                <input type="number" class="form-control" id="applicantId" name="applicantId" required>
-            </div>
-            <div class="form-group">
                 <label for="categoryId">Категория</label>
-                <input type="number" class="form-control" id="categoryId" name="categoryId" required>
+                <select class="form-control" id="categoryId" name="categoryId" required>
+                    <#list categories as category>
+                        <option value="${category.id}">${category.name}</option>
+                    </#list>
+                </select>
             </div>
             <div class="form-group">
                 <label for="salary">Зарплата</label>
