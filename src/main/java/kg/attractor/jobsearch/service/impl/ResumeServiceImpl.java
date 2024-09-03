@@ -1,5 +1,6 @@
 package kg.attractor.jobsearch.service.impl;
 
+import jakarta.transaction.Transactional;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.errors.ResourceNotFoundException;
 import kg.attractor.jobsearch.mappers.CustomResumeMapper;
@@ -8,13 +9,14 @@ import kg.attractor.jobsearch.model.Resume;
 import kg.attractor.jobsearch.repository.ResumeRepository;
 import kg.attractor.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
@@ -50,17 +52,26 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public void addResume(ResumeDto resumeDto) {
-        Resume resume = Resume.builder()
-                .applicantId(resumeDto.getApplicantId())
-                .name(resumeDto.getName())
-                .categoryId(resumeDto.getCategoryId())
-                .salary(resumeDto.getSalary())
-                .isActive(resumeDto.getIsActive())
-                .createdDate(resumeDto.getCreatedDate())
-                .updateTime(resumeDto.getUpdateTime())
-                .build();
-        resumeRepository.save(resume);
+    @Transactional
+    public ResumeDto addResume(ResumeDto resumeDto) {
+        try {
+            log.info("Saving resume: {}", resumeDto);
+            Resume resume = Resume.builder()
+                    .applicantId(resumeDto.getApplicantId())
+                    .name(resumeDto.getName())
+                    .categoryId(resumeDto.getCategoryId())
+                    .salary(resumeDto.getSalary())
+                    .isActive(resumeDto.getIsActive())
+                    .createdDate(resumeDto.getCreatedDate())
+                    .updateTime(resumeDto.getUpdateTime())
+                    .build();
+            resumeRepository.save(resume);
+            log.info("Resume saved successfully: {}", resume);
+        } catch (Exception e) {
+            log.error("Error saving resume: {}", resumeDto, e);
+            throw e;
+        }
+        return resumeDto;
     }
 
     @Override

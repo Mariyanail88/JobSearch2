@@ -8,7 +8,7 @@ public interface ResumeService {
     List<ResumeDto> getResumesByUserId();
     ResumeDto getResumeById(Integer id);
     ResumeDto getResumeByCategoryId(Integer categoryId);
-    void addResume(ResumeDto resumeDto);
+    ResumeDto addResume(ResumeDto resumeDto);
     boolean deleteResume(Integer id);
     List<ResumeDto> getResumesByUserId(Integer userId);
     void editResume(Integer id, ResumeDto resumeDto);

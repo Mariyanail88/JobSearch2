@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ResumeRepository extends JpaRepository<Resume, Integer> {
-    List<Resume> findByCategoryId(Integer categoryId);
 
-    List<Resume> findByApplicantId(Integer userId);
+    List<Resume> findByApplicantId(Integer applicantId);
 
     @Query("SELECT r FROM Resume r " +
             "JOIN RespondedApplicant ra ON r.id = ra.resumeId " +

@@ -13,7 +13,6 @@
 
     <@modalTemplates.modal modalTitle=title modalName=name />
 
-    <div class="profile-container">
         <h1 class="profile-header" id="profile-header"></h1>
 
         <div class="profile-section">
