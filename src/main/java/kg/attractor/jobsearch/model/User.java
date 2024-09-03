@@ -42,6 +42,7 @@ public class User {
     private String avatar;
     private String accountType;
     private boolean enabled;
+    private String resetToken;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

@@ -27,6 +27,8 @@ databaseChangeLog:
       file: /db/changelog/initial/0013_001_create_roles_authorities_table.yaml
   - include:
       file: /db/changelog/initial/0014_001_create_user_roles_table.yaml
+  - include:
+      file: /db/changelog/initial/0015_001_add_reset_password_token_to_user_table.yaml
 
 
   - include:

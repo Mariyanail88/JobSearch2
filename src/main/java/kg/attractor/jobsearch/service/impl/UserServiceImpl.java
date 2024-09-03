@@ -1,6 +1,8 @@
 package kg.attractor.jobsearch.service.impl;
 
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
@@ -28,6 +30,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -122,10 +125,8 @@ public class UserServiceImpl implements UserService {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
-        // Initialize roles collection if null
         user.setRoles(initializeCollectionIfNull(user.getRoles()));
 
-        // Assign the PATIENT role to the new user
         Role userRole = roleRepository.findByRoleName(user.getAccountType().toUpperCase()).orElseThrow(
                 () -> new NoSuchElementException("Role not found")
         );
@@ -280,6 +281,45 @@ public class UserServiceImpl implements UserService {
         log.info(String.format("user with id %d not found", id));
         return false;
     }
+    // Отправка токена для сброса пароля
+    @Override
+    public void sendPasswordResetToken(String email) throws UserNotFoundException, MessagingException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        String token = UUID.randomUUID().toString();
+        user.setResetToken(token);
+        userRepository.save(user);
+
+        String resetLink = "http://localhost:8080/auth/reset_password?token=" + token;
+        sendEmail(user.getEmail(), resetLink);
+    }
+
+
+    // Вспомогательный метод для отправки email
+    private void sendEmail(String to, String resetLink) throws MessagingException {
+     //   MimeMessage message = mailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+//
+//        helper.setTo(to);
+//        helper.setSubject("Password Reset Request");
+//        helper.setText("<p>Click the link below to reset your password:</p>"
+//                + "<p><a href=\"" + resetLink + "\">Reset Password</a></p>", true);
+//
+//        mailSender.send(message);
+    }
+
+    // Сброс пароля по токену
+    @Override
+    public void resetPassword(String token, String password) throws UserNotFoundException {
+        User user = userRepository.findByResetToken(token)
+                .orElseThrow(() -> new UserNotFoundException("Invalid token"));
+
+        user.setPassword(encoder.encode(password));
+        user.setResetToken(null);
+        userRepository.save(user);
+    }
+
     private <T> Collection<T> initializeCollectionIfNull(Collection<T> collection) {
         return collection == null ? new HashSet<>() : collection;
     }

@@ -1,5 +1,6 @@
 package kg.attractor.jobsearch.service;
 
+import jakarta.mail.MessagingException;
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
@@ -36,5 +37,11 @@ public interface UserService {
     ResponseEntity<?> getAvatar(Integer userId) throws UserNotFoundException;
 
     void updateUser(UserWithAvatarFileDto userDto) throws IOException, UserNotFoundException;
+    // Отправка токена для сброса пароля
+    void sendPasswordResetToken(String email) throws UserNotFoundException, MessagingException;
+
+    // Сброс пароля по токену
+    void resetPassword(String token, String password) throws UserNotFoundException;
+
 }
 

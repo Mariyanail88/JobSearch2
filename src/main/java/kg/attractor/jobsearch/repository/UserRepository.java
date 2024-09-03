@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<User> findByResetToken(String resetToken);
+
 
     @Query("SELECT u FROM User u JOIN RespondedApplicant ra ON u.id = ra.resumeId WHERE ra.vacancyId = :vacancyId")
     List<User> findUsersRespondedToVacancy(@Param("vacancyId") Integer vacancyId);
