@@ -138,9 +138,13 @@ public class ResumeController {
     public String getProfile(Model model, Authentication authentication) throws UserNotFoundException {
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto userDto = userService.getUserByEmail(authentication.getName());
+            log.info("UserDto: {}", userDto); // Добавьте это для отладки
             List<ResumeDto> resumes = resumeService.getResumesByUserId(userDto.getId());
-            model.addAttribute("user", userDto);
-            model.addAttribute("resumes", resumes);
+            List<?> vacanciesUserResponded = userService.getUsersRespondedToVacancy(userDto.getId()); // Предполагаем, что этот метод существует
+            log.info("VacanciesUserResponded: {}", vacanciesUserResponded); // Добавьте это для отладки
+            model.addAttribute("userDto", userDto);
+            model.addAttribute("userResumes", resumes); // Изменено с "resumes" на "userResumes"
+            model.addAttribute("vacanciesUserResponded", vacanciesUserResponded); // Добавляем переменную в модель
             return "auth/profile";
         }
         return "redirect:/auth/login";
