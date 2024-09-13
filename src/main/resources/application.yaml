@@ -7,18 +7,16 @@ spring:
     static-path-pattern: /static/**
   freemarker:
     expose-session-attributes: true
-
-  # ------------- DataBases
+  messages:
+    basename: resource
+    encoding: UTF-8
   datasource:
     url: jdbc:h2:./db/JobSearch;AUTO_SERVER=true
     username: root
     password: qwerty
     driver-class-name: org.h2.Driver
-
   liquibase:
     change-log: classpath:/db/changelog/master.yaml
-
-  # ------------- JPA Settings
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,13 +25,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
-
-  # ------------- Cache Settings
   cache:
     type: caffeine
     caffeine:
       spec: maximumSize=500,expireAfterAccess=600s
-
 logging:
   level:
     root: info
@@ -43,6 +38,8 @@ logging:
     com:
       example:
         JobSearch: debug
-
 app:
   avatar_dir: avatars
+  locale:
+    default: en
+    param_name: lang
