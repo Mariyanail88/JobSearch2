@@ -41,5 +41,5 @@ logging:
 app:
   avatar_dir: avatars
   locale:
-    default: en
-    param_name: lang
+    defaultLang: en
+    paramName: lang
