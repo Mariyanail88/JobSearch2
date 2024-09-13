@@ -8,6 +8,8 @@ import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 
 @Slf4j
@@ -31,6 +34,9 @@ public class AuthController {
     private final UserService userService;
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping("/login")
     public String login() {
@@ -47,7 +53,7 @@ public class AuthController {
     @PostMapping("register")
     public String registerUser(@Valid @ModelAttribute("userDto") UserWithAvatarFileDto userDto,
                                BindingResult bindingResult,
-                               Model model) {
+                               Model model, Locale locale) {
         if (bindingResult.hasErrors()) {
             log.error(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
             model.addAttribute("bindingResult", bindingResult);
@@ -70,13 +76,15 @@ public class AuthController {
             userService.addUserWithAvatar(userDto);
 
             log.info("User authenticated successfully: {}", userDto.getEmail());
+            model.addAttribute("successMessage", messageSource.getMessage("registration.success", null, locale));
         } catch (IOException | UserNotFoundException e) {
-            model.addAttribute("errorMessage", "Error uploading avatar. Please try again.");
+            model.addAttribute("errorMessage", messageSource.getMessage("error.upload.avatar", null, locale));
             log.error(e.getMessage());
             return "auth/register";
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            bindingResult.rejectValue("email", "error.userDto", String.format("User with email %s already exists.", userDto.getEmail()));
+            bindingResult.rejectValue("email", "error.userDto",
+                    messageSource.getMessage("error.userExists", new Object[]{userDto.getEmail()}, locale));
             model.addAttribute("bindingResult", bindingResult);
             model.addAttribute("userDto", userDto);
             return "auth/register";
@@ -86,7 +94,6 @@ public class AuthController {
             return "auth/register";
         }
 
-        model.addAttribute("successMessage", "Registration successful! Redirecting to the main page...");
         return "redirect:/";
     }
 
@@ -96,12 +103,12 @@ public class AuthController {
     }
 
     @PostMapping("/forgot_password")
-    public String processForgotPassword(@RequestParam("email") String email, Model model) {
+    public String processForgotPassword(@RequestParam("email") String email, Model model, Locale locale) {
         try {
             userService.sendPasswordResetToken(email);
-            model.addAttribute("message", "A password reset link has been sent to your email.");
+            model.addAttribute("message", messageSource.getMessage("password.reset.link.sent", null, locale));
         } catch (Exception e) {
-            model.addAttribute("error", "Error occurred while sending password reset link.");
+            model.addAttribute("error", messageSource.getMessage("error.sending.reset.link", null, locale));
         }
         return "auth/forgot_password_form";
     }
@@ -115,12 +122,12 @@ public class AuthController {
     @PostMapping("/reset_password")
     public String processResetPassword(@RequestParam("token") String token,
                                        @RequestParam("password") String password,
-                                       Model model) {
+                                       Model model, Locale locale) {
         try {
             userService.resetPassword(token, password);
-            model.addAttribute("message", "Your password has been reset successfully.");
+            model.addAttribute("message", messageSource.getMessage("password.reset.success", null, locale));
         } catch (Exception e) {
-            model.addAttribute("error", "Error occurred while resetting your password.");
+            model.addAttribute("error", messageSource.getMessage("error.resetting.password", null, locale));
         }
         return "auth/reset_password_form";
     }
