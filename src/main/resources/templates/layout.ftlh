@@ -30,7 +30,6 @@
         >
     </#if>
 
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">JOB SEARCH</a>
@@ -41,88 +40,56 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <#--                    <li class="nav-item">-->
-                    <#--                        <a class="nav-link active" aria-current="page" href="/">Home</a>-->
-                    <#--                    </li>-->
-
                     <#if user?? && user.authorities?seq_contains("ADMIN")>
                         <li class="nav-item">
                             <a class="nav-link" href="/create">Create</a>
                         </li>
                     </#if>
-
-
-                    <#--                    <li class="nav-item dropdown">-->
-                    <#--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
-                    <#--                           data-bs-toggle="dropdown" aria-expanded="false">-->
-                    <#--                            Dropdown-->
-                    <#--                        </a>-->
-                    <#--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-                    <#--                            <li><a class="dropdown-item" href="#">Action</a></li>-->
-                    <#--                            <li><a class="dropdown-item" href="#">Another action</a></li>-->
-                    <#--                            <li>-->
-                    <#--                                <hr class="dropdown-divider">-->
-                    <#--                            </li>-->
-                    <#--                            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-                    <#--                        </ul>-->
-                    <#--                    </li>-->
-                    <#--                    <li class="nav-item">-->
-                    <#--                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-                    <#--                    </li>-->
                 </ul>
-                <#--                <form class="d-flex">-->
-                <#--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-                <#--                    <button class="btn btn-outline-success" type="submit">Search</button>-->
-                <#--                </form>-->
-            </div>
-
-            <#--            <#assign known = SPRING_SECURITY_CONTEXT?? >-->
-            <#--            <#if known>-->
-            <#--                <#assign-->
-            <#--                user = SPRING_SECURITY_CONTEXT.authentication.principal-->
-            <#--                name = user.getUsername()-->
-            <#--                >-->
-            <#if user??>
-                <div class="text-light m-2 m-sm-0">
-                    you logged in with email "${name}"; your role in the system is
-                    <#list user.authorities as auth>
-                        <#if auth?index == 0>
-                            <span class="text-danger">${auth}</span>
+                <div class="d-flex">
+                    <#if user??>
+                        <div class="text-light m-2 m-sm-0">
+                            you logged in with email "${name}"; your role in the system is
+                            <#list user.authorities as auth>
+                                <#if auth?index == 0>
+                                    <span class="text-danger">${auth}</span>
+                                <#else>
+                                </#if>
+                            </#list>
+                            ; actions available:
+                            <#list user.authorities as auth>
+                                <#if auth?index == 0>
+                                <#else>
+                                    / <span class="text-info">${auth}</span>
+                                </#if>
+                            </#list>
+                        </div>
+                        <a href="/profile" class="btn btn-outline-info m-2">Profile</a>
+                        <#if _csrf??>
+                            <form action="/logout" method="post">
+                                <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                                       value="${(_csrf.token)!'--no-token--'}"/>
+                                <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
+                            </form>
                         <#else>
+                            <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
                         </#if>
-                    </#list>
-                    ; actions available:
-                    <#list user.authorities as auth>
-                        <#if auth?index == 0>
-                        <#else>
-                            / <span class="text-info">${auth}</span>
-                        </#if>
-                    </#list>
-
+                    <#else>
+                        <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
+                        <a href="/auth/register" class="btn btn-outline-info m-2">Register</a>
+                    </#if>
+                    <div class="btn-group m-2" role="group" aria-label="Language switcher">
+                        <a href="?lang=en" class="btn btn-outline-light">EN</a>
+                        <a href="?lang=ru" class="btn btn-outline-light">RU</a>
+                        <a href="?lang=ky" class="btn btn-outline-light">KY</a>
+                    </div>
                 </div>
-                <a href="/profile" class="btn btn-outline-info m-2">Profile</a>
-                <#if _csrf??>
-                    <form action="/logout" method="post">
-                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
-                               value="${(_csrf.token)!'--no-token--'}"/>
-                        <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
-                    </form>
-                <#else>
-                    <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
-                </#if>
-            <#else>
-                <a href="/auth/login"
-                   class="btn btn-outline-info m-2">Login</a>
-                <a href="/auth/register"
-                   class="btn btn-outline-info m-2">Register</a>
-            </#if>
+            </div>
         </div>
     </nav>
 
     <div class="container">
-
         <#nested spring>
-
     </div>
 
     </body>
