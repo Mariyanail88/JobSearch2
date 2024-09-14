@@ -9,10 +9,12 @@ import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.service.ResumeService;
 import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.service.VacancyService;
+import kg.attractor.jobsearch.util.MvcControllersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Slf4j
 @Controller
@@ -33,6 +38,15 @@ public class ProfileController {
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
     private final UserService userService;
+    @ModelAttribute
+    public void addAttributes(Model model,
+                              CsrfToken csrfToken,
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
+    ) {
+//        model.addAttribute("_csrf", csrfToken);
+
+        ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
+    }
 
     @GetMapping()
     public String profile(

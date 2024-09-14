@@ -1,5 +1,17 @@
-<#import "../layout.ftlh" as main>
-<@main.layout>
+<#import "../layout.ftlh" as layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <div class="container">
         <h1>Создать резюме</h1>
         <form action="/resumes/create" method="post">
@@ -29,4 +41,4 @@
             <button type="submit" class="btn btn-primary">Создать</button>
         </form>
     </div>
-</@main.layout>
+</@layout.layout>

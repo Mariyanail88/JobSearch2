@@ -1,52 +1,32 @@
-<#import "layout.ftlh" as main>
-<@main.layout>
-    <#if isAuthenticated>
-        <p class="h4 text-dark">Вы вошли как ${username}</p>
-        <#if accountType == "employer">
-            <p class="h4 text-dark">Количество резюме: ${resumes?size}</p>
-            <div class="row d-flex justify-content-between">
-                <#list resumes as resume>
-                    <div class="card col-6 m-2" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">${resume.name}</h5>
-                            <p class="card-text">Зарплата: ${resume.salary}</p>
-                            <p class="card-text">Активно: <#if resume.isActive>Да<#else>Нет</#if></p>
-                            <a href="/resumes/${resume.id}" class="btn btn-dark">Подробнее</a>
-                        </div>
-                    </div>
-                </#list>
+<#import "layout.ftlh" as layout>
+<@layout.layout
+         title=title
+         home=home
+         create=create
+         profile=profile
+         logout=logout
+         login=login
+         register=register
+         loggedInMessage=loggedInMessage
+         roleMessage=roleMessage
+         notLoggedInMessage=notLoggedInMessage
+         availableActions=availableActions
+>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+    <div class="main-content">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <h1>${greeting}</h1>
             </div>
-        <#elseif accountType == "applicant">
-            <p class="h4 text-dark">Количество вакансий: ${vacancies?size}</p>
-            <div class="row d-flex justify-content-between">
-                <#list vacancies as vacancy>
-                    <div class="card col-6 m-2" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">${vacancy.name}</h5>
-                            <p class="card-text">${vacancy.description}</p>
-                            <p class="card-text">Зарплата: ${vacancy.salary}</p>
-                            <p class="card-text">Активно: <#if vacancy.isActive>Да<#else>Нет</#if></p>
-                            <a href="/vacancies/${vacancy.id}" class="btn btn-dark">Подробнее</a>
-                        </div>
-                    </div>
-                </#list>
+            <div class="welcome-image">
+                <img src="/static/images/istockphoto-job-search.jpg" alt="Job Search">
             </div>
-        </#if>
-    <#else>
-        <p class="h4 text-dark">Вы не вошли в систему</p>
-        <p class="h4 text-dark">Количество вакансий: ${vacancies?size}</p>
-        <div class="row d-flex justify-content-between">
-            <#list vacancies as vacancy>
-                <div class="card col-6 m-2" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">${vacancy.name}</h5>
-                        <p class="card-text">${vacancy.description}</p>
-                        <p class="card-text">Зарплата: ${vacancy.salary}</p>
-                        <p class="card-text">Активно: <#if vacancy.isActive>Да<#else>Нет</#if></p>
-                        <a href="/vacancies/${vacancy.id}" class="btn btn-dark">Подробнее</a>
-                    </div>
-                </div>
-            </#list>
+            <div class="welcome-links">
+                <a href="/vacancies" class="btn btn-primary">${vacancies}</a>
+                <a href="/resumes" class="btn btn-primary">${resumes}</a>
+                <a href="/vacancies/vacancies-with-responses" class="btn btn-primary">${vacanciesAndResponses}</a>
+            </div>
         </div>
-    </#if>
-</@main.layout>
+    </div>
+</@layout.layout>

@@ -1,5 +1,17 @@
 <#import "../layout.ftlh" as layout>
-<@layout.layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <div class="container">
         <h1>Создать работодателя</h1>
         <form action="/employers" method="post">

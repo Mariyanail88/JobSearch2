@@ -1,5 +1,17 @@
-<#import "../layout.ftlh" as main>
-<@main.layout>
+<#import "../layout.ftlh" as layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <h2>Резюме</h2>
     <p class="h4 text-dark">Количество резюме: ${resumes?size}</p>
     <#if isAuthenticated>
@@ -26,4 +38,4 @@
             </div>
         </div>
     </div>
-</@main.layout>
+</@layout.layout>

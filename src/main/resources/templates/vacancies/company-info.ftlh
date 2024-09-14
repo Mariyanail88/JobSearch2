@@ -1,5 +1,17 @@
-<#import "../layout.ftlh" as main>
-<@main.layout>
+<#import "../layout.ftlh" as layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <link rel="stylesheet" type="text/css" href="/static/css/company-info.css">
     <div class="container mt-4">
         <h2>Информация о компании</h2>
@@ -36,4 +48,4 @@
         <a href="/" class="btn">Домой</a>
         <a href="/vacancies" class="btn">Полный список вакансий</a>
     </div>
-</@main.layout>
+</@layout.layout>

@@ -1,5 +1,17 @@
 <#import "../layout.ftlh" as layout>
-<@layout.layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <div class="container">
         <h1>Редактировать профиль</h1>
         <form action="/profile/edit" method="post" enctype="multipart/form-data">

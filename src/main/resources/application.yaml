@@ -40,6 +40,6 @@ logging:
         JobSearch: debug
 app:
   avatar_dir: avatars
-  locale:
-    defaultLang: ru
-    paramName: lang
+#  locale:
+#    defaultLang: ru
+#    paramName: lang

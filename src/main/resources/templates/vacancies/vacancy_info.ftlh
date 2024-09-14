@@ -1,5 +1,17 @@
-<#import "../layout.ftlh" as main>
-<@main.layout>
+<#import "../layout.ftlh" as layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
     <body>
     <div class="container">
         <div class="card mb-3">
@@ -27,4 +39,4 @@
         </div>
     </div>
     </body>
-</@main.layout>
+</@layout.layout>

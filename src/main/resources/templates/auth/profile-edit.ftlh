@@ -1,6 +1,18 @@
-<#import "../layout.ftlh" as main>
+<#import "../layout.ftlh" as layout>
 <#import "../modal.ftlh" as modalTemplates>
-<@main.layout>
+<@layout.layout
+title=title
+home=home
+create=create
+profile=profile
+logout=logout
+login=login
+register=register
+loggedInMessage=loggedInMessage
+roleMessage=roleMessage
+notLoggedInMessage=notLoggedInMessage
+availableActions=availableActions
+>
 
     <#assign title = successMessage!"Заголовок по умолчанию">
     <#assign name = entityName!"Имя по умолчанию">
@@ -125,4 +137,4 @@
         });
     </script>
 
-</@main.layout>
+</@layout.layout>

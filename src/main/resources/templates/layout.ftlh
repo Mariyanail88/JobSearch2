@@ -1,5 +1,6 @@
 <#import "spring.ftl" as spring>
-<#macro layout>
+<#macro layout title home create profile logout login register
+        loggedInMessage roleMessage notLoggedInMessage availableActions>
 
     <!doctype html>
     <html lang="en">
@@ -18,8 +19,10 @@
         <link rel="stylesheet" type="text/css" href="/static/css/layout.css">
         <!-- Link to the favicon -->
         <link rel="icon" type="image/png" href="/static/images/app_favicon.png">
-        <title>JOB SEARCH</title>
+
+        <title>${title}</title> <!-- Dynamically set title -->
     </head>
+
     <body>
 
     <#assign known = SPRING_SECURITY_CONTEXT?? >
@@ -30,9 +33,10 @@
         >
     </#if>
 
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">JOB SEARCH</a>
+            <a class="navbar-brand" href="/">${title}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,57 +46,73 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <#if user?? && user.authorities?seq_contains("ADMIN")>
                         <li class="nav-item">
-                            <a class="nav-link" href="/create">Create</a>
+                            <a class="nav-link" href="/create">${create}</a>
                         </li>
                     </#if>
                 </ul>
-                <div class="d-flex">
-                    <#if user??>
-                        <div class="text-light m-2 m-sm-0">
-                            you logged in with email "${name}"; your role in the system is
-                            <#list user.authorities as auth>
-                                <#if auth?index == 0>
-                                    <span class="text-danger">${auth}</span>
-                                <#else>
-                                </#if>
-                            </#list>
-                            ; actions available:
-                            <#list user.authorities as auth>
-                                <#if auth?index == 0>
-                                <#else>
-                                    / <span class="text-info">${auth}</span>
-                                </#if>
-                            </#list>
-                        </div>
-                        <a href="/profile" class="btn btn-outline-info m-2">Profile</a>
-                        <#if _csrf??>
-                            <form action="/logout" method="post">
-                                <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
-                                       value="${(_csrf.token)!'--no-token--'}"/>
-                                <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
-                            </form>
-                        <#else>
-                            <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
-                        </#if>
-                    <#else>
-                        <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
-                        <a href="/auth/register" class="btn btn-outline-info m-2">Register</a>
-                    </#if>
-                    <div class="btn-group m-2" role="group" aria-label="Language switcher">
-                        <a href="?lang=en" class="btn btn-outline-light">EN</a>
-                        <a href="?lang=ru" class="btn btn-outline-light">RU</a>
-                        <a href="?lang=ky" class="btn btn-outline-light">KY</a>
-                    </div>
-                </div>
             </div>
+
+            <#if user??>
+
+                <div class="text-light m-2 m-sm-0">
+                    ${loggedInMessage} "${name}"; ${roleMessage}
+                    <#list user.authorities as auth>
+                        <#if auth?index == 0>
+                            <span class="text-danger">${auth}</span>
+                        <#else>
+                        </#if>
+                    </#list>
+                    ; ${availableActions}:
+                    <#list user.authorities as auth>
+                        <#if auth?index == 0>
+                        <#else>
+                            / <span class="text-info">${auth}</span>
+                        </#if>
+                    </#list>
+
+                </div>
+
+
+
+
+                <a href="/profile" class="btn btn-outline-info m-2">${profile}</a>
+                <#if _csrf??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button type="submit" class="btn btn-outline-info m-2" id="logout">${logout}</button>
+                    </form>
+                <#else>
+                    <a href="/logout" class="btn btn-outline-info m-2" id="logout">${logout}</a>
+                </#if>
+            <#else>
+                <a href="/auth/login"
+                   class="btn btn-outline-info m-2">${login}</a>
+                <a href="/auth/register"
+                   class="btn btn-outline-info m-2">${register}</a>
+            </#if>
+            <div class="ms-auto">
+                <form action="/setLanguage" method="post" class="d-inline">
+                    <input type="hidden" name="currentUrl" id="currentUrl" value="">
+                    <button type="submit" name="lang" value="en" class="btn btn-outline-light">EN</button>
+                    <button type="submit" name="lang" value="ru" class="btn btn-outline-light">RU</button>
+                    <button type="submit" name="lang" value="kg" class="btn btn-outline-light">KG</button>
+                </form>
+            </div>
+
+            <script>
+                // Set the current URL in the hidden input field
+                document.getElementById('currentUrl').value = window.location.href;
+            </script>
         </div>
     </nav>
 
     <div class="container">
+
         <#nested spring>
+
     </div>
 
     </body>
     </html>
-
 </#macro>

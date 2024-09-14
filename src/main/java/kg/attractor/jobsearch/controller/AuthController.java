@@ -6,6 +6,7 @@ import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.service.ResumeService;
 import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.service.VacancyService;
+import kg.attractor.jobsearch.util.MvcControllersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 @Slf4j
 @Controller
@@ -34,9 +37,17 @@ public class AuthController {
     private final UserService userService;
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
+    private final MessageSource messageSource;
 
-    @Autowired
-    private MessageSource messageSource;
+    @ModelAttribute
+    public void addAttributes(Model model,
+                              CsrfToken csrfToken,
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
+    ) {
+
+
+        ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
+    }
 
     @GetMapping("/login")
     public String login() {
