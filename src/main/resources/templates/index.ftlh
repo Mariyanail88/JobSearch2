@@ -25,7 +25,7 @@
             <div class="welcome-links">
                 <a href="/vacancies" class="btn btn-primary">${vacancies}</a>
                 <a href="/resumes" class="btn btn-primary">${resumes}</a>
-                <a href="/vacancies/vacancies-with-responses" class="btn btn-primary">${vacanciesAndResponses}</a>
+<#--                <a href="/vacancies/vacancies-with-responses" class="btn btn-primary">${vacanciesAndResponses}</a>-->
             </div>
         </div>
     </div>

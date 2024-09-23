@@ -65,6 +65,10 @@ public class MvcControllersUtil {
         model.addAttribute("availableActions", bundle.getString("layout.actions.available"));
         model.addAttribute("title", bundle.getString("layout.title"));
 
+        model.addAttribute("loginEmail", bundle.getString("login.email"));
+        model.addAttribute("loginSubmit", bundle.getString("login.signIn"));
+        model.addAttribute("loginPassword", bundle.getString("login.password"));
+
         // Adding additional properties from resource_ru.properties
         model.addAttribute("greeting", bundle.getString("greeting"));
         model.addAttribute("indexGreeting", bundle.getString("index.greeting"));

@@ -26,16 +26,16 @@ public class IndexController {
         );
 
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
-//        ResourceBundle bundle = getResourceBundleSetLocaleSetProperties(model, locale);
 
-        // Retrieve and add translations to the model for the index.ftlh
+
+
         model.addAttribute("greeting", bundle.getString("index.greeting"));
         model.addAttribute("vacancies", bundle.getString("index.vacancies"));
         model.addAttribute("resumes", bundle.getString("index.resumes"));
         model.addAttribute("vacanciesAndResponses", bundle.getString("index.vacancies.and.responses"));
 
 
-        // Log greetings for debugging
+
         log.info("Locale: {}", locale);
         log.info("Greeting: {}", bundle.getString("greeting"));
 
@@ -43,15 +43,15 @@ public class IndexController {
     }
 
     private static ResourceBundle getResourceBundleSetLocaleSetProperties(Model model, Locale locale) {
-        // If locale is null, set it to English
+
         if (locale == null) {
-            locale = Locale.ENGLISH; // Default to English if no locale is set
+            locale = Locale.ENGLISH;
         }
 
-        // Load the resource bundle based on the current locale
+
         ResourceBundle bundle = ResourceBundle.getBundle("resource", locale);
 
-        // Retrieve and add translations to the model for the layout.ftlh
+
         MvcControllersUtil.setPropertiesForLayout(model, bundle);
         return bundle;
     }
