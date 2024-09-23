@@ -36,12 +36,12 @@ public class ResumeController {
     private final ResumeService resumeService;
     private final UserService userService;
     private final CategoriesService categoriesService;
+
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
                               @SessionAttribute(name = "currentLocale", required = false) Locale locale
     ) {
-//        model.addAttribute("_csrf", csrfToken);
 
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
@@ -91,21 +91,17 @@ public class ResumeController {
             Authentication authentication,
             Model model) throws UserNotFoundException {
 
-        // Проверка аутентификации
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/auth/login";
         }
 
-        // Получение данных пользователя
         UserDto userDto = userService.getUserByEmail(authentication.getName());
         log.info("Authenticated user: {}", userDto);
 
-        // Установка данных резюме
         resumeDto.setApplicantId(userDto.getId());
         resumeDto.setCreatedDate(LocalDateTime.now());
         resumeDto.setUpdateTime(LocalDateTime.now());
 
-        // Проверка на ошибки валидации
         if (bindingResult.hasErrors()) {
             log.error("Validation errors: {}", bindingResult.getFieldErrors());
             model.addAttribute("bindingResult", bindingResult);
@@ -114,14 +110,12 @@ public class ResumeController {
             model.addAttribute("categories", categories);
             return "resumes/create_resume";
         }
-
         try {
-            // Сохранение резюме
+
             log.info("Creating resume: {}", resumeDto);
             ResumeDto createdResume = resumeService.addResume(resumeDto);
             log.info("Resume created successfully: {}", createdResume);
 
-            // Перенаправление на страницу профиля с добавленным резюме
             return "redirect:/resumes/profile";
         } catch (Exception e) {
             log.error("Error creating resume", e);

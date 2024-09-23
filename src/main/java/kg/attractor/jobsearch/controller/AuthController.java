@@ -9,7 +9,6 @@ import kg.attractor.jobsearch.service.VacancyService;
 import kg.attractor.jobsearch.util.MvcControllersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -42,10 +41,7 @@ public class AuthController {
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
-                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
-    ) {
-
-
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale) {
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
 

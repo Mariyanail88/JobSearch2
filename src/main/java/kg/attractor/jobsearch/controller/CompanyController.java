@@ -8,7 +8,6 @@ import kg.attractor.jobsearch.service.UserService;
 import kg.attractor.jobsearch.service.VacancyService;
 import kg.attractor.jobsearch.util.MvcControllersUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -29,18 +28,18 @@ public class CompanyController {
     private final UserService userService;
     private final VacancyService vacancyService;
     private final MessageSource messageSource;
+
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
-                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
-    ) {
-//        model.addAttribute("_csrf", csrfToken);
-
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale) {
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
 
     @GetMapping("/company/{email}")
     public String getCompanyInfo(@PathVariable String email, Model model, Authentication authentication, Locale locale) throws UserNotFoundException {
+        MvcControllersUtil.authCheck(model, authentication);
+
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto userDto = userService.getUserByEmail(email);
             List<VacancyDto> companyVacancies = vacancyService.getVacancyByAuthorId(userDto.getId());

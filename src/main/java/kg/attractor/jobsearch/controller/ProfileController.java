@@ -38,38 +38,23 @@ public class ProfileController {
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
     private final UserService userService;
+
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
-                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
-    ) {
-//        model.addAttribute("_csrf", csrfToken);
-
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale) {
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
 
     @GetMapping()
-    public String profile(
-            Model model,
-            Principal principal,
-            Authentication authentication) throws IOException, UserNotFoundException {
-
-
-        Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
-        log.info("ifEntityUpdated: {}", ifEntityUpdated);
-        if (ifEntityUpdated != null) {
-            String entityTitle = (String) model.asMap().get("entityTitle");
-            String entityName = (String) model.asMap().get("entityName");
-
-            model.addAttribute("entityUpdated", ifEntityUpdated);
-            model.addAttribute("entityTitle", entityTitle);
-            model.addAttribute("entityName", entityName);
-        }
+    public String profile(Model model, Principal principal, Authentication authentication) throws IOException, UserNotFoundException {
+        MvcControllersUtil.authCheck(model, authentication);
 
         if (principal == null) {
             log.error("Principal is null. User is not authenticated.");
             return "redirect:/auth/login";
         }
+
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         model.addAttribute("isAuthenticated", isAuthenticated);
         if (isAuthenticated && authentication.getPrincipal() instanceof UserDetails) {
@@ -82,14 +67,26 @@ public class ProfileController {
         UserDto userDto = userService.getUserByEmail(principal.getName());
         List<ResumeDto> resumes = resumeService.getResumesByUserId(userDto.getId());
         List<ResumeDto> resumesRespondedToEmployerVacancies = resumeService.getResumesRespondedToEmployerVacancies(userDto.getId());
-
         List<VacancyDto> vacanciesUserResponded = vacancyService.getVacanciesUserResponded(userDto.getId());
         List<VacancyDto> vacancies = vacancyService.getVacancyByAuthorId(userDto.getId());
+
         model.addAttribute("userVacancies", vacancies);
         model.addAttribute("userResumes", resumes);
         model.addAttribute("userDto", userDto);
         model.addAttribute("resumesRespondedToEmployerVacancies", resumesRespondedToEmployerVacancies);
         model.addAttribute("vacanciesUserResponded", vacanciesUserResponded);
+
+        Boolean ifEntityUpdated = (Boolean) model.asMap().get("ifEntityUpdated");
+        log.info("ifEntityUpdated: {}", ifEntityUpdated);
+        if (ifEntityUpdated != null) {
+            String entityTitle = (String) model.asMap().get("entityTitle");
+            String entityName = (String) model.asMap().get("entityName");
+
+            model.addAttribute("entityUpdated", ifEntityUpdated);
+            model.addAttribute("entityTitle", entityTitle);
+            model.addAttribute("entityName", entityName);
+        }
+
         return "auth/profile";
     }
 
@@ -104,11 +101,10 @@ public class ProfileController {
     }
 
     @PostMapping("edit")
-    public String editProfile(
-            @Valid @ModelAttribute("user") UserWithAvatarFileDto userWithAvatarFileDto,
-            BindingResult bindingResult,
-            Authentication authentication,
-            Model model) throws IOException, UserNotFoundException {
+    public String editProfile(@Valid @ModelAttribute("user") UserWithAvatarFileDto userWithAvatarFileDto,
+                              BindingResult bindingResult,
+                              Authentication authentication,
+                              Model model) throws IOException, UserNotFoundException {
         model.addAttribute("userDto", userWithAvatarFileDto);
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);

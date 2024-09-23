@@ -1,6 +1,5 @@
 package kg.attractor.jobsearch.controller;
 
-
 import kg.attractor.jobsearch.errors.ErrorResponseBody;
 import kg.attractor.jobsearch.service.ErrorService;
 import kg.attractor.jobsearch.util.MvcControllersUtil;
@@ -24,13 +23,11 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class CustomErrorController implements ErrorController {
     private final ErrorService errorService;
+
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
-                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
-    ) {
-//        model.addAttribute("_csrf", csrfToken);
-
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale) {
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
 
@@ -57,5 +54,4 @@ public class CustomErrorController implements ErrorController {
 
         return "errors/error";
     }
-
 }

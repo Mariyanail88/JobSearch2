@@ -36,10 +36,7 @@ public class VacancyController {
     @ModelAttribute
     public void addAttributes(Model model,
                               CsrfToken csrfToken,
-                              @SessionAttribute(name = "currentLocale", required = false) Locale locale
-    ) {
-//        model.addAttribute("_csrf", csrfToken);
-
+                              @SessionAttribute(name = "currentLocale", required = false) Locale locale) {
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
     }
 
@@ -70,7 +67,6 @@ public class VacancyController {
         return "vacancies/vacancy_info";
     }
 
-
     @GetMapping("create")
     public String createVacancy(Model model) {
         model.addAttribute("vacancyDto", new VacancyDto());
@@ -83,13 +79,11 @@ public class VacancyController {
         return "redirect:/vacancies";
     }
 
-
     @PostMapping()
     public String createVacancy(@ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
         vacancyService.createVacancy(vacancyDto);
         return "redirect:/vacancies";
     }
-
 
     @GetMapping("edit/{vacancyId}")
     public String showEditVacancyForm(@PathVariable Integer vacancyId, Model model, Authentication authentication) {
@@ -99,11 +93,9 @@ public class VacancyController {
         return "vacancies/edit_vacancy";
     }
 
-
     @PostMapping("edit/{vacancyId}")
     public String editVacancy(@PathVariable Integer vacancyId, @ModelAttribute("vacancy") VacancyDto vacancyDto, Authentication authentication) {
         vacancyService.updateVacancy(vacancyId, vacancyDto);
         return "redirect:/vacancies";
     }
-
 }
