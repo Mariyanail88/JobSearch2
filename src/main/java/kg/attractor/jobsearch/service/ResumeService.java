@@ -15,6 +15,6 @@ public interface ResumeService {
     List<ResumeDto> getResumeDtos(); // Новые методы
     ResumeDto createResume(ResumeDto resumeDto);
     ResumeDto updateResume(Integer id, ResumeDto resumeDto);
-
+    void updateResume(Integer resumeId);
     List<ResumeDto> getResumesRespondedToEmployerVacancies(Integer id);
 }

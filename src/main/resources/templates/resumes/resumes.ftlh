@@ -1,6 +1,6 @@
 <#import "../layout.ftlh" as layout>
 <@layout.layout
-title=title
+title=resumeTitle
 home=home
 create=create
 profile=profile
@@ -12,12 +12,12 @@ roleMessage=roleMessage
 notLoggedInMessage=notLoggedInMessage
 availableActions=availableActions
 >
-    <h2>Резюме</h2>
-    <p class="h4 text-dark">Количество резюме: ${resumes?size}</p>
+    <h2>${resumeTitle}</h2>
+    <p class="h4 text-dark">${resumeCount}: ${resumes?size}</p>
     <#if isAuthenticated>
-        <p class="h4 text-dark">Вы вошли как ${username}</p>
+        <p class="h4 text-dark">${resumeLoggedInAs} ${username}</p>
     <#else>
-        <p class="h4 text-dark">Вы не вошли в систему</p>
+        <p class="h4 text-dark">${resumeNotLoggedIn}</p>
     </#if>
     <div class="row d-flex justify-content-between">
         <#list resumes as resume>
@@ -25,8 +25,8 @@ availableActions=availableActions
                 <div class="card h-100 shadow-sm">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${resume.name}</h5>
-                        <p class="card-text mb-2"><strong>Зарплата:</strong> ${resume.getFormattedCreatedDate()}</p>
-                        <a href="/resumes/${resume.id}" class="btn btn-primary mt-auto">Подробнее</a>
+                        <p class="card-text mb-2"><strong>${resumeSalary}:</strong> ${resume.getFormattedCreatedDate()}</p>
+                        <a href="/resumes/${resume.id}" class="btn btn-primary mt-auto">${resumeDetails}</a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@ availableActions=availableActions
         <!-- Центрирование кнопки "Домой" -->
         <div class="row">
             <div class="col text-center"> <!-- Этот div центрирует кнопку -->
-                <a href="/" class="btn btn-primary w-100">Домой</a>
+                <a href="/" class="btn btn-primary w-100">${home}</a>
             </div>
         </div>
     </div>

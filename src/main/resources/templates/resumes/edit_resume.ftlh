@@ -13,32 +13,32 @@ notLoggedInMessage=notLoggedInMessage
 availableActions=availableActions
 >
     <div class="container">
-        <h1>Редактировать резюме</h1>
-        <form action="/resumes/edit/${resume.id}" method="post">
+        <h1>${resumeCreateTitle}</h1>
+        <form action="/resumes/create" method="post">
             <div class="form-group">
-                <label for="name">Название</label>
-                <input type="text" class="form-control" id="name" name="name" value="${resume.name}" required>
+                <label for="name">${resumeName}</label>
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="applicantId">ID Соискателя</label>
-                <input type="number" class="form-control" id="applicantId" name="applicantId" value="${resume.applicantId}" required>
-            </div>
-            <div class="form-group">
-                <label for="categoryId">Категория</label>
-                <input type="number" class="form-control" id="categoryId" name="categoryId" value="${resume.categoryId}" required>
-            </div>
-            <div class="form-group">
-                <label for="salary">Зарплата</label>
-                <input type="number" class="form-control" id="salary" name="salary" value="${resume.salary}" required>
-            </div>
-            <div class="form-group">
-                <label for="isActive">Активно</label>
-                <select class="form-control" id="isActive" name="isActive" required>
-                    <option value="true" <#if resume.isActive?? && resume.isActive>selected</#if>>Да</option>
-                    <option value="false" <#if resume.isActive?? && !resume.isActive>selected</#if>>Нет</option>
+                <label for="categoryId">${resumeCategory}</label>
+                <select class="form-control" id="categoryId" name="categoryId" required>
+                    <#list categories as category>
+                        <option value="${category.id}">${category.name}</option>
+                    </#list>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <div class="form-group">
+                <label for="salary">${resumeSalary}</label>
+                <input type="number" class="form-control" id="salary" name="salary" required>
+            </div>
+            <div class="form-group">
+                <label for="isActive">${resumeIsActive}</label>
+                <select class="form-control" id="isActive" name="isActive" required>
+                    <option value="true">${resumeActiveYes}</option>
+                    <option value="false">${resumeActiveNo}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">${resumeCreateButton}</button>
         </form>
     </div>
 </@layout.layout>

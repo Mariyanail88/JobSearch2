@@ -175,6 +175,14 @@ public class ResumeServiceImpl implements ResumeService {
                 .map(resumeMapper::toResumeDto)
                 .toList();
     }
+    @Override
+    public void updateResume(Integer resumeId) {
+        ResumeDto existingResume = getResumeById(resumeId);
+        existingResume.setUpdateTime(LocalDateTime.now());
+        Resume resume = resumeMapper.toResume(existingResume);
+        resumeRepository.save(resume);
+        log.info("updated resumes {}", resume.getName());
+    }
 }
 
 

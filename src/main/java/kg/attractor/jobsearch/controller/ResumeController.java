@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +45,8 @@ public class ResumeController {
     ) {
 
         ResourceBundle bundle = MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
+        List<CategoryDto> categories = categoriesService.getCategories();
+        model.addAttribute("categories", categories);
     }
 
     @GetMapping()
@@ -75,9 +78,6 @@ public class ResumeController {
     @GetMapping("create")
     public String showCreateResumeForm(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            List<CategoryDto> categories = categoriesService.getCategories();
-            log.info("Categories: {}", categories); // Добавьте это для отладки
-            model.addAttribute("categories", categories);
             model.addAttribute("resumeDto", new ResumeDto());
             return "resumes/create_resume";
         }
@@ -106,8 +106,6 @@ public class ResumeController {
             log.error("Validation errors: {}", bindingResult.getFieldErrors());
             model.addAttribute("bindingResult", bindingResult);
             model.addAttribute("resumeDto", resumeDto);
-            List<CategoryDto> categories = categoriesService.getCategories();
-            model.addAttribute("categories", categories);
             return "resumes/create_resume";
         }
         try {
@@ -120,8 +118,6 @@ public class ResumeController {
         } catch (Exception e) {
             log.error("Error creating resume", e);
             model.addAttribute("errorMessage", "An error occurred while creating the resume. Please try again.");
-            List<CategoryDto> categories = categoriesService.getCategories();
-            model.addAttribute("categories", categories);
             return "resumes/create_resume";
         }
     }
@@ -140,18 +136,36 @@ public class ResumeController {
         return "redirect:/resumes";
     }
 
-    @GetMapping("profile")
-    public String getProfile(Model model, Authentication authentication) throws UserNotFoundException {
+//    @GetMapping("profile")
+//    public String getProfile(Model model, Authentication authentication) throws UserNotFoundException {
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            UserDto userDto = userService.getUserByEmail(authentication.getName());
+//            log.info("UserDto: {}", userDto); // Добавьте это для отладки
+//            List<ResumeDto> resumes = resumeService.getResumesByUserId(userDto.getId());
+//            List<?> vacanciesUserResponded = userService.getUsersRespondedToVacancy(userDto.getId()); // Предполагаем, что этот метод существует
+//            log.info("VacanciesUserResponded: {}", vacanciesUserResponded); // Добавьте это для отладки
+//            model.addAttribute("userDto", userDto);
+//            model.addAttribute("userResumes", resumes); // Изменено с "resumes" на "userResumes"
+//            model.addAttribute("vacanciesUserResponded", vacanciesUserResponded); // Добавляем переменную в модель
+//            return "auth/profile";
+//        }
+//        return "redirect:/auth/login";
+//    }
+    @PostMapping("update/{resumeId}")
+    public String updateResume(
+            @PathVariable Integer resumeId,
+            Authentication authentication,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
         if (authentication != null && authentication.isAuthenticated()) {
-            UserDto userDto = userService.getUserByEmail(authentication.getName());
-            log.info("UserDto: {}", userDto); // Добавьте это для отладки
-            List<ResumeDto> resumes = resumeService.getResumesByUserId(userDto.getId());
-            List<?> vacanciesUserResponded = userService.getUsersRespondedToVacancy(userDto.getId()); // Предполагаем, что этот метод существует
-            log.info("VacanciesUserResponded: {}", vacanciesUserResponded); // Добавьте это для отладки
-            model.addAttribute("userDto", userDto);
-            model.addAttribute("userResumes", resumes); // Изменено с "resumes" на "userResumes"
-            model.addAttribute("vacanciesUserResponded", vacanciesUserResponded); // Добавляем переменную в модель
-            return "auth/profile";
+            ResumeDto resumeDto = resumeService.getResumeById(resumeId);
+            resumeService.updateResume(resumeId);
+
+            redirectAttributes.addFlashAttribute("ifEntityUpdated", true);
+            redirectAttributes.addFlashAttribute("entityTitle", "resume");
+            redirectAttributes.addFlashAttribute("entityName", resumeDto.getName());
+            return "redirect:/profile";
         }
         return "redirect:/auth/login";
     }
