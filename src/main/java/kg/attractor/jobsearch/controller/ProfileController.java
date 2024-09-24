@@ -106,10 +106,12 @@ public class ProfileController {
                               Authentication authentication,
                               Model model) throws IOException, UserNotFoundException {
         model.addAttribute("userDto", userWithAvatarFileDto);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);
             return "auth/profile-edit";
         }
+
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto userDto = userService.getUserByEmail(authentication.getName());
             userWithAvatarFileDto.setEnabled(userDto.isEnabled());
@@ -121,6 +123,8 @@ public class ProfileController {
 
             return "auth/profile-edit";
         }
+
         return "redirect:/auth/login";
+
     }
 }

@@ -14,10 +14,10 @@ notLoggedInMessage=notLoggedInMessage
 availableActions=availableActions
 >
 
-    <#assign title = successMessage!"Заголовок по умолчанию">
-    <#assign name = entityName!"Имя по умолчанию">
+    <#assign title = successMessage!"Default Title">
+    <#assign name = entityName!"Default Name">
     <#assign updated = hasUpdated!false>
-    <p>обновлено: <#if hasUpdated??>да<#else>нет</#if></p>
+    <p>updated: <#if hasUpdated??>yes<#else>no</#if></p>
 
     <@modalTemplates.modal modalTitle=title modalName=name />
 
@@ -123,15 +123,12 @@ availableActions=availableActions
 
                 successModalElement.querySelector('.modal-title').textContent = `${title}`;
 
-
-
                 const successModal = new bootstrap.Modal(successModalElement);
                 successModal.show();
 
-
                 setTimeout(() => {
                     successModal.hide();
-                    window.location.href = "/auth/profile";
+                    window.location.href = "/profile";
                 }, 3000);
             }
         });

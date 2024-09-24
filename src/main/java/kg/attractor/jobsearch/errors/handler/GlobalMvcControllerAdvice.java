@@ -7,21 +7,31 @@ import kg.attractor.jobsearch.errors.UserNotFoundException;
 import kg.attractor.jobsearch.errors.VacancyNotFoundException;
 import kg.attractor.jobsearch.service.ErrorService;
 import kg.attractor.jobsearch.util.ConsoleColors;
+import kg.attractor.jobsearch.util.MvcControllersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
+
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalMvcControllerAdvice {
 
     private final ErrorService errorService;
+
+    @ModelAttribute
+    public void addCommonAttributes(Model model, Locale locale) {
+        MvcControllersUtil.getResourceBundleSetLocaleSetProperties(model, locale);
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest request, Exception ex, Model model) {
         logging(request.getRequestURL().toString(), ex.getMessage());
@@ -69,7 +79,9 @@ public class GlobalMvcControllerAdvice {
         model.addAttribute("message", ex.getMessage());
         model.addAttribute("details", request);
         return "errors/error";
-    }private static void logging(String requestUrl, String exceptionMessage) {
+    }
+
+    private static void logging(String requestUrl, String exceptionMessage) {
         log.error(
                 ConsoleColors.RED +
                         "Request: {} raised error(s) {}", requestUrl, exceptionMessage +
