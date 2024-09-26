@@ -1,6 +1,6 @@
 <#import "spring.ftl" as spring>
 <#macro layout title home create profile logout login register
-        loggedInMessage roleMessage notLoggedInMessage availableActions>
+loggedInMessage roleMessage notLoggedInMessage availableActions>
 
     <!doctype html>
     <html lang="en">
@@ -21,6 +21,50 @@
         <link rel="icon" type="image/png" href="/static/images/app_favicon.png">
 
         <title>${title}</title> <!-- Dynamically set title -->
+        <style>
+            .navbar {
+                width: 100%; /* Увеличиваем ширину шапки */
+                /*max-width: 1200px; !* Ограничиваем максимальную ширину *!*/
+                margin: 0 auto; /* Центрируем шапку */
+            }
+            .navbar-brand {
+                font-size: 1.8em; /* Увеличиваем размер шрифта */
+                color: #b0b0b0 !important; /* Чуть темнее серый цвет текста */
+                text-shadow: 0 0 1px #fff; /* Максимально тонкая обводка белым цветом */
+            }
+            .text-light {
+                color: #b0b0b0 !important; /* Светло-серый цвет текста */
+            }
+            .btn:hover {
+                color: #d3d3d3 !important; /* Белый цвет текста при наведении */
+            }
+            .user-info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 0.6em; /* Небольшой размер текста */
+                color: #b0b0b0; /* Светло-серый цвет текста */
+                margin-left: 20px; /* Отступ слева для позиционирования ближе к бренду */
+            }
+            .user-info span {
+                margin-bottom: 0.2em; /* Небольшой отступ между элементами */
+            }
+            .language-buttons {
+                display: flex;
+                flex-direction: column; /* Выстраиваем кнопки по вертикали */
+                align-items: flex-end; /* Выравниваем кнопки по правому краю */
+            }
+            .language-buttons .btn {
+                color: #b0b0b0; /* Цвет текста кнопок */
+                border-color: #b0b0b0; /* Цвет обводки кнопок */
+                border-radius: 0.2rem; /* Менее скругленные углы */
+                margin-bottom: 0.5rem; /* Отступ между кнопками */
+            }
+            .language-buttons .btn:hover {
+                color: #d3d3d3 !important; /* Цвет текста при наведении */
+                border-color: #d3d3d3 !important; /* Цвет обводки при наведении */
+            }
+        </style>
     </head>
 
     <body>
@@ -33,10 +77,27 @@
         >
     </#if>
 
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">${title}</a>
+            <#if user??>
+                <div class="user-info">
+                    <span>${loggedInMessage} "${name}"</span>
+                    <span>${roleMessage}</span>
+                    <#list user.authorities as auth>
+                        <#if auth?index == 0>
+                            <span class="text-danger">${auth}</span>
+                        <#else>
+                        </#if>
+                    </#list>
+                    <span>${availableActions}</span>
+                    <#list user.authorities as auth>
+                        <#if auth?index != 0>
+                            <span class="text-info">${auth}</span>
+                        </#if>
+                    </#list>
+                </div>
+            </#if>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,28 +114,6 @@
             </div>
 
             <#if user??>
-
-                <div class="text-light m-2 m-sm-0">
-                    ${loggedInMessage} "${name}"; ${roleMessage}
-                    <#list user.authorities as auth>
-                        <#if auth?index == 0>
-                            <span class="text-danger">${auth}</span>
-                        <#else>
-                        </#if>
-                    </#list>
-                    ; ${availableActions}:
-                    <#list user.authorities as auth>
-                        <#if auth?index == 0>
-                        <#else>
-                            / <span class="text-info">${auth}</span>
-                        </#if>
-                    </#list>
-
-                </div>
-
-
-
-
                 <a href="/profile" class="btn btn-outline-info m-2">${profile}</a>
                 <#if _csrf??>
                     <form action="/logout" method="post">
@@ -91,7 +130,7 @@
                 <a href="/auth/register"
                    class="btn btn-outline-info m-2">${register}</a>
             </#if>
-            <div class="ms-auto">
+            <div class="ms-auto language-buttons">
                 <form action="/setLanguage" method="post" class="d-inline">
                     <input type="hidden" name="currentUrl" id="currentUrl" value="">
                     <button type="submit" name="lang" value="en" class="btn btn-outline-light">EN</button>

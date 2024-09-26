@@ -1,51 +1,80 @@
-.company-info {
-    margin-bottom: 20px;
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgba(233, 236, 239, 0.5); /* Более дружественный к пользователю цвет фона */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Убедиться, что тело занимает всю высоту окна просмотра */
+    display: flex;
+    flex-direction: column;
 }
 
-.vacancies-list {
-    margin-top: 20px;
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1; /* Позволить основному контенту расти и занимать доступное пространство */
+    padding: 0; /* Удалить любые отступы */
+    margin: 0; /* Удалить любые поля */
 }
 
-.vacancy-card {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    background-color: #fff; /* Белый цвет фона */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для анимации */
-}
-
-.vacancy-card h4 {
-    margin-top: 0;
-}
-
-.vacancy-actions {
-    margin-top: 10px;
-}
-
-/* Анимация при наведении */
-.vacancy-card:hover {
-    transform: translateY(-10px); /* Поднимаем карточку вверх */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Добавляем тень */
-}
-
-/* Стили для кнопок внизу страницы */
-.bottom-buttons {
-    margin-top: 20px;
+.welcome-container {
     text-align: center;
+    padding: 20px; /* Скорректированный отступ */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box; /* Убедиться, что отступы включены в общую ширину и высоту элемента */
 }
 
-.bottom-buttons .btn {
-    margin: 5px;
-    padding: 10px 20px; /* Увеличиваем размер кнопок */
-    font-size: 18px; /* Увеличиваем размер текста */
-    background-color: #28a745; /* Зеленый цвет фона */
-    color: #fff; /* Белый цвет текста */
-    border: none; /* Убираем границу */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s ease; /* Плавный переход для изменения цвета */
+.welcome-header {
+    margin-bottom: 20px; /* Скорректированный отступ */
 }
 
-.bottom-buttons .btn:hover {
-    background-color: #218838; /* Темно-зеленый цвет при наведении */
+.welcome-header h1 {
+    font-size: 2.5em; /* Скорректированный размер шрифта */
+    color: #343a40;
+}
+
+.welcome-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Скорректированный отступ */
+}
+
+.welcome-links {
+    margin-top: 20px; /* Скорректированный отступ */
+}
+
+.welcome-links .btn {
+    margin: 10px; /* Скорректированный отступ */
+    padding: 15px 30px; /* Скорректированный отступ */
+    font-size: 1.2em; /* Скорректированный размер шрифта */
+    text-decoration: none; /* Убедиться, что нет подчеркивания */
+    display: inline-block; /* Убедиться, что кнопки являются inline-block */
+    transition: background-color 0.3s, border-color 0.3s; /* Плавный переход для эффектов наведения */
+}
+
+.welcome-links .btn-primary {
+    background-color: #6c757d; /* Средне серый цвет */
+    border-color: #6c757d; /* Средне серый цвет границы */
+    color: #fff;
+}
+
+.welcome-links .btn-primary:hover {
+    background-color: #d3d3d3; /* Светло-серый цвет при наведении */
+    border-color: #d3d3d3; /* Светло-серый цвет границы при наведении */
+}
+
+.welcome-links .btn-secondary {
+    background-color: #6c757d; /* Средне серый цвет для кнопки "View Resumes" */
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.welcome-links .btn-secondary:hover {
+    background-color: #5a6268; /* Темно-серый цвет при наведении */
+    border-color: #545b62; /* Темно-серый цвет границы при наведении */
 }

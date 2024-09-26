@@ -1,12 +1,12 @@
 .navbar-text {
-    font-weight: normal; /* Adjust to normal if bold is too heavy */
-    font-size: 0.9em; /* Make the font size smaller */
-    color: #f8f9fa; /* Light color to contrast with dark background */
+    font-weight: normal; /* Установить нормальный вес шрифта, если жирный слишком тяжелый */
+    font-size: 0.9em; /* Сделать размер шрифта меньше */
+    color: #f8f9fa; /* Светлый цвет для контраста с темным фоном */
     margin-right: 1rem;
     white-space: nowrap;
 }
 .btn {
-    margin-left: 0.5rem; /* Space between buttons */
+    margin-left: 0.5rem; /* Расстояние между кнопками */
 }
 .d-flex {
     display: flex;
@@ -25,94 +25,94 @@
 }
 
 .card {
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s; /* Переход для трансформации и теней */
 }
 
 .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05); /* Увеличение масштаба при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень при наведении */
 }
 
 .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
+    font-size: 1.25rem; /* Размер шрифта заголовка */
+    font-weight: bold; /* Жирный шрифт */
 }
 
 .card-text {
-    font-size: 1rem;
+    font-size: 1rem; /* Размер шрифта текста */
 }
 
 .card-text strong {
-    color: #333;
+    color: #333; /* Цвет текста для выделенного текста */
 }
 
 .error-message {
-    color: yellow;
+    color: yellow; /* Цвет сообщения об ошибке */
 }
 
 .btn-primary {
-    background-color: #28a745; /* Green */
-    border-color: #28a745; /* Green */
-    padding: 15px 30px; /* Make the button bigger */
-    font-size: 18px; /* Increase font size */
-    border-radius: 5px; /* Optional: rounded corners */
-    display: inline-block; /* Ensure it respects padding */
-    text-align: center; /* Center the text inside the button */
-    margin: 0 auto; /* Center the button horizontally */
-    width: fit-content; /* Button width fits content */
+    background-color: #b0b0b0; /* Серый цвет */
+    border-color: #b0b0b0; /* Серый цвет границы */
+    padding: 15px 30px; /* Увеличить размер кнопки */
+    font-size: 18px; /* Увеличить размер шрифта */
+    border-radius: 5px; /* Опционально: скругленные углы */
+    display: inline-block; /* Убедиться, что кнопка учитывает padding */
+    text-align: center; /* Центрировать текст внутри кнопки */
+    margin: 0 auto; /* Центрировать кнопку по горизонтали */
+    width: fit-content; /* Ширина кнопки по содержимому */
 }
 
 .center-container {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100%; /* Optional: use with full-height parent */
+    justify-content: center; /* Центрировать по горизонтали */
+    align-items: center; /* Центрировать по вертикали */
+    height: 100%; /* Опционально: использовать с родителем на всю высоту */
 }
 
 .btn-primary:hover {
-    background-color: #218838; /* Darker green */
-    border-color: #1e7e34; /* Even darker green */
+    background-color: #d3d3d3; /* Светло-серый цвет при наведении */
+    border-color: #d3d3d3; /* Светло-серый цвет границы при наведении */
 }
 
 .btn-outline-info {
-    color: #28a745; /* Green */
-    border-color: #28a745; /* Green */
+    color: #b0b0b0; /* Серый цвет текста */
+    border-color: #b0b0b0; /* Серый цвет границы */
 }
 
 .btn-outline-info:hover {
-    color: #fff;
-    background-color: #28a745; /* Green */
-    border-color: #28a745; /* Green */
+    color: #b0b0b0; /* Белый цвет текста при наведении */
+    background-color: #b0b0b0; /* Серый цвет фона при наведении */
+    border-color: #b0b0b0; /* Серый цвет границы при наведении */
 }
 
 .container {
-    background-color: #2a72b8;  /*#6c757d grey; White background for the container */
+    background-color: #6c757d;  /*#6c757d серый; Белый фон для контейнера */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Тень для контейнера */
 }
 
 .navbar-text {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #f8f9fa; /* Light color to contrast with dark background */
+    font-weight: bold; /* Жирный шрифт */
+    font-size: 1.4em; /* Размер шрифта */
+    color: #f8f9fa; /* Светлый цвет для контраста с темным фоном */
     margin-right: 1rem;
 }
 
 .navbar-text span {
-    color: #17a2b8; /* Info color */
+    color: #6c757d; /* Цвет информации */
 }
 
-/* Custom switch styling */
+/* Стилизация пользовательского переключателя */
 .custom-switch-green .form-check-input:checked {
-    background-color: #28a745; /* Green color */
-    border-color: #28a745; /* Green color */
+    background-color: #b0b0b0; /* Серый цвет */
+    border-color: #b0b0b0; /* Серый цвет */
 }
 
 .custom-switch-green .form-check-input:focus {
-    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* Green shadow */
+    box-shadow: 0 0 0 0.25rem rgba(176, 176, 176, 0.25); /* Серый тень */
 }
 
 .custom-switch-green .form-check-input:checked:focus {
-    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* Green shadow */
+    box-shadow: 0 0 0 0.25rem rgba(176, 176, 176, 0.25); /* Серый тень */
 }

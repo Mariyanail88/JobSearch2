@@ -12,33 +12,40 @@ roleMessage=roleMessage
 notLoggedInMessage=notLoggedInMessage
 availableActions=availableActions
 >
+    <head>
+        <style>
+            .card-title {
+                font-weight: bold;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            }
+            .card-text strong {
+                font-weight: bold;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            }
+            .card-text .value {
+                margin-left: 10px;
+                font-size: 1.1em;
+            }
+        </style>
+    </head>
+    <body>
     <div class="container">
-        <h1>${resumeCreateTitle}</h1>
-        <form action="/resumes/create" method="post">
-            <div class="form-group">
-                <label for="name">${resumeName}</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h1 class="card-title">${resume.name}</h1>
+
+                <p class="card-text"><strong>${resumeName}:</strong> <span class="value">${resume.name}</span></p>
+                <p class="card-text"><strong>${resumeSalary}:</strong> <span class="value">${resume.salary}</span></p>
+                <p class="card-text"><strong>${resumeIsActive}:</strong> <span class="value">${resume.isActive?string(resumeActiveYes, resumeActiveNo)}</span></p>
+                <p class="card-text"><strong>${resumeCreatedDate}:</strong> <span class="value">${resume.getFormattedCreatedDate()}</span></p>
+                <p class="card-text"><strong>${resumeUpdatedDate}:</strong> <span class="value">${resume.getFormattedUpdatedDate()}</span></p>
             </div>
-            <div class="form-group">
-                <label for="categoryId">${resumeCategory}</label>
-                <select class="form-control" id="categoryId" name="categoryId" required>
-                    <#list categories as category>
-                        <option value="${category.id}">${category.name}</option>
-                    </#list>
-                </select>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <a href="/" class="btn btn-primary">${home}</a>
             </div>
-            <div class="form-group">
-                <label for="salary">${resumeSalary}</label>
-                <input type="number" class="form-control" id="salary" name="salary" required>
-            </div>
-            <div class="form-group">
-                <label for="isActive">${resumeIsActive}</label>
-                <select class="form-control" id="isActive" name="isActive" required>
-                    <option value="true">${resumeActiveYes}</option>
-                    <option value="false">${resumeActiveNo}</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">${resumeCreateButton}</button>
-        </form>
+        </div>
     </div>
+    </body>
 </@layout.layout>

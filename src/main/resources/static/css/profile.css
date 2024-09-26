@@ -53,10 +53,10 @@
     border-radius: 10px;
     margin-left: 20px;
     font-size: 1.2em;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap; /* Предотвращение переноса текста */
 }
 .create-btn {
-    white-space: normal; /* Allow text wrapping */
+    white-space: normal; /* Разрешить перенос текста */
     text-align: center;
 }
 .responses-count {
@@ -76,26 +76,26 @@
     padding: 20px;
     margin: 10px;
     font-size: 1.2em;
-    overflow: hidden; /* Ensure content fits within the card */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    word-wrap: break-word; /* Break long words to fit within the card */
+    overflow: hidden; /* Убедиться, что содержимое помещается в карточку */
+    text-overflow: ellipsis; /* Добавить многоточие для переполненного текста */
+    word-wrap: break-word; /* Переносить длинные слова, чтобы они помещались в карточку */
 }
 .vacancy-or-resume-title {
     margin: 0;
     font-weight: bold;
-    color: #1c1c1e; /* Highlight color */
-    overflow: hidden; /* Ensure content fits within the card */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: nowrap; /* Prevent text wrapping */
+    color: #1c1c1e; /* Цвет выделения */
+    overflow: hidden; /* Убедиться, что содержимое помещается в карточку */
+    text-overflow: ellipsis; /* Добавить многоточие для переполненного текста */
+    white-space: nowrap; /* Предотвращение переноса текста */
 }
 .vacancy-or-resume-date {
     margin: 0;
     font-weight: bold;
-    color: rgba(50, 50, 50, 0.5); /* Different color for date */
-    overflow: hidden; /* Ensure content fits within the card */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
-    white-space: nowrap; /* Prevent text wrapping */
-    font-size: 0.9em; /* Smaller font size */
+    color: rgba(50, 50, 50, 0.5); /* Другой цвет для даты */
+    overflow: hidden; /* Убедиться, что содержимое помещается в карточку */
+    text-overflow: ellipsis; /* Добавить многоточие для переполненного текста */
+    white-space: nowrap; /* Предотвращение переноса текста */
+    font-size: 0.9em; /* Меньший размер шрифта */
 }
 .vacancy-or-resume-actions {
     margin-top: 10px;
@@ -119,7 +119,7 @@
     padding: 15px 30px;
     font-size: 1.5em;
     color: #fff;
-    background-color: #007bff;
+    background-color: #6c757d; /* Средне серый цвет */
     border: none;
     border-radius: 10px;
     text-decoration: none;
@@ -127,7 +127,7 @@
     transition: background-color 0.3s ease;
 }
 .home-btn:hover {
-    background-color: #0056b3;
+    background-color: #5a6268; /* Темно-серый цвет при наведении */
 }
 
 .toast {

@@ -1,9 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: rgba(233, 236, 239, 0.5); /* More UI-friendly background color */
+    background-color: rgba(233, 236, 239, 0.5); /* Более дружественный к пользователю цвет фона */
     margin: 0;
     padding: 0;
-    height: 100vh; /* Ensure the body takes the full height of the viewport */
+    height: 100vh; /* Убедиться, что тело занимает всю высоту окна просмотра */
     display: flex;
     flex-direction: column;
 }
@@ -12,28 +12,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1; /* Allow the main content to grow and take up available space */
-    padding: 0; /* Remove any padding */
-    margin: 0; /* Remove any margin */
+    flex-grow: 1; /* Позволить основному контенту расти и занимать доступное пространство */
+    padding: 0; /* Удалить любые отступы */
+    margin: 0; /* Удалить любые поля */
 }
 
 .welcome-container {
     text-align: center;
-    padding: 20px; /* Adjusted padding */
+    padding: 20px; /* Скорректированный отступ */
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
-    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+    box-sizing: border-box; /* Убедиться, что отступы включены в общую ширину и высоту элемента */
 }
 
 .welcome-header {
-    margin-bottom: 20px; /* Adjusted margin */
+    margin-bottom: 20px; /* Скорректированный отступ */
 }
 
 .welcome-header h1 {
-    font-size: 2.5em; /* Adjusted font size */
+    font-size: 2.5em; /* Скорректированный размер шрифта */
     color: #343a40;
 }
 
@@ -41,40 +41,40 @@ body {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
-    margin-bottom: 20px; /* Adjusted margin */
+    margin-bottom: 20px; /* Скорректированный отступ */
 }
 
 .welcome-links {
-    margin-top: 20px; /* Adjusted margin */
+    margin-top: 20px; /* Скорректированный отступ */
 }
 
 .welcome-links .btn {
-    margin: 10px; /* Adjusted margin */
-    padding: 15px 30px; /* Adjusted padding */
-    font-size: 1.2em; /* Adjusted font size */
-    text-decoration: none; /* Ensure no underline */
-    display: inline-block; /* Ensure buttons are inline-block */
-    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
+    margin: 10px; /* Скорректированный отступ */
+    padding: 15px 30px; /* Скорректированный отступ */
+    font-size: 1.2em; /* Скорректированный размер шрифта */
+    text-decoration: none; /* Убедиться, что нет подчеркивания */
+    display: inline-block; /* Убедиться, что кнопки являются inline-block */
+    transition: background-color 0.3s, border-color 0.3s; /* Плавный переход для эффектов наведения */
 }
 
 .welcome-links .btn-primary {
-    background-color: #7bc323;
-    border-color: #b0ea69;
+    background-color: #6c757d; /* Средне серый цвет */
+    border-color: #6c757d; /* Средне серый цвет границы */
     color: #fff;
 }
 
 .welcome-links .btn-primary:hover {
-    background-color: #1ebd2b;
-    border-color: #1ebd2b;
+    background-color: #d3d3d3; /* Светло-серый цвет при наведении */
+    border-color: #d3d3d3; /* Светло-серый цвет границы при наведении */
 }
 
 .welcome-links .btn-secondary {
-    background-color: #6c757d; /* Grey color for "View Resumes" button */
+    background-color: #6c757d; /* Средне серый цвет для кнопки "View Resumes" */
     border-color: #6c757d;
     color: #fff;
 }
 
 .welcome-links .btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
+    background-color: #5a6268; /* Темно-серый цвет при наведении */
+    border-color: #545b62; /* Темно-серый цвет границы при наведении */
 }
