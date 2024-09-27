@@ -12,33 +12,55 @@ roleMessage=roleMessage
 notLoggedInMessage=notLoggedInMessage
 availableActions=availableActions
 >
+    <style>
+        .form-label {
+            font-weight: bold; /* Сделать текст жирным */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Добавить тень к тексту */
+        }
+    </style>
+
     <div class="container">
-        <h1>${resumeCreateTitle}</h1>
-        <form action="/resumes/create" method="post">
+        <h1>${resumeEditTitle!''}</h1>
+        <form action="/resumes/edit/${resume.id}" method="post">
             <div class="form-group">
-                <label for="name">${resumeName}</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="name" class="form-label">${resumeName!''}</label>
+                <input type="text" class="form-control" id="name" name="name" value="${resume.name!''}" required>
+                <#if bindingResult?has_content && bindingResult.hasFieldErrors("name")>
+                    <span class="error-message">${bindingResult.getFieldError("name").defaultMessage}</span>
+                </#if>
             </div>
             <div class="form-group">
-                <label for="categoryId">${resumeCategory}</label>
-                <select class="form-control" id="categoryId" name="categoryId" required>
-                    <#list categories as category>
-                        <option value="${category.id}">${category.name}</option>
-                    </#list>
-                </select>
+                <label for="applicantId" class="form-label">${resumeApplicantId!''}</label>
+                <input type="number" class="form-control" id="applicantId" name="applicantId" value="${resume.applicantId!''}" required>
+                <#if bindingResult?has_content && bindingResult.hasFieldErrors("applicantId")>
+                    <span class="error-message">${bindingResult.getFieldError("applicantId").defaultMessage}</span>
+                </#if>
             </div>
             <div class="form-group">
-                <label for="salary">${resumeSalary}</label>
-                <input type="number" class="form-control" id="salary" name="salary" required>
+                <label for="categoryId" class="form-label">${resumeCategory!''}</label>
+                <input type="number" class="form-control" id="categoryId" name="categoryId" value="${resume.categoryId!''}" required>
+                <#if bindingResult?has_content && bindingResult.hasFieldErrors("categoryId")>
+                    <span class="error-message">${bindingResult.getFieldError("categoryId").defaultMessage}</span>
+                </#if>
             </div>
             <div class="form-group">
-                <label for="isActive">${resumeIsActive}</label>
+                <label for="salary" class="form-label">${resumeSalary!''}</label>
+                <input type="number" class="form-control" id="salary" name="salary" value="${resume.salary!''}" required>
+                <#if bindingResult?has_content && bindingResult.hasFieldErrors("salary")>
+                    <span class="error-message">${bindingResult.getFieldError("salary").defaultMessage}</span>
+                </#if>
+            </div>
+            <div class="form-group">
+                <label for="isActive" class="form-label">${resumeIsActive!''}</label>
                 <select class="form-control" id="isActive" name="isActive" required>
-                    <option value="true">${resumeActiveYes}</option>
-                    <option value="false">${resumeActiveNo}</option>
+                    <option value="true" <#if resume.isActive?? && resume.isActive>selected</#if>>${resumeActiveYes!''}</option>
+                    <option value="false" <#if resume.isActive?? && !resume.isActive>selected</#if>>${resumeActiveNo!''}</option>
                 </select>
+                <#if bindingResult?has_content && bindingResult.hasFieldErrors("isActive")>
+                    <span class="error-message">${bindingResult.getFieldError("isActive").defaultMessage}</span>
+                </#if>
             </div>
-            <button type="submit" class="btn btn-primary">${resumeCreateButton}</button>
+            <button type="submit" class="btn btn-primary">${resumeSaveButton!''}</button>
         </form>
     </div>
 </@layout.layout>

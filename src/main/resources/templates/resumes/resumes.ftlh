@@ -25,7 +25,7 @@ availableActions=availableActions
                 <div class="card h-100 shadow-sm">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${resume.name}</h5>
-                        <p class="card-text mb-2"><strong>${resumeSalary}:</strong> ${resume.getFormattedCreatedDate()}</p>
+                        <p class="card-text mb-2"><strong>${resumeSalary}:</strong> ${resume.salary}</p>
                         <a href="/resumes/${resume.id}" class="btn btn-primary mt-auto">${resumeDetails}</a>
                     </div>
                 </div>

@@ -78,6 +78,9 @@ public class ResumeController {
     @GetMapping("create")
     public String showCreateResumeForm(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
+            List<CategoryDto> categories = categoriesService.getCategories();
+            log.info("Loaded categories: {}", categories);
+            model.addAttribute("categories", categories);
             model.addAttribute("resumeDto", new ResumeDto());
             return "resumes/create_resume";
         }
@@ -114,7 +117,7 @@ public class ResumeController {
             ResumeDto createdResume = resumeService.addResume(resumeDto);
             log.info("Resume created successfully: {}", createdResume);
 
-            return "redirect:/resumes/profile";
+            return "redirect:/profile";
         } catch (Exception e) {
             log.error("Error creating resume", e);
             model.addAttribute("errorMessage", "An error occurred while creating the resume. Please try again.");
