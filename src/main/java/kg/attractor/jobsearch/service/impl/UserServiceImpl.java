@@ -1,8 +1,7 @@
 package kg.attractor.jobsearch.service.impl;
 
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+
 import kg.attractor.jobsearch.dto.ResumeDto;
 import kg.attractor.jobsearch.dto.UserDto;
 import kg.attractor.jobsearch.dto.UserWithAvatarFileDto;
@@ -283,7 +282,7 @@ public class UserServiceImpl implements UserService {
     }
     // Отправка токена для сброса пароля
     @Override
-    public void sendPasswordResetToken(String email) throws UserNotFoundException, MessagingException {
+    public void sendPasswordResetToken(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
 
@@ -297,7 +296,7 @@ public class UserServiceImpl implements UserService {
 
 
     // Вспомогательный метод для отправки email
-    private void sendEmail(String to, String resetLink) throws MessagingException {
+    private void sendEmail(String to, String resetLink) {
      //   MimeMessage message = mailSender.createMimeMessage();
 //        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 //
